@@ -1,7 +1,6 @@
 #define PUGIXML_HEADER_ONLY
 #include "pugi_lib/pugixml.cpp"
-#include <string>
-#include <vector>
+#include "parser.hpp"
 
 namespace parser {
 
