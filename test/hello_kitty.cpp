@@ -13,14 +13,13 @@ int main() {
 		std::cout << "Error description: " << result.description() << "\n";
 	}
 
-	for (pugi::xml_node img = doc.child("img"); img; img = img.next_sibling("img")) {
+	pugi::xpath_node_set imgs = doc.select_nodes("//img");
 
-	    std::cout << "img " << img.attribute("src").value() << "\n";
+	std::cout << "Images...:";
+
+	for (const auto &node : imgs) {
+	
+	        std::cout << " " << node.node().name();
 	}
-/*
-	pugi::xpath_node_set bounds = doc.select_nodes("/");
-
-	std::cout << "Bounds:";
-*/
 
 }
