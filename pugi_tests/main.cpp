@@ -1,5 +1,5 @@
 #define PUGIXML_HEADER_ONLY
-#include "pugixml.hpp"
+#include "pugi_lib/pugixml.cpp"
 #include <iostream>
 
 int main() {
