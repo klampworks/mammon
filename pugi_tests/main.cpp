@@ -13,6 +13,15 @@ int main() {
 	pugi::xml_document doc;
 
 	pugi::xml_parse_result result = doc.load_buffer_inplace_own(buffer, size);
-	std::cout << "hello world" << std::endl;
 
+	pugi::xpath_node_set bounds = doc.select_nodes("/mesh/bounds");
+
+	std::cout << "Bounds:";
+
+	for (const auto &node : bounds) {
+	
+	        std::cout << " " << node.node().name();
+	}
+
+	std::cout << "\n\nhello world" << std::endl;
 }
