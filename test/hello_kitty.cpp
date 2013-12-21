@@ -19,7 +19,7 @@ int main() {
 
 	for (const auto &node : imgs) {
 	
-	        std::cout << " " << node.node().name();
+	        std::cout << " " << node.node().attribute("src").value() << std::endl;
 	}
 
 }
