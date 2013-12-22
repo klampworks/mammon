@@ -33,6 +33,14 @@ std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids) 
 	return std::move(ret);
 }
 
+struct my_walker : public pugi::xml_tree_walker {
+
+	std::string value;
+	bool for_each(pugi::xml_node &node) {
+		value += node.value();
+	}
+};
+
 void parse_posts(const char *filename) {
 
 	pugi::xml_document doc;
@@ -45,7 +53,10 @@ void parse_posts(const char *filename) {
 	for (const auto &node : posts) {
 
 		pugi::xpath_node quote = node.node().select_single_node("td/blockquote");
-		std::string text = quote.node().value();
+
+		my_walker k;
+		quote.node().traverse(k);
+		std::string text = k.value;
 		std::cout << text << std::endl;
 
 		pugi::xpath_node file = node.node().select_single_node("td/span[@class='filesize']/a");
@@ -55,13 +66,6 @@ void parse_posts(const char *filename) {
 	}
 }
 
-class my_walker : public pugi::xml_walker {
-
-	std::string value;
-	bool for_each(pugi::xml_node &node) {
-		value += node.value();
-	}
-};
 
 int main(int argc, char **argv) {
 
