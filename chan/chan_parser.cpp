@@ -44,10 +44,11 @@ void parse_posts(const char *filename) {
 
 	for (const auto &node : posts) {
 
-		pugi::xpath_node_set files = node.node().select_nodes("//span[@class='filesize']/a");
+		pugi::xpath_node_set files = node.node().select_nodes("td/span[@class='filesize']/a");
 		for (const auto &k : files) {
 	        std::cout << k.node().attribute("href").value() << std::endl;
 		}
+		std::cout << std::endl;
 
 	}
 }
