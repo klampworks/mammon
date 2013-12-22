@@ -1,9 +1,14 @@
 #include "../parser.hpp"
+#include <iostream>
 
 int main() {
 
 	const char *filename = "input.html";
-	const char *xpath = "";
+	const char *xpath = "//span[@class='reflink']/span/a";
 
 	std::vector<std::string> res = parser::parse_path(filename, xpath);
+
+	for (const auto &a : res) {
+		std::cout << a << std::endl;
+	}
 }
