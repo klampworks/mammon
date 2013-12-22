@@ -38,6 +38,10 @@ struct my_walker : public pugi::xml_tree_walker {
 	std::string value;
 	bool for_each(pugi::xml_node &node) {
 		value += node.value();
+
+		my_walker k;
+		node.traverse(k);
+		value+=k.value;
 	}
 };
 
