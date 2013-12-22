@@ -11,18 +11,15 @@ std::vector<std::string> parse_thread_ids() {
 	std::vector<std::string> ret;
 
 	//Only take the odd numbered values.
-	
 	for (unsigned i = 1; i < ids.size(); i+=2) {
 		ret.push_back(ids[i]);
 	}
 	
-
 	return ret;
 }
 
 std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids) {
 
-	//2374.html
 	const char *str_url = "http://desuchan.net/tech/res/";
 	const char *end_url = ".html";
 
@@ -38,6 +35,7 @@ std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids) 
 int main(int argc, char **argv) {
 
 	std::vector<std::string> res = parse_thread_ids();
+	res = convert_id_to_url(res);
 
 	for (const auto &a : res) {
 		if (!a.empty())
