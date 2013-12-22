@@ -4,7 +4,7 @@
 
 namespace parser {
 
-std::vector<std::string> parse_path(const char *filename, const char *xpath) {
+std::vector<std::string> parse_path(const char *filename, const char *xpath, const char *att) {
 
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename);
@@ -14,7 +14,8 @@ std::vector<std::string> parse_path(const char *filename, const char *xpath) {
 	std::vector<std::string> res;
 
 	for (const auto &node : imgs)
-	        res.push_back(node.node().attribute("src2").value());
+	        //res.push_back(node.node().attribute("src2").value());
+	        res.push_back(node.node().attribute(att).value());
 
 	return std::move(res);
 }

@@ -6,7 +6,7 @@
 
 namespace parser {
 
-	std::vector<std::string> parse_path(const char*, const char*);
+	std::vector<std::string> parse_path(const char*, const char*, const char*);
 
 }
 
