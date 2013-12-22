@@ -12,7 +12,7 @@ std::vector<std::string> parse_thread_ids() {
 
 	//Only take the odd numbered values.
 	for (unsigned i = 1; i < ids.size(); i+=2) {
-		ret.push_back(i);
+		ret.push_back(ids[i]);
 	}
 
 	return ret;
