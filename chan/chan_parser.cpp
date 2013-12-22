@@ -55,6 +55,14 @@ void parse_posts(const char *filename) {
 	}
 }
 
+class my_walker : public pugi::xml_walker {
+
+	std::string value;
+	bool for_each(pugi::xml_node &node) {
+		value += node.value();
+	}
+};
+
 int main(int argc, char **argv) {
 
 	parse_posts("input_2.html");
