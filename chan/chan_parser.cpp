@@ -31,6 +31,20 @@ std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids) 
 	return std::move(ret);
 }
 
+void parse_posts(const char *filename) {
+
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(filename);
+
+	pugi::xpath_node_set posts = doc.select_nodes("");
+
+	std::vector<std::string> res;
+
+	for (const auto &node : imgs) {
+	        std:;cout << node.node().name() << std::endl;;
+
+	}
+}
 
 int main(int argc, char **argv) {
 
