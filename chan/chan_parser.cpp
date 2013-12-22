@@ -1,3 +1,5 @@
+#define PUGIXML_HEADER_ONLY
+#include "../pugi_lib/pugixml.cpp"
 #include "../parser.hpp"
 #include <iostream>
 
@@ -36,18 +38,20 @@ void parse_posts(const char *filename) {
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename);
 
-	pugi::xpath_node_set posts = doc.select_nodes("");
+	pugi::xpath_node_set posts = doc.select_nodes("//table/tbody/tr");
 
 	std::vector<std::string> res;
 
-	for (const auto &node : imgs) {
-	        std:;cout << node.node().name() << std::endl;;
+	for (const auto &node : posts) {
+	        std::cout << node.node().name() << std::endl;;
 
 	}
 }
 
 int main(int argc, char **argv) {
 
+	parse_posts("input_2.html");
+	return 1;
 	std::vector<std::string> res = parse_thread_ids();
 	res = convert_id_to_url(res);
 
