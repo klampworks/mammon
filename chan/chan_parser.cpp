@@ -47,6 +47,7 @@ void parse_posts(const char *filename) {
 
 	for (const auto &node : posts) {
 
+		std::cout << "##############################" << std::endl;
 		pugi::xpath_node quote = node.node().select_single_node("td/blockquote");
 
 		//Flatten the subtree into a single string.
@@ -57,6 +58,7 @@ void parse_posts(const char *filename) {
 		pugi::xpath_node file = node.node().select_single_node("td/span[@class='filesize']/a");
 		std::string img_src = file.node().attribute("href").value();
 		std::cout << img_src << std::endl;
+		std::cout << "##############################" << std::endl;
 
 	}
 }
@@ -100,6 +102,5 @@ std::string flatten(pugi::xml_node &&quote) {
 	my_walker k;
 	quote.traverse(k);
 	return std::move(k.value);
-
 }
 
