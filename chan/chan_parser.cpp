@@ -49,6 +49,12 @@ std::string parse_post_text(pugi::xml_node &&node) {
 	return flatten(quote.node());
 }
 
+std::string parse_post_img(pugi::xml_node &&node) {
+
+	pugi::xpath_node file = node.select_single_node("span[@class='filesize']/a");
+	return file.node().attribute("href").value();
+}
+
 void parse_posts(const char *filename) {
 
 	pugi::xml_document doc;
@@ -58,8 +64,10 @@ void parse_posts(const char *filename) {
 	pugi::xpath_node op = doc.select_single_node("//form/div[2]");
 	std::string op_postid = parse_postid(op.node());
 	std::string op_text = parse_post_text(op.node());
+	std::string op_img = parse_post_img(op.node());
 
 	std::cout << "OP id = " << op_postid << std::endl;
+	std::cout << "OP img = " << op_img << std::endl;
 	std::cout << "OP text = " << op_text << std::endl;
 /*
 <a name="2374"></a>
@@ -81,9 +89,7 @@ void parse_posts(const char *filename) {
 
 		std::string text = parse_post_text(node.node());
 
-		pugi::xpath_node file = node.node().select_single_node("span[@class='filesize']/a");
-		std::string img_src = file.node().attribute("href").value();
-
+		std::string img_src = parse_post_img(node.node());
 
 		std::cout << "##############################" << std::endl;
 		std::cout << "Id = " << post_id << std::endl;
