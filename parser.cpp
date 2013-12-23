@@ -2,9 +2,11 @@
 #include "pugi_lib/pugixml.cpp"
 #include "parser.hpp"
 
-namespace parser {
-
-std::vector<std::string> parse_path(const char *filename, const char *xpath, const char *att) {
+std::vector<std::string> base_parser::parse_path(
+	const char *filename, 
+	const char *xpath, 
+	const char *att) 
+{
 
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename);
@@ -20,10 +22,14 @@ std::vector<std::string> parse_path(const char *filename, const char *xpath, con
 	return std::move(res);
 }
 
-std::string parse_first_path(pugi::xml_node &&node, const char *xpath, const char *att) {
+std::string base_parser::parse_first_path(
+	pugi::xml_node &&node, 
+	const char *xpath, 
+	const char *att) 
+{
 
 	pugi::xpath_node res = node.select_single_node(xpath);
 	return res.node().attribute(att).value();
 }
 
-} //namespace
+}
