@@ -1,6 +1,4 @@
-#define PUGIXML_HEADER_ONLY
-#include "pugi_lib/pugixml.cpp"
-#include "parser.hpp"
+#include "base_parser.hpp"
 
 std::vector<std::string> base_parser::parse_path(
 	const char *filename, 
@@ -32,4 +30,3 @@ std::string base_parser::parse_first_path(
 	return res.node().attribute(att).value();
 }
 
-}
