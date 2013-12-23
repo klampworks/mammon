@@ -1,0 +1,15 @@
+#ifndef CHAN_PARSER_HPP
+#define CHAN_PARSER_HPP
+
+class chan_parser : public base_parser {
+
+	std::vector<std::string> parse_thread_ids();
+	std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids);
+	std::string parse_postid(pugi::xml_node &&node);
+	std::string parse_post_text(pugi::xml_node &&node);
+	std::string parse_post_img(pugi::xml_node &&node);
+	void parse_posts(const char *filename);
+	std::string flatten(pugi::xml_node &&quote);
+
+};
+#endif

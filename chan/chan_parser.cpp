@@ -2,11 +2,10 @@
 #include "../pugi_lib/pugixml.cpp"
 #include "../parser.hpp"
 #include <iostream>
-
-std::string flatten(pugi::xml_node &&quote);
+#include "chan_parser.hpp"
 
 //List page.
-std::vector<std::string> parse_thread_ids() {
+std::vector<std::string> chan_parser::parse_thread_ids() {
 
 	const char *filename = "input.html";
 	const char *xpath = "//form/div[@id]";
@@ -23,7 +22,7 @@ std::vector<std::string> parse_thread_ids() {
 	return ret;
 }
 
-std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids) {
+std::vector<std::string> chan_parser::convert_id_to_url(const std::vector<std::string> &ids) {
 
 	const char *str_url = "http://desuchan.net/tech/res/";
 	const char *end_url = ".html";
@@ -37,12 +36,12 @@ std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids) 
 }
 
 //Post page
-std::string parse_postid(pugi::xml_node &&node) {
+std::string chan_parser::parse_postid(pugi::xml_node &&node) {
 
-	return parser::parse_first_path(std::move(node), "a[@name]", "name");
+	return base_parser::parse_first_path(std::move(node), "a[@name]", "name");
 }
 
-std::string parse_post_text(pugi::xml_node &&node) {
+std::string chan_parser::parse_post_text(pugi::xml_node &&node) {
 
 	pugi::xpath_node quote = node.select_single_node("blockquote");
 
@@ -50,13 +49,12 @@ std::string parse_post_text(pugi::xml_node &&node) {
 	return flatten(quote.node());
 }
 
-std::string parse_post_img(pugi::xml_node &&node) {
+std::string chan_parser::parse_post_img(pugi::xml_node &&node) {
 
-	pugi::xpath_node file = node.select_single_node("span[@class='filesize']/a");
-	return file.node().attribute("href").value();
+	return base_parser::parse_first_path(std::move(node), "span[@class='filesize']/a", "href");
 }
 
-void parse_posts(const char *filename) {
+void chan_parser::parse_posts(const char *filename) {
 
 	//Parse file into an AST.
 	pugi::xml_document doc;
@@ -135,7 +133,7 @@ struct my_walker : public pugi::xml_tree_walker {
 	}
 };
 
-std::string flatten(pugi::xml_node &&quote) {
+std::string chan_parser::flatten(pugi::xml_node &&quote) {
 
 	my_walker k;
 	quote.traverse(k);
