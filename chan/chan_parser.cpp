@@ -56,7 +56,7 @@ void parse_posts(const char *filename) {
 		std::string img_src = file.node().attribute("href").value();
 
 
-		if (!img_src.empty() && text.empty())
+		if (img_src.empty() && text.empty())
 			continue;
 
 		std::cout << "##############################" << std::endl;
