@@ -49,12 +49,6 @@ struct my_walker : public pugi::xml_tree_walker {
 		}
 
 		return true;
-
-		/*
-		my_walker k;
-		node.traverse(k);
-		value+=k.value;
-		*/
 	}
 };
 
