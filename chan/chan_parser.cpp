@@ -40,8 +40,13 @@ struct my_walker : public pugi::xml_tree_walker {
 
 		std::string tmp(node.value());
 
-		if (!tmp.empty())
-			value += " " + tmp;
+		if (!tmp.empty()) {
+
+			if (!value.empty())
+				value += " ";
+
+			value += tmp;
+		}
 
 		return true;
 
