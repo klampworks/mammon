@@ -3,6 +3,8 @@
 #include "../parser.hpp"
 #include <iostream>
 
+std::string flatten(const pugi::xml_node &quote);
+
 std::vector<std::string> parse_thread_ids() {
 
 	const char *filename = "input.html";
@@ -33,24 +35,6 @@ std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids) 
 	return std::move(ret);
 }
 
-struct my_walker : public pugi::xml_tree_walker {
-
-	std::string value;
-	bool for_each(pugi::xml_node &node) {
-
-		std::string tmp(node.value());
-
-		if (!tmp.empty()) {
-
-			if (!value.empty())
-				value += " ";
-
-			value += tmp;
-		}
-
-		return true;
-	}
-};
 
 void parse_posts(const char *filename) {
 
@@ -65,9 +49,9 @@ void parse_posts(const char *filename) {
 
 		pugi::xpath_node quote = node.node().select_single_node("td/blockquote");
 
-		my_walker k;
-		quote.node().traverse(k);
-		std::string text = k.value;
+		//Flatten the subtree into a single string.
+		std::string text = flatten(quote.node());
+
 		std::cout << text << std::endl;
 
 		pugi::xpath_node file = node.node().select_single_node("td/span[@class='filesize']/a");
@@ -90,3 +74,32 @@ int main(int argc, char **argv) {
 			std::cout << a << std::endl;
 	}
 }
+
+//Pugi XML developers have been writing too much Java...
+struct my_walker : public pugi::xml_tree_walker {
+
+	std::string value;
+	bool for_each(pugi::xml_node &node) {
+
+		std::string tmp(node.value());
+
+		if (!tmp.empty()) {
+
+			if (!value.empty())
+				value += " ";
+
+			value += tmp;
+		}
+
+		return true;
+	}
+};
+
+std::string flatten(const pugi::xml_node &quote) {
+
+	my_walker k;
+	quote.traverse(k);
+	return std::move(k.value);
+
+}
+
