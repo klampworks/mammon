@@ -57,11 +57,13 @@ std::string parse_post_img(pugi::xml_node &&node) {
 
 void parse_posts(const char *filename) {
 
+	//Parse file into an AST.
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename);
 
-
+	//Parse the original post subtree.
 	pugi::xpath_node op = doc.select_single_node("//form/div[2]");
+
 	std::string op_postid = parse_postid(op.node());
 	std::string op_text = parse_post_text(op.node());
 	std::string op_img = parse_post_img(op.node());
@@ -76,6 +78,7 @@ void parse_posts(const char *filename) {
 
 <form id="delform"
 */
+	//Parse the thread responses into a node set.
 	pugi::xpath_node_set posts = doc.select_nodes("//table/tbody/tr/td");
 
 	std::vector<std::string> res;
@@ -84,11 +87,11 @@ void parse_posts(const char *filename) {
 
 		std::string post_id = parse_postid(node.node());
 
+		//Sometimes this matches a node that is not a reply.
 		if (post_id.empty())
 			continue;
 
 		std::string text = parse_post_text(node.node());
-
 		std::string img_src = parse_post_img(node.node());
 
 		std::cout << "##############################" << std::endl;
