@@ -3,7 +3,7 @@
 #include "../parser.hpp"
 #include <iostream>
 
-std::string flatten(const pugi::xml_node &quote);
+std::string flatten(pugi::xml_node &&quote);
 
 std::vector<std::string> parse_thread_ids() {
 
@@ -95,7 +95,7 @@ struct my_walker : public pugi::xml_tree_walker {
 	}
 };
 
-std::string flatten(const pugi::xml_node &quote) {
+std::string flatten(pugi::xml_node &&quote) {
 
 	my_walker k;
 	quote.traverse(k);
