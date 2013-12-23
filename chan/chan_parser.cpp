@@ -41,6 +41,14 @@ std::string parse_postid(pugi::xml_node &&node) {
 	return id.node().attribute("name").value();
 }
 
+std::string parse_post_text(pugi::xml_node &&node) {
+
+	pugi::xpath_node quote = node.select_single_node("blockquote");
+
+	//Flatten the subtree into a single string.
+	return flatten(quote.node());
+}
+
 void parse_posts(const char *filename) {
 
 	pugi::xml_document doc;
@@ -49,8 +57,10 @@ void parse_posts(const char *filename) {
 
 	pugi::xpath_node op = doc.select_single_node("//form/div[2]");
 	std::string op_postid = parse_postid(op.node());
+	std::string op_text = parse_post_text(op.node());
 
 	std::cout << "OP id = " << op_postid << std::endl;
+	std::cout << "OP text = " << op_text << std::endl;
 /*
 <a name="2374"></a>
 <label><input type="checkbox" name="num" value="2374" />
@@ -69,10 +79,7 @@ void parse_posts(const char *filename) {
 		if (post_id.empty())
 			continue;
 
-		pugi::xpath_node quote = node.node().select_single_node("blockquote");
-
-		//Flatten the subtree into a single string.
-		std::string text = flatten(quote.node());
+		std::string text = parse_post_text(node.node());
 
 		pugi::xpath_node file = node.node().select_single_node("span[@class='filesize']/a");
 		std::string img_src = file.node().attribute("href").value();
