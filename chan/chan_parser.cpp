@@ -5,6 +5,7 @@
 
 std::string flatten(pugi::xml_node &&quote);
 
+//List page.
 std::vector<std::string> parse_thread_ids() {
 
 	const char *filename = "input.html";
@@ -35,10 +36,10 @@ std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids) 
 	return std::move(ret);
 }
 
+//Post page
 std::string parse_postid(pugi::xml_node &&node) {
 
-	pugi::xpath_node id = node.select_single_node("a[@name]");
-	return id.node().attribute("name").value();
+	return parser::parse_first_path(std::move(node), "a[@name]", "name");
 }
 
 std::string parse_post_text(pugi::xml_node &&node) {
@@ -75,13 +76,7 @@ void parse_posts(const char *filename) {
 	std::cout << "OP title = " << title << std::endl;
 	std::cout << "OP img = " << op_img << std::endl;
 	std::cout << "OP text = " << op_text << std::endl;
-/*
-<a name="2374"></a>
-<label><input type="checkbox" name="num" value="2374" />
-<span class="filetitle">Programming Thread</span>
-
-<form id="delform"
-*/
+	//
 	//Parse the thread responses into a node set.
 	pugi::xpath_node_set posts = doc.select_nodes("//table/tbody/tr/td");
 
@@ -103,7 +98,6 @@ void parse_posts(const char *filename) {
 		std::cout << "Image = " << img_src << std::endl;
 		std::cout << "Text = " << text << std::endl;
 		std::cout << "##############################" << std::endl;
-
 	}
 }
 

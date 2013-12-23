@@ -7,7 +7,7 @@
 namespace parser {
 
 	std::vector<std::string> parse_path(const char*, const char*, const char*);
-	std::string parse_first_path(xml_node &&node, const char *xpath, const char *att);
+	std::string parse_first_path(pugi::xml_node &&node, const char *xpath, const char *att);
 
 }
 
