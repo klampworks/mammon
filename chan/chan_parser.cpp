@@ -35,6 +35,11 @@ std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids) 
 	return std::move(ret);
 }
 
+std::string parse_postid(pugi::xml_node &&node) {
+
+	pugi::xpath_node id = node.select_single_node("a[@name]");
+	return id.node().attribute("name").value();
+}
 
 void parse_posts(const char *filename) {
 
@@ -50,17 +55,18 @@ void parse_posts(const char *filename) {
 
 <form id="delform"
 */
-
-
-
 	pugi::xpath_node_set posts = doc.select_nodes("//table/tbody/tr/td");
 
 	std::vector<std::string> res;
 
 	for (const auto &node : posts) {
 
+		/*
 		pugi::xpath_node id = node.node().select_single_node("a[@name]");
 		std::string post_id = id.node().attribute("name").value();
+		*/
+
+		std::string post_id = parse_postid(node.node());
 
 		if (post_id.empty())
 			continue;
