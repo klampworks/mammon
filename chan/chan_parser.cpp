@@ -1,6 +1,6 @@
 #define PUGIXML_HEADER_ONLY
 #include "../pugi_lib/pugixml.cpp"
-#include "../parser.hpp"
+#include "../base_parser.hpp"
 #include <iostream>
 #include "chan_parser.hpp"
 
@@ -11,7 +11,7 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 	const char *xpath = "//form/div[@id]";
 	const char *att = "id";
 
-	std::vector<std::string> ids =  parser::parse_path(filename, xpath, att);
+	std::vector<std::string> ids = base_parser::parse_path(filename, xpath, att);
 	std::vector<std::string> ret;
 
 	//Only take the odd numbered values.
@@ -100,18 +100,6 @@ void chan_parser::parse_posts(const char *filename) {
 }
 
 
-int main(int argc, char **argv) {
-
-	parse_posts("input_2.html");
-	return 1;
-	std::vector<std::string> res = parse_thread_ids();
-	res = convert_id_to_url(res);
-
-	for (const auto &a : res) {
-		if (!a.empty())
-			std::cout << a << std::endl;
-	}
-}
 
 //Pugi XML developers have been writing too much Java...
 struct my_walker : public pugi::xml_tree_walker {
