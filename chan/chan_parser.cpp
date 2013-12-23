@@ -37,7 +37,12 @@ struct my_walker : public pugi::xml_tree_walker {
 
 	std::string value;
 	bool for_each(pugi::xml_node &node) {
-		value += node.value();
+
+		std::string tmp(node.value());
+
+		if (!tmp.empty())
+			value += " " + tmp;
+
 		return true;
 
 		/*
