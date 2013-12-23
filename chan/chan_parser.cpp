@@ -50,6 +50,9 @@ void parse_posts(const char *filename) {
 		pugi::xpath_node id = node.node().select_single_node("td/a[@name]");
 		std::string post_id = id.node().attribute("name").value();
 
+		if (post_id.empty())
+			continue;
+
 		pugi::xpath_node quote = node.node().select_single_node("td/blockquote");
 
 		//Flatten the subtree into a single string.
@@ -58,9 +61,6 @@ void parse_posts(const char *filename) {
 		pugi::xpath_node file = node.node().select_single_node("td/span[@class='filesize']/a");
 		std::string img_src = file.node().attribute("href").value();
 
-
-		if (img_src.empty() && text.empty())
-			continue;
 
 		std::cout << "##############################" << std::endl;
 		std::cout << "Id = " << post_id << std::endl;
