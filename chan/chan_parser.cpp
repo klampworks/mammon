@@ -22,19 +22,6 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 	return ret;
 }
 
-std::vector<std::string> chan_parser::convert_id_to_url(const std::vector<std::string> &ids) {
-
-	const char *str_url = "http://desuchan.net/tech/res/";
-	const char *end_url = ".html";
-
-	std::vector<std::string> ret;
-
-	for (const auto &id : ids)
-		ret.push_back(str_url + id.substr(1) + end_url);
-
-	return std::move(ret);
-}
-
 //Post page
 std::string chan_parser::parse_postid(pugi::xml_node &&node) {
 
