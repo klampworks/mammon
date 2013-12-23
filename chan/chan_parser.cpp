@@ -41,8 +41,9 @@ void parse_posts(const char *filename) {
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename);
 
-/*
+
 	pugi::xpath_node op = doc.select_single_node("//form/div[2]");
+/*
 <a name="2374"></a>
 <label><input type="checkbox" name="num" value="2374" />
 <span class="filetitle">Programming Thread</span>
