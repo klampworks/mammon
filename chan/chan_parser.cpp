@@ -68,7 +68,11 @@ void parse_posts(const char *filename) {
 	std::string op_text = parse_post_text(op.node());
 	std::string op_img = parse_post_img(op.node());
 
+	pugi::xpath_node title_node = doc.select_single_node("//span[@class='filetitle']");
+	std::string title = title_node.node().value();
+
 	std::cout << "OP id = " << op_postid << std::endl;
+	std::cout << "OP title = " << title << std::endl;
 	std::cout << "OP img = " << op_img << std::endl;
 	std::cout << "OP text = " << op_text << std::endl;
 /*
