@@ -41,24 +41,35 @@ void parse_posts(const char *filename) {
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename);
 
-	pugi::xpath_node_set posts = doc.select_nodes("//table/tbody/tr");
+/*
+	pugi::xpath_node op = doc.select_single_node("//form/div[2]");
+<a name="2374"></a>
+<label><input type="checkbox" name="num" value="2374" />
+<span class="filetitle">Programming Thread</span>
+
+<form id="delform"
+*/
+
+
+
+	pugi::xpath_node_set posts = doc.select_nodes("//table/tbody/tr/td");
 
 	std::vector<std::string> res;
 
 	for (const auto &node : posts) {
 
-		pugi::xpath_node id = node.node().select_single_node("td/a[@name]");
+		pugi::xpath_node id = node.node().select_single_node("a[@name]");
 		std::string post_id = id.node().attribute("name").value();
 
 		if (post_id.empty())
 			continue;
 
-		pugi::xpath_node quote = node.node().select_single_node("td/blockquote");
+		pugi::xpath_node quote = node.node().select_single_node("blockquote");
 
 		//Flatten the subtree into a single string.
 		std::string text = flatten(quote.node());
 
-		pugi::xpath_node file = node.node().select_single_node("td/span[@class='filesize']/a");
+		pugi::xpath_node file = node.node().select_single_node("span[@class='filesize']/a");
 		std::string img_src = file.node().attribute("href").value();
 
 
