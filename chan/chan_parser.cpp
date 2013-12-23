@@ -48,6 +48,9 @@ void parse_posts(const char *filename) {
 
 
 	pugi::xpath_node op = doc.select_single_node("//form/div[2]");
+	std::string op_postid = parse_postid(op.node());
+
+	std::cout << "OP id = " << op_postid << std::endl;
 /*
 <a name="2374"></a>
 <label><input type="checkbox" name="num" value="2374" />
@@ -60,11 +63,6 @@ void parse_posts(const char *filename) {
 	std::vector<std::string> res;
 
 	for (const auto &node : posts) {
-
-		/*
-		pugi::xpath_node id = node.node().select_single_node("a[@name]");
-		std::string post_id = id.node().attribute("name").value();
-		*/
 
 		std::string post_id = parse_postid(node.node());
 
