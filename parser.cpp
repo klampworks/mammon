@@ -20,4 +20,10 @@ std::vector<std::string> parse_path(const char *filename, const char *xpath, con
 	return std::move(res);
 }
 
+std::string parse_first_path(xml_node &&node, const char *xpath, const char *att) {
+
+	pugi::xpath_node res = node.select_single_node(xpath);
+	return res.node().attribute(att).value();
+}
+
 } //namespace
