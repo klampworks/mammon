@@ -8,6 +8,9 @@ namespace base_db {
 sqlite3 *database;
 const char *database_file;
 
+bool check_table(const char *table_name, const std::vector<std::string> &columns);
+void format_table(const char *table_name, const std::vector<std::string> &columns);
+
 //Initialise connection with database file.
 void init() {
  
