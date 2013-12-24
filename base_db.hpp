@@ -12,5 +12,7 @@ namespace base_db {
 
 	std::string lookup_single_value(
 		const std::string&, const std::string&);
+
+	std::string insert_row(const char*, const std::vector<std::string>&);
 }
 #endif

@@ -149,4 +149,35 @@ std::string lookup_single_value(
 	return res;
 }
 
+std::string insert_row(const char *table_name, const std::vector<std::string> &values) {
+
+	if (values.empty())
+		return "";
+
+	std::string columns("?");
+	
+	for (unsigned int i = 1; i < values.size(); i++)
+		columns += ",?";
+
+	sqlite3_stmt *stmt;
+	
+	std::string statement = "insert into " + std::string(table_name) + 
+		" values (" + columns + ")";
+	
+	if (sqlite3_prepare_v2(database, statement.c_str(), -1, &stmt, 0) != SQLITE_OK)
+		return "";
+
+	for (const auto &val : value)
+		sqlite3_bind_text(stmt, i + 1, val.c_str(), val.length(), 0);
+		
+	sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
+
+	long long tmp = (long long)sqlite3_last_insert_rowid(database);
+
+	//TODO is this the best way to long long --> std::string?
+	std::stringstream ss;
+	ss << tmp;
+	return ss.str();
+}
 } //namespace
