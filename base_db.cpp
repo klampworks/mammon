@@ -97,8 +97,6 @@ void format_table(const char *table_name, const std::vector<std::string> &column
 }	
 
 std::string lookup_single_value(
-	const std::string &statement,
-	const std::string &table_name, 
 	const std::string &statement, 
 	const std::vector<std::string> &value) 
 {
@@ -127,8 +125,6 @@ std::string lookup_single_value(
 }
 
 std::string lookup_single_value(
-	const std::string &statement,
-	const std::string &table_name, 
 	const std::string &statement, 
 	const std::string &value) 
 {
