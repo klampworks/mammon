@@ -3,5 +3,7 @@
 
 namespace base_db {
 
+	void init();
+	void init_table(const char *table_name, const std::vector<std::string> &columns);
 }
 #endif
