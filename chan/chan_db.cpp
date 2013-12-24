@@ -47,7 +47,7 @@ void insert_post(
 		thread_id,
 		post_id,
 		img,
-		text)});
+		text}));
 }
 
 }//namespace
