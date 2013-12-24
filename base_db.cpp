@@ -99,6 +99,35 @@ void format_table(const char *table_name, const std::vector<std::string> &column
 std::string lookup_single_value(
 	const std::string &table_name, 
 	const std::string &statement, 
+	const std::vector<std::string> &value) 
+{
+
+	sqlite3_stmt *stmt;
+		
+	if (sqlite3_prepare_v2(database, statement.c_str(), -1, &stmt, 0) != SQLITE_OK) 
+		return "";
+
+	{ unsigned i = 0;
+	for (const auto &val : value) {
+	
+		if (sqlite3_bind_text(stmt, ++i, value.c_str(), value.length(), 0) != SQLITE_OK)
+			return "";
+	}}
+
+	sqlite3_step(stmt);
+
+	char *tmp_ptr = (char*)sqlite3_column_text(stmt, 0);
+	
+	std::string res = tmp_ptr? std::string(tmp_ptr) : "";
+
+	sqlite3_finalize(stmt);
+	
+	return res;
+}
+
+std::string lookup_single_value(
+	const std::string &table_name, 
+	const std::string &statement, 
 	const std::string &value) 
 {
 
