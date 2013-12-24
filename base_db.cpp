@@ -6,7 +6,7 @@
 namespace base_db {
 
 sqlite3 *database;
-const char *database_file;
+const char *database_file = "test.sqlite";
 
 bool check_table(const char *table_name, const std::vector<std::string> &columns);
 void format_table(const char *table_name, const std::vector<std::string> &columns);
