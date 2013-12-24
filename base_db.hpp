@@ -3,10 +3,12 @@
 
 #include <string>
 #include <vector>
+
 namespace base_db {
 
 	void init();
 	void init_table(const char *table_name, const std::vector<std::string> &columns);
+
 	std::string lookup_single_value(
 		const std::string&, const std::vector<std::string>&);
 
