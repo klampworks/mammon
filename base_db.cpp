@@ -30,7 +30,7 @@ bool check_table(const char *table_name, const std::vector<std::string> &columns
 
 	sqlite3_stmt *stmt;
 
-	std::string statement =  "PRAGMA table_info(" + table_name + ")";
+	std::string statement =  "PRAGMA table_info(" + std::string(table_name) + ")";
 
 	int result =  sqlite3_prepare_v2(database, statement.c_str(), -1, &stmt, 0); 
 
@@ -51,7 +51,7 @@ bool check_table(const char *table_name, const std::vector<std::string> &columns
 		if (tmp_ptr)
 			tmp = tmp_ptr;
 		else
-			std::cout << "sf";
+			return false;
 
 		bool flag = false;
 
@@ -85,9 +85,9 @@ void format_table(const char *table_name, const std::vector<std::string> &column
 	for (unsigned int i = 1; i < columns.size(); i++)
 		insert += ", " + columns[i] + " TEXT";
 	
-	std::string statement("create table " + table_name + "(" + insert + ");");
+	std::string statement("create table " + std::string(table_name) + "(" + insert + ");");
 	
-	int result = sqlite3_prepare(atabase, statement.c_str(), -1, &stmt, 0);
+	int result = sqlite3_prepare(database, statement.c_str(), -1, &stmt, 0);
 	
 	if (result != SQLITE_OK)
 		return;
