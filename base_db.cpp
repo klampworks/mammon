@@ -2,6 +2,23 @@
 
 namespace base_db {
 
+sqlite3 *database;
+const char *database_file;
+
+//Initialise connection with database file.
+void init() {
+ 
+	sqlite3 *database;
+	sqlite3_open(database_file, &database);
+}
+
+//Check if a table exists, if not them create it.
+void init_table(const char *table_name, const std::vector<std::string> &columns) {
+
+	if (!check_table(table_name, columns))
+		format_table(table_name, columns);
+}
+
 //Returns true if the table name exists along with all its required columns.
 bool check_table(const char *table_name, const std::vector<std::string> &columns) {
 
