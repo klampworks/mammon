@@ -1,6 +1,7 @@
 #include "base_db.hpp"
 #include <sqlite3.h>
 #include <string>
+#include <sstream>
 #include <vector>
 
 namespace base_db {
@@ -106,12 +107,12 @@ std::string lookup_single_value(
 	if (sqlite3_prepare_v2(database, statement.c_str(), -1, &stmt, 0) != SQLITE_OK) 
 		return "";
 
-	{ unsigned i = 0;
+	unsigned i = 0;
 	for (const auto &val : value) {
 	
-		if (sqlite3_bind_text(stmt, ++i, value.c_str(), value.length(), 0) != SQLITE_OK)
+		if (sqlite3_bind_text(stmt, ++i, val.c_str(), val.length(), 0) != SQLITE_OK)
 			return "";
-	}}
+	}
 
 	sqlite3_step(stmt);
 
@@ -167,8 +168,9 @@ std::string insert_row(const char *table_name, const std::vector<std::string> &v
 	if (sqlite3_prepare_v2(database, statement.c_str(), -1, &stmt, 0) != SQLITE_OK)
 		return "";
 
-	for (const auto &val : value)
-		sqlite3_bind_text(stmt, i + 1, val.c_str(), val.length(), 0);
+	unsigned i = 0;
+	for (const auto &val : values)
+		sqlite3_bind_text(stmt, ++i, val.c_str(), val.length(), 0);
 		
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
