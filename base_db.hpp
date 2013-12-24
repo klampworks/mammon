@@ -1,6 +1,8 @@
 #ifndef BASE_DB_HPP
 #define BASE_DB_HPP
 
+#include <string>
+#include <vector>
 namespace base_db {
 
 	void init();
