@@ -47,7 +47,30 @@ bool check_table(const char *table_name, const std::vector<std::string> &columns
 	}
 
 	return true;
-
 }
+
+//Create a table with columns.
+void format_table(const char *table_name, const std::vector<std::string> &columns) {
+
+	sqlite3_stmt *stmt;
+	
+	if (columns.size() == 0)
+		return;
+	
+	std::string insert(columns[0] + " TEXT");
+	
+	for (unsigned int i = 1; i < columns.size(); i++)
+		insert += ", " + columns[i] + " TEXT";
+	
+	std::string statement("create table " + table_name + "(" + insert + ");");
+	
+	int result = sqlite3_prepare(atabase, statement.c_str(), -1, &stmt, 0);
+	
+	if (result != SQLITE_OK)
+		return;
+	
+	sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
+}	
 
 } //namespace
