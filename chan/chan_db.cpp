@@ -40,8 +40,14 @@ void insert_post(
 		//This post already exists.
 		return;
 
-
-
+	base_db::insert_row(table_name, std::vector<std::string>({
+		//It is important that these are in the order that the columns are
+		//created in the database.
+		board,
+		thread_id,
+		post_id,
+		img,
+		text)});
 }
 
 }//namespace
