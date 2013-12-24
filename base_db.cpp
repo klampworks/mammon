@@ -1,4 +1,7 @@
 #include "base_db.hpp"
+#include <sqlite3.h>
+#include <string>
+#include <vector>
 
 namespace base_db {
 
