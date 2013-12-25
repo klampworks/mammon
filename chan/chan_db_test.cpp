@@ -12,9 +12,10 @@ int main() {
 		post_id("666"),
 		board("test"),
 		text("This is a test."),
+		img_url("http://."),
 		img("test.jpg");
 
-	chan_post post(board, thread_id, post_id, img, text);
+	chan_post post(board, thread_id, post_id, img, img_url, text);
 
 	chan_db::insert_post(table_name, post);
 
