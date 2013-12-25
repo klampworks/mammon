@@ -3,6 +3,7 @@
 #include "../base_parser.hpp"
 #include <iostream>
 #include "chan_parser.hpp"
+#include "chan_post.hpp"
 
 //List page.
 std::vector<std::string> chan_parser::parse_thread_ids() {
@@ -41,6 +42,13 @@ std::string chan_parser::parse_post_img(pugi::xml_node &&node) {
 	return base_parser::parse_first_path(std::move(node), "span[@class='filesize']/a", "href");
 }
 
+std::string chan_parser::parse_post_img_name(pugi::xml_node &&node) {
+
+	pugi::xpath_node img = node.select_single_node("span[@class='filesize']/a");
+	return img.node().value();
+}
+
+//parse thread?
 void chan_parser::parse_posts(const char *filename) {
 
 	//Parse file into an AST.

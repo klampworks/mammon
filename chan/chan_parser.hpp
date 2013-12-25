@@ -9,6 +9,7 @@
     	std::string parse_postid(pugi::xml_node &&node);
 	std::string parse_post_text(pugi::xml_node &&node);
     	std::string parse_post_img(pugi::xml_node &&node);
+	std::string parse_post_img_name(pugi::xml_node &&node);
 	void parse_posts(const char *filename);
     	std::string flatten(pugi::xml_node &&quote);
 
