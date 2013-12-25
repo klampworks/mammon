@@ -49,13 +49,13 @@ std::string chan_parser::parse_post_img_name(pugi::xml_node &&node) {
 }
 
 //parse thread?
-std::vector<chan_post> chan_parser::parse_thread(const char *filename) {
+std::vector<chan_post> chan_parser::parse_thread(const std::string &xml) {
 
 	std::vector<chan_post> thread;
 
 	//Parse file into an AST.
 	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file(filename);
+	pugi::xml_parse_result result = doc.load(xml.c_str());
 
 	if (!result) {
 		std::cout << "Error parsing document: " << result.description() << std::endl;
@@ -77,8 +77,6 @@ std::vector<chan_post> chan_parser::parse_thread(const char *filename) {
 
 	//Parse the thread responses into a node set.
 	pugi::xpath_node_set posts = doc.select_nodes("//table/tbody/tr/td");
-
-	std::vector<std::string> res;
 
 	for (const auto &node : posts) {
 

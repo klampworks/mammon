@@ -1,5 +1,6 @@
 #include "chan_parser.hpp"
 #include <iostream>
+#include <fstream>
 
 std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids) {
 
@@ -17,7 +18,15 @@ std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids) 
 int main() {
 
 	chan_parser p;
-	std::vector<chan_post> thread = p.parse_thread("input_2.html");
+
+	std::ifstream ifs;
+	ifs.open("input_2.html");
+	std::string xml, tmp;
+
+	while(std::getline(ifs, tmp))
+		xml += tmp;
+
+	std::vector<chan_post> thread = p.parse_thread(xml);
 
 	for (const auto &post : thread) {
 

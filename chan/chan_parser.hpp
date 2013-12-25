@@ -11,7 +11,7 @@
 	std::string parse_post_text(pugi::xml_node &&node);
     	std::string parse_post_img(pugi::xml_node &&node);
 	std::string parse_post_img_name(pugi::xml_node &&node);
-	std::vector<chan_post> parse_thread(const char *filename);
+	std::vector<chan_post> parse_thread(const std::string &xml);
     	std::string flatten(pugi::xml_node &&quote);
 
     };
