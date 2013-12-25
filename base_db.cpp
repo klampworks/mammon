@@ -96,7 +96,8 @@ void format_table(const char *table_name, const std::vector<std::string> &column
 	int result = sqlite3_prepare(database, statement.c_str(), -1, &stmt, 0);
 	
 	if (result != SQLITE_OK) {
-		std::cout << "Error, could not prepare statment." << std::endl;
+		std::cout << "Error, could not prepare statment " << statement << 
+			"\nReason: " << sqlite3_errstr(result) << std::endl;
 		return;
 	}
 	
