@@ -2,6 +2,7 @@
     #define CHAN_PARSER_HPP
 
     #include "../base_parser.hpp"
+    #include "chan_post.hpp"
 
     struct chan_parser : public base_parser {
 
@@ -10,7 +11,7 @@
 	std::string parse_post_text(pugi::xml_node &&node);
     	std::string parse_post_img(pugi::xml_node &&node);
 	std::string parse_post_img_name(pugi::xml_node &&node);
-	void parse_posts(const char *filename);
+	std::vector<chan_post> parse_thread(const char *filename);
     	std::string flatten(pugi::xml_node &&quote);
 
     };

@@ -49,7 +49,7 @@ std::string chan_parser::parse_post_img_name(pugi::xml_node &&node) {
 }
 
 //parse thread?
-void chan_parser::parse_posts(const char *filename) {
+std::vector<chan_post> chan_parser::parse_thread(const char *filename) {
 
 	std::vector<chan_post> thread;
 
@@ -108,6 +108,8 @@ void chan_parser::parse_posts(const char *filename) {
 		thread.push_back(chan_post("test", op_postid, std::move(post_id), 
 			std::move(img_name), std::move(img_src), std::move(text)));
 	}
+
+	return std::move(thread);
 }
 
 
