@@ -14,8 +14,9 @@ int main() {
 		text("This is a test."),
 		img("test.jpg");
 
-	chan_db::insert_post(table_name,
-		board, thread_id, post_id, img, text);
+	chan_post post(board, thread_id, post_id, img, text);
+
+	chan_db::insert_post(table_name, post);
 
 	return 0;
 }

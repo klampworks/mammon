@@ -38,13 +38,7 @@ bool post_exists(
 	return !res.empty();
 }
 
-void insert_post(
-	const char *table_name,
-	const std::string &board,
-	const std::string &thread_id,
-	const std::string &post_id,
-	const std::string &img,
-	const std::string &text)
+void insert_post(const char *table_name, chan_post post)
 {
 	if (post_exists)
 		//This post already exists.
@@ -53,11 +47,11 @@ void insert_post(
 	base_db::insert_row(table_name, std::vector<std::string>({
 		//It is important that these are in the order that the columns are
 		//created in the database.
-		board,
-		thread_id,
-		post_id,
-		img,
-		text}));
+		post.board,
+		post.thread_id,
+		post.post_id,
+		post.img,
+		post.content}));
 }
 
 }//namespace
