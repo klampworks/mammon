@@ -14,7 +14,7 @@ std::vector<std::string> convert_id_to_url(const std::vector<std::string> &ids) 
 	return std::move(ret);
 }
 
-int main(int argc, char **argv) {
+int main() {
 
 	chan_parser p;
 	p.parse_posts("input_2.html");
