@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <iostream>
 
 namespace base_db {
 
@@ -24,6 +25,8 @@ void init_table(const char *table_name, const std::vector<std::string> &columns)
 
 	if (!check_table(table_name, columns))
 		format_table(table_name, columns);
+	else
+		std::cout << "Table already exists." << std::endl;
 }
 
 //Returns true if the table name exists along with all its required columns.
@@ -78,8 +81,10 @@ void format_table(const char *table_name, const std::vector<std::string> &column
 
 	sqlite3_stmt *stmt;
 	
-	if (columns.size() == 0)
+	if (columns.size() == 0) {
+		std::cout << "No columns have been supplied!" << std::endl;
 		return;
+	}
 	
 	std::string insert(columns[0] + " TEXT");
 	
@@ -90,8 +95,10 @@ void format_table(const char *table_name, const std::vector<std::string> &column
 	
 	int result = sqlite3_prepare(database, statement.c_str(), -1, &stmt, 0);
 	
-	if (result != SQLITE_OK)
+	if (result != SQLITE_OK) {
+		std::cout << "Error, could not prepare statment." << std::endl;
 		return;
+	}
 	
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
