@@ -1,0 +1,5 @@
+cmake_minimum_required (VERSION 2.6)
+set(CMAKE_CXX_FLAGS "-std=c++11")
+project (test)
+add_executable(test chan_db_test.cpp chan_db.cpp ../base_db.cpp)
+target_link_libraries(test sqlite3)
