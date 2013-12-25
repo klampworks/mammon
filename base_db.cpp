@@ -73,6 +73,7 @@ bool check_table(const char *table_name, const std::vector<std::string> &columns
 
 	}
 
+	sqlite3_finalize(stmt);
 	return true;
 }
 
@@ -93,7 +94,7 @@ void format_table(const char *table_name, const std::vector<std::string> &column
 	
 	std::string statement("create table " + std::string(table_name) + "(" + insert + ");");
 	
-	int result = sqlite3_prepare(database, statement.c_str(), -1, &stmt, 0);
+	int result = sqlite3_prepare_v2(database, statement.c_str(), -1, &stmt, 0);
 	
 	if (result != SQLITE_OK) {
 		std::cout << "Error, could not prepare statment " << statement << 
