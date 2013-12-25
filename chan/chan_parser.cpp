@@ -47,6 +47,10 @@ void chan_parser::parse_posts(const char *filename) {
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename);
 
+	if (!result) {
+		std::cout << "Error parsing document: " << result.description() << std::endl;
+	}
+
 	//Parse the original post subtree.
 	pugi::xpath_node op = doc.select_single_node("//form/div[2]");
 
