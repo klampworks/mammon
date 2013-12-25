@@ -45,7 +45,7 @@ std::string chan_parser::parse_post_img(pugi::xml_node &&node) {
 std::string chan_parser::parse_post_img_name(pugi::xml_node &&node) {
 
 	pugi::xpath_node img = node.select_single_node("span[@class='filesize']/a");
-	return img.node().value();
+	return img.node().child_value();
 }
 
 //parse thread?
@@ -64,6 +64,7 @@ void chan_parser::parse_posts(const char *filename) {
 
 	std::string op_postid = parse_postid(op.node());
 	std::string op_text = parse_post_text(op.node());
+	std::string op_img_name = parse_post_img_name(op.node());
 	std::string op_img = parse_post_img(op.node());
 
 	pugi::xpath_node title_node = doc.select_single_node("//span[@class='filetitle']");
@@ -72,6 +73,7 @@ void chan_parser::parse_posts(const char *filename) {
 	std::cout << "OP id = " << op_postid << std::endl;
 	std::cout << "OP title = " << title << std::endl;
 	std::cout << "OP img = " << op_img << std::endl;
+	std::cout << "OP img name = " << op_img_name << std::endl;
 	std::cout << "OP text = " << op_text << std::endl;
 	//
 	//Parse the thread responses into a node set.
@@ -89,10 +91,12 @@ void chan_parser::parse_posts(const char *filename) {
 
 		std::string text = parse_post_text(node.node());
 		std::string img_src = parse_post_img(node.node());
+		std::string img_name = parse_post_img_name(node.node());
 
 		std::cout << "##############################" << std::endl;
 		std::cout << "Id = " << post_id << std::endl;
 		std::cout << "Image = " << img_src << std::endl;
+		std::cout << "Image = " << img_name << std::endl;
 		std::cout << "Text = " << text << std::endl;
 		std::cout << "##############################" << std::endl;
 	}
