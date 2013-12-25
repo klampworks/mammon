@@ -1,5 +1,6 @@
 #include "../base_db.hpp"
 #include "chan_db.hpp"
+#include <iostream>
 
 namespace chan_db {
 
@@ -15,10 +16,26 @@ void init_table(const char *table_name) {
 		"thread_id",
 		"post_id",
 		"img",
-		"text"
+		"content"
 	});
 
+	std::cout << "Initialising table " << table_name << std::endl;
 	base_db::init_table(table_name, columns);
+}
+
+bool post_exists(
+	const char *table_name, 
+	const std::string &board,
+	const std::string &thread_id,
+	const std::string &post_id)
+{
+	std::string statment("select ROWID from " + std::string(table_name) + " where "
+		"board=? and thread_id=? and post_id=?");
+
+	const std::vector<std::string> values({board, thread_id, post_id});
+	std::string res = base_db::lookup_single_value(statment, values);
+
+	return !res.empty();
 }
 
 void insert_post(
@@ -29,14 +46,7 @@ void insert_post(
 	const std::string &img,
 	const std::string &text)
 {
-	//First check to see if this post already exists.
-	std::string statment("select ROWID from " + std::string(table_name) + " where "
-		"board=? and thread_id=? and post_id=?");
-
-	const std::vector<std::string> values({board, thread_id, post_id});
-	std::string res = base_db::lookup_single_value(statment, values);
-
-	if (!res.empty())
+	if (post_exists)
 		//This post already exists.
 		return;
 
