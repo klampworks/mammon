@@ -16,7 +16,6 @@ void format_table(const char *table_name, const std::vector<std::string> &column
 //Initialise connection with database file.
 void init() {
  
-	sqlite3 *database;
 	sqlite3_open(database_file, &database);
 }
 
