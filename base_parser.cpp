@@ -9,6 +9,10 @@ std::vector<std::string> base_parser::parse_path(
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename);
 
+	if (!result) {
+		std::cout << "Error parsing document: " << result.description() << std::endl;
+	}
+
 	pugi::xpath_node_set imgs = doc.select_nodes(xpath);
 
 	std::vector<std::string> res;
