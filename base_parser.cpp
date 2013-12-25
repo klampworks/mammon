@@ -1,4 +1,5 @@
 #include "base_parser.hpp"
+#include <iostream>
 
 std::vector<std::string> base_parser::parse_path(
 	const char *filename, 
