@@ -1,6 +1,7 @@
 #include "../base_db.hpp"
 #include "chan_db.hpp"
 #include <iostream>
+#include <algorithm> //std::remove_if
 
 namespace chan_db {
 
@@ -35,6 +36,18 @@ bool post_exists(
 
 	return !res.empty();
 }
+
+void insert_posts(const char *table_name, std::vector<chan_post> &posts) 
+{
+
+	posts.erase(std::remove_if(posts.begin(), posts.end(), 
+		[table_name](const chan_post &post) {
+			//If the post already exists, will return true and the post 
+			//will be removed from the original vector.
+			return insert_post(table_name, post);}));
+
+}
+
 //Returns true if the post already exists.
 bool insert_post(const char *table_name, chan_post post)
 {
