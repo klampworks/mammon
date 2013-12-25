@@ -51,6 +51,8 @@ std::string chan_parser::parse_post_img_name(pugi::xml_node &&node) {
 //parse thread?
 void chan_parser::parse_posts(const char *filename) {
 
+	std::vector<chan_post> thread;
+
 	//Parse file into an AST.
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename);
@@ -67,6 +69,7 @@ void chan_parser::parse_posts(const char *filename) {
 	std::string op_img_name = parse_post_img_name(op.node());
 	std::string op_img = parse_post_img(op.node());
 
+	//TODO does not work, do we care?
 	pugi::xpath_node title_node = doc.select_single_node("//span[@class='filetitle']");
 	std::string title = title_node.node().value();
 
@@ -75,7 +78,9 @@ void chan_parser::parse_posts(const char *filename) {
 	std::cout << "OP img = " << op_img << std::endl;
 	std::cout << "OP img name = " << op_img_name << std::endl;
 	std::cout << "OP text = " << op_text << std::endl;
-	//
+
+	thread.push_back(chan_post("test", op_postid, op_postid, op_img_name, op_img, op_text));
+
 	//Parse the thread responses into a node set.
 	pugi::xpath_node_set posts = doc.select_nodes("//table/tbody/tr/td");
 
@@ -99,6 +104,9 @@ void chan_parser::parse_posts(const char *filename) {
 		std::cout << "Image = " << img_name << std::endl;
 		std::cout << "Text = " << text << std::endl;
 		std::cout << "##############################" << std::endl;
+
+		thread.push_back(chan_post("test", op_postid, std::move(post_id), 
+			std::move(img_name), std::move(img_src), std::move(text)));
 	}
 }
 
