@@ -35,13 +35,12 @@ bool post_exists(
 
 	return !res.empty();
 }
-
-
+//Returns true if the post already exists.
 bool insert_post(const char *table_name, chan_post post)
 {
 	if (post_exists(table_name, post))
 		//This post already exists.
-		return false;
+		return true;
 
 	base_db::insert_row(table_name, std::vector<std::string>({
 		//It is important that these are in the order that the columns are
@@ -52,7 +51,7 @@ bool insert_post(const char *table_name, chan_post post)
 		post.img,
 		post.content}));
 
-	return true;
+	return false;
 }
 
 }//namespace
