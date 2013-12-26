@@ -19,6 +19,24 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 	for (unsigned i = 1; i < ids.size(); i+=2) {
 		ret.push_back(ids[i]);
 	}
+
+	pugi::xml_document doc;
+	doc.load_file(filename);
+	auto nodes = doc.select_nodes(xpath);
+	auto t = parse_posts("", "", std::move(nodes));
+
+
+	for (const auto &post : t) {
+
+		std::cout << "##############################" << std::endl;
+		std::cout << "Board = " << post.board << std::endl;
+		std::cout << "Thread = " << post.thread_id << std::endl;
+		std::cout << "Id = " << post.post_id << std::endl;
+		std::cout << "Image = " << post.img_url << std::endl;
+		std::cout << "Image = " << post.img<< std::endl;
+		std::cout << "Text = " << post.content << std::endl;
+		std::cout << "##############################" << std::endl;
+	}
 	
 	return ret;
 }
