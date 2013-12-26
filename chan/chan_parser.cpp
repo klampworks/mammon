@@ -5,6 +5,7 @@
 #include "chan_parser.hpp"
 #include "chan_post.hpp"
 
+#include <fstream>
 //List page.
 std::vector<std::string> chan_parser::parse_thread_ids() {
 
@@ -20,13 +21,23 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 		ret.push_back(ids[i]);
 	}
 
+	std::ifstream ifs;
+	ifs.open("input.html");
+	std::string xml, tmp;
+
+	while(std::getline(ifs, tmp))
+		xml += tmp;
+
 	pugi::xml_document doc;
-	doc.load_file(filename);
-	auto nodes = doc.select_nodes(xpath);
-	auto t = parse_posts("", "", std::move(nodes));
+	pugi::xml_parse_result result = doc.load(xml.c_str());
+	
+	auto ops = doc.select_nodes(xpath);
 
+	for (auto op : ops) {
 
-	for (const auto &post : t) {
+		auto nodes = op.node().select_nodes("//table/tbody/tr/td");
+		auto thread = parse_posts("test", "", std::move(nodes));
+	for (const auto &post : thread) {
 
 		std::cout << "##############################" << std::endl;
 		std::cout << "Board = " << post.board << std::endl;
@@ -37,6 +48,24 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 		std::cout << "Text = " << post.content << std::endl;
 		std::cout << "##############################" << std::endl;
 	}
+		std::cout << "##############################" << std::endl;
+		std::cout << "##############################" << std::endl;
+		std::cout << "##############################" << std::endl;
+		std::cout << "##############################" << std::endl;
+	}
+
+	/*
+	pugi::xml_document doc;
+	doc.load_file(filename);
+	auto nodes = doc.select_nodes(xpath);
+	auto t = parse_posts("", "", std::move(nodes));
+
+	for (auto n : nodes) {
+
+		auto op = doc.select_nodes("//table/tbody/tr/td");
+	}
+
+	*/
 	
 	return ret;
 }
