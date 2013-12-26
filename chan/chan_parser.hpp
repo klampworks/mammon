@@ -14,5 +14,7 @@
 	std::vector<chan_post> parse_thread(const std::string &xml);
     	std::string flatten(pugi::xml_node &&quote);
 
+	std::vector<chan_post> parse_posts(const char*, 
+	const std::string&, pugi::xpath_node_set&&);
     };
 #endif
