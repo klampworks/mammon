@@ -1,11 +1,8 @@
 #define PUGIXML_HEADER_ONLY
 #include "../pugi_lib/pugixml.cpp"
 #include "../base_parser.hpp"
-#include <iostream>
 #include "chan_parser.hpp"
 #include "chan_post.hpp"
-
-#include <fstream>
 
 std::vector<chan_post> chan_parser::parse_a_thread(const char *board, 
 	const pugi::xml_node &node) 
@@ -116,10 +113,7 @@ std::vector<chan_post> chan_parser::parse_thread(const std::string &xml) {
 
 	//Parse file into an AST.
 	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load(xml.c_str());
-
-	if (!result)
-		std::cout << "Error parsing document: " << result.description() << std::endl;
+	doc.load(xml.c_str());
 
 	//Parse the original post subtree.
 	pugi::xpath_node_set op = doc.select_nodes("//form/div[2]");
