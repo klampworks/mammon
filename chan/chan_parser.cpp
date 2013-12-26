@@ -128,23 +128,6 @@ std::vector<chan_post> chan_parser::parse_posts(const char *board,
 
 		if (!cp.post_id.empty())
 			ret.push_back(std::move(cp));
-
-		/*
-		std::string post_id = parse_postid(node.node());
-
-		//Sometimes this matches a node that is not a reply.
-		if (post_id.empty())
-			continue;
-
-		std::string content = parse_post_text(node.node());
-		std::string img_src = parse_post_img(node.node());
-		std::string img_name = parse_post_img_name(node.node());
-
-		//If no thread_id is given assume this is the OP.
-		const std::string &thread = thread_id.empty()? post_id : thread_id;
-		ret.push_back(chan_post(board, thread, std::move(post_id), 
-			std::move(img_name), std::move(img_src), std::move(content)));
-*/
 	}
 
 	return std::move(ret);
