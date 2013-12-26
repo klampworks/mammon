@@ -31,23 +31,28 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load(xml.c_str());
 	
+	//Parse each thread <div>
 	auto ops = doc.select_nodes(xpath);
 
+	//FOr each thread...
 	for (auto op : ops) {
 
+		//Parse each reply (not OP)
 		auto nodes = op.node().select_nodes("table/tbody/tr/td");
 		auto thread = parse_posts("test", "", std::move(nodes));
-	for (const auto &post : thread) {
 
-		std::cout << "##############################" << std::endl;
-		std::cout << "Board = " << post.board << std::endl;
-		std::cout << "Thread = " << post.thread_id << std::endl;
-		std::cout << "Id = " << post.post_id << std::endl;
-		std::cout << "Image = " << post.img_url << std::endl;
-		std::cout << "Image = " << post.img<< std::endl;
-		std::cout << "Text = " << post.content << std::endl;
-		std::cout << "##############################" << std::endl;
-	}
+		//For each reply...
+		for (const auto &post : thread) {
+
+			std::cout << "##############################" << std::endl;
+			std::cout << "Board = " << post.board << std::endl;
+			std::cout << "Thread = " << post.thread_id << std::endl;
+			std::cout << "Id = " << post.post_id << std::endl;
+			std::cout << "Image = " << post.img_url << std::endl;
+			std::cout << "Image = " << post.img<< std::endl;
+			std::cout << "Text = " << post.content << std::endl;
+			std::cout << "##############################" << std::endl;
+		}
 		std::cout << "##############################" << std::endl;
 		std::cout << "##############################" << std::endl;
 		std::cout << "##############################" << std::endl;
