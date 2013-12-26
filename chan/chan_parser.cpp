@@ -28,7 +28,7 @@ std::vector<chan_post> chan_parser::parse_a_thread(const char *board,
 std::vector<std::string> chan_parser::parse_thread_ids() {
 
 	const char *filename = "input.html";
-	const char *xpath = "//form/div[@id]";
+	const char *xpath = "//form/div[@id and not(@style)]";
 	const char *att = "id";
 
 	std::vector<std::string> ids = base_parser::parse_path(filename, xpath, att);
