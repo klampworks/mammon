@@ -29,7 +29,7 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 		xml += tmp;
 
 	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load(xml.c_str());
+	doc.load(xml.c_str());
 	
 	//Parse each thread <div>
 	auto ops = doc.select_nodes(xpath);
@@ -38,7 +38,7 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 	for (auto op : ops) {
 
 		
-		chan_post op_post = parse_post(op.node());
+		chan_post op_post = parse_post("test", op.node());
 		/*
 		std::string post_id = parse_postid(op.node());
 
@@ -84,7 +84,7 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 }
 
 //Returns an empty object if it cannot be parsed.
-chan_post chan_parser::parse_post(const pugi::xml_node &node) {
+chan_post chan_parser::parse_post(const char *board, const pugi::xml_node &node, const std::string &thread_id) {
 
 	std::string post_id = parse_postid(node);
 
@@ -95,10 +95,10 @@ chan_post chan_parser::parse_post(const pugi::xml_node &node) {
 	std::string img_src = parse_post_img(node);
 	std::string img_name = parse_post_img_name(node);
 
-	/*
+	const std::string &thread = thread_id.empty()? post_id : thread_id;
+
 	return chan_post(board, thread, std::move(post_id), 
 			std::move(img_name), std::move(img_src), std::move(content));
-			*/
 }
 
 //Post page
