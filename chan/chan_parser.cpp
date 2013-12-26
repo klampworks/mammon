@@ -24,12 +24,29 @@ std::vector<chan_post> chan_parser::parse_a_thread(const char *board,
 
 	return std::move(replies);
 }
-
+ 
+//Given a list page, return a list of thread previews i.e.
+//op + the last few replies.
 std::vector<std::vector<chan_post>> chan_parser::parse_threads(
 	const char *board,
 	const std::string &xml)
 {
 
+	const char *xpath = "//form/div[@id and not(@style)]";
+
+	pugi::xml_document doc;
+	doc.load(xml.c_str());
+	
+	//Parse each thread <div>
+	auto ops = doc.select_nodes(xpath);
+
+	std::vector<std::vector<chan_post>> threads;
+
+	//For each thread...
+	for (auto op : ops)
+		threads.push_back(parse_a_thread(board, op.node()));
+
+	return threads;
 }
 
 //List page.
