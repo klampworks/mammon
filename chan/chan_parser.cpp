@@ -20,6 +20,8 @@ std::vector<chan_post> chan_parser::parse_a_thread(const char *board,
 
 	//TODO This is horrible.
 	replies.insert(replies.begin(), thread);
+
+	return std::move(replies);
 }
 
 //List page.
