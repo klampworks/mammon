@@ -59,19 +59,6 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 		std::cout << "##############################" << std::endl;
 	}
 
-	/*
-	pugi::xml_document doc;
-	doc.load_file(filename);
-	auto nodes = doc.select_nodes(xpath);
-	auto t = parse_posts("", "", std::move(nodes));
-
-	for (auto n : nodes) {
-
-		auto op = doc.select_nodes("//table/tbody/tr/td");
-	}
-
-	*/
-	
 	return ret;
 }
 
