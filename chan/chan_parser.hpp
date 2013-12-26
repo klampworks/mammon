@@ -6,8 +6,6 @@
 
     struct chan_parser : public base_parser {
 
-    	std::vector<std::string> parse_thread_ids();
-
     	std::string parse_postid(const pugi::xml_node &node);
 	std::string parse_post_text(const pugi::xml_node &node);
     	std::string parse_post_img(const pugi::xml_node &node);
