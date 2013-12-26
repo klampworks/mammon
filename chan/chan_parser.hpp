@@ -19,6 +19,9 @@
 	std::vector<chan_post> parse_posts(const char*, 
 	const std::string&, pugi::xpath_node_set&&);
 
-	chan_post parse_post(const pugi::xml_node &node);
+	std::vector<chan_parser> parse_a_thread(const char *board, 
+		const pugi::xml_node &node);
+
+	chan_post parse_post(const char *board, const pugi::xml_node &node, const std::string &thread=std::string());
     };
 #endif

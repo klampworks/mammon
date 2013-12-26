@@ -6,6 +6,13 @@
 #include "chan_post.hpp"
 
 #include <fstream>
+
+std::vector<chan_parser> chan_parser::parse_a_thread(const char *board, 
+	const pugi::xml_node &node) 
+{
+
+}
+
 //List page.
 std::vector<std::string> chan_parser::parse_thread_ids() {
 
@@ -73,23 +80,6 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 	return ret;
 }
 
-//Returns an empty object if it cannot be parsed.
-chan_post chan_parser::parse_post(const char *board, const pugi::xml_node &node, const std::string &thread_id) {
-
-	std::string post_id = parse_postid(node);
-
-	if (post_id.empty())
-		return chan_post();
-
-	std::string content = parse_post_text(node);
-	std::string img_src = parse_post_img(node);
-	std::string img_name = parse_post_img_name(node);
-
-	const std::string &thread = thread_id.empty()? post_id : thread_id;
-
-	return chan_post(board, thread, std::move(post_id), 
-			std::move(img_name), std::move(img_src), std::move(content));
-}
 
 //Post page
 std::string chan_parser::parse_postid(const pugi::xml_node &node) {
@@ -116,6 +106,7 @@ std::string chan_parser::parse_post_img_name(const pugi::xml_node &node) {
 	return img.node().child_value();
 }
 
+//Given a subtree will return a vector of posts.
 std::vector<chan_post> chan_parser::parse_posts(const char *board, 
 	const std::string &thread_id, pugi::xpath_node_set &&posts) 
 {
@@ -131,6 +122,26 @@ std::vector<chan_post> chan_parser::parse_posts(const char *board,
 	}
 
 	return std::move(ret);
+}
+
+//Returns an empty object if it cannot be parsed.
+chan_post chan_parser::parse_post(const char *board, const pugi::xml_node &node, 
+	const std::string &thread_id) 
+{
+
+	std::string post_id = parse_postid(node);
+
+	if (post_id.empty())
+		return chan_post();
+
+	std::string content = parse_post_text(node);
+	std::string img_src = parse_post_img(node);
+	std::string img_name = parse_post_img_name(node);
+
+	const std::string &thread = thread_id.empty()? post_id : thread_id;
+
+	return chan_post(board, thread, std::move(post_id), 
+			std::move(img_name), std::move(img_src), std::move(content));
 }
 
 std::vector<chan_post> chan_parser::parse_thread(const std::string &xml) {
