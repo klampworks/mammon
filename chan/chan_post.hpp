@@ -11,6 +11,7 @@ struct chan_post {
 		img_url,
 		content;
 	
+	chan_post(){}
 	chan_post(const std::string &board_p, const std::string &thread_id_p,
 		const std::string &post_id_p, const std::string &img_p, 
 		const std::string &img_url_p, const std::string &content_p) :
