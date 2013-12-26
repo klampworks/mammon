@@ -97,15 +97,13 @@ std::vector<chan_post> chan_parser::parse_thread(const std::string &xml) {
 	//Parse the thread responses into a node set.
 	op = doc.select_nodes("//table/tbody/tr/td");
 
-	auto thread_2 = parse_posts("test", "", std::move(op));
+	auto thread_2 = parse_posts("test", op_postid, std::move(op));
 	
 	//TODO is there a way to move this?
 	thread.insert(thread.end(), thread_2.begin(), thread_2.end());
 
 	return std::move(thread);
 }
-
-
 
 //Pugi XML developers have been writing too much Java...
 struct my_walker : public pugi::xml_tree_walker {
