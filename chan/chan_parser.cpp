@@ -135,29 +135,27 @@ std::vector<chan_post> chan_parser::parse_posts(const char *board,
 
 std::vector<chan_post> chan_parser::parse_thread(const std::string &xml) {
 
-	std::vector<chan_post> thread;
-
 	//Parse file into an AST.
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load(xml.c_str());
 
-	if (!result) {
+	if (!result)
 		std::cout << "Error parsing document: " << result.description() << std::endl;
-	}
 
 	//Parse the original post subtree.
 	pugi::xpath_node_set op = doc.select_nodes("//form/div[2]");
-	thread = parse_posts("test", "", std::move(op));
+
+	std::vector<chan_post> thread = parse_posts("test", "", std::move(op));
 
 	std::string op_postid = thread.front().thread_id;
 
 	//Parse the thread responses into a node set.
 	op = doc.select_nodes("//table/tbody/tr/td");
 
-	auto thread_2 = parse_posts("test", op_postid, std::move(op));
+	std::vector<chan_post> replies = parse_posts("test", op_postid, std::move(op));
 	
 	//TODO is there a way to move this?
-	thread.insert(thread.end(), thread_2.begin(), thread_2.end());
+	thread.insert(thread.end(), replies.begin(), replies.end());
 
 	return std::move(thread);
 }
