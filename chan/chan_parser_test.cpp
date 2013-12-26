@@ -31,6 +31,8 @@ int main() {
 	for (const auto &post : thread) {
 
 		std::cout << "##############################" << std::endl;
+		std::cout << "Board = " << post.board << std::endl;
+		std::cout << "Thread = " << post.thread_id << std::endl;
 		std::cout << "Id = " << post.post_id << std::endl;
 		std::cout << "Image = " << post.img_url << std::endl;
 		std::cout << "Image = " << post.img<< std::endl;
