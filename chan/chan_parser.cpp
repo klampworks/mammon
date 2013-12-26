@@ -79,8 +79,20 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 	return ret;
 }
 
+//Returns an empty object if it cannot be parsed.
 chan_post chan_parser::parse_post(const pugi::xml_node &node) {
 
+	std::string post_id = parse_postid(op.node());
+
+	if (post_id.empty())
+		return chan_post;
+
+	std::string content = parse_post_text(op.node());
+	std::string img_src = parse_post_img(op.node());
+	std::string img_name = parse_post_img_name(op.node());
+
+	return chan_post(board, thread, std::move(post_id), 
+			std::move(img_name), std::move(img_src), std::move(content));
 }
 
 //Post page
