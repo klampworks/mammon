@@ -93,24 +93,14 @@ std::vector<chan_post> chan_parser::parse_thread(const std::string &xml) {
 	thread = parse_posts("test", "", std::move(op));
 
 	std::string op_postid = thread.front().thread_id;
+
 	//Parse the thread responses into a node set.
-	pugi::xpath_node_set posts = doc.select_nodes("//table/tbody/tr/td");
+	op = doc.select_nodes("//table/tbody/tr/td");
 
-	for (const auto &node : posts) {
-
-		std::string post_id = parse_postid(node.node());
-
-		//Sometimes this matches a node that is not a reply.
-		if (post_id.empty())
-			continue;
-
-		std::string text = parse_post_text(node.node());
-		std::string img_src = parse_post_img(node.node());
-		std::string img_name = parse_post_img_name(node.node());
-
-		thread.push_back(chan_post("test", op_postid, std::move(post_id), 
-			std::move(img_name), std::move(img_src), std::move(text)));
-	}
+	auto thread_2 = parse_posts("test", "", std::move(op));
+	
+	//TODO is there a way to move this?
+	thread.insert(thread.end(), thread_2.begin(), thread_2.end());
 
 	return std::move(thread);
 }
