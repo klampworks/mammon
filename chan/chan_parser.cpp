@@ -48,7 +48,34 @@ std::string chan_parser::parse_post_img_name(pugi::xml_node &&node) {
 	return img.node().child_value();
 }
 
-//parse thread?
+std::vector<chan_post> chan_parser::parse_posts(const char *board, 
+	const std::string &thread_id, pugi::xpath_node_set &&posts) 
+{
+
+	std::vector<chan_post> ret;
+
+	for (const auto &node : posts) {
+
+		std::string post_id = parse_postid(node.node());
+
+		//Sometimes this matches a node that is not a reply.
+		if (post_id.empty())
+			continue;
+
+		std::string content = parse_post_text(node.node());
+		std::string img_src = parse_post_img(node.node());
+		std::string img_name = parse_post_img_name(node.node());
+
+		//If no thread_id is given assume this is the OP.
+		const std::string &thread = thread_id.empty()? post_id : thread_id;
+
+		ret.push_back(chan_post(board, thread, std::move(post_id), 
+			std::move(img_name), std::move(img_src), std::move(content)));
+	}
+
+	return std::move(ret);
+}
+
 std::vector<chan_post> chan_parser::parse_thread(const std::string &xml) {
 
 	std::vector<chan_post> thread;
@@ -62,6 +89,7 @@ std::vector<chan_post> chan_parser::parse_thread(const std::string &xml) {
 	}
 
 	//Parse the original post subtree.
+	/*
 	pugi::xpath_node op = doc.select_single_node("//form/div[2]");
 
 	std::string op_postid = parse_postid(op.node());
@@ -74,7 +102,12 @@ std::vector<chan_post> chan_parser::parse_thread(const std::string &xml) {
 	std::string title = title_node.node().value();
 
 	thread.push_back(chan_post("test", op_postid, op_postid, op_img_name, op_img, op_text));
+	*/
 
+	pugi::xpath_node_set op = doc.select_nodes("//form/div[2]");
+	thread = parse_posts("test", "", std::move(op));
+
+	std::string op_postid = thread.front().thread_id;
 	//Parse the thread responses into a node set.
 	pugi::xpath_node_set posts = doc.select_nodes("//table/tbody/tr/td");
 
