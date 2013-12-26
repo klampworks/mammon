@@ -35,7 +35,7 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 
 	for (auto op : ops) {
 
-		auto nodes = op.node().select_nodes("//table/tbody/tr/td");
+		auto nodes = op.node().select_nodes("table/tbody/tr/td");
 		auto thread = parse_posts("test", "", std::move(nodes));
 	for (const auto &post : thread) {
 
