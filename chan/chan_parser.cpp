@@ -89,21 +89,6 @@ std::vector<chan_post> chan_parser::parse_thread(const std::string &xml) {
 	}
 
 	//Parse the original post subtree.
-	/*
-	pugi::xpath_node op = doc.select_single_node("//form/div[2]");
-
-	std::string op_postid = parse_postid(op.node());
-	std::string op_text = parse_post_text(op.node());
-	std::string op_img_name = parse_post_img_name(op.node());
-	std::string op_img = parse_post_img(op.node());
-
-	//TODO does not work, do we care?
-	pugi::xpath_node title_node = doc.select_single_node("//span[@class='filetitle']");
-	std::string title = title_node.node().value();
-
-	thread.push_back(chan_post("test", op_postid, op_postid, op_img_name, op_img, op_text));
-	*/
-
 	pugi::xpath_node_set op = doc.select_nodes("//form/div[2]");
 	thread = parse_posts("test", "", std::move(op));
 
