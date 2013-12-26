@@ -71,6 +71,28 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 	while(std::getline(ifs, tmp))
 		xml += tmp;
 
+	auto threads = parse_threads("test", xml);
+
+	for (const auto &thread: threads) {
+
+		for (const auto &post : thread) {
+
+			std::cout << "##############################" << std::endl;
+			std::cout << "Board = " << post.board << std::endl;
+			std::cout << "Thread = " << post.thread_id << std::endl;
+			std::cout << "Id = " << post.post_id << std::endl;
+			std::cout << "Image = " << post.img_url << std::endl;
+			std::cout << "Image = " << post.img<< std::endl;
+			std::cout << "Text = " << post.content << std::endl;
+			std::cout << "##############################" << std::endl;
+		}
+
+		std::cout << "##############################" << std::endl;
+		std::cout << "##############################" << std::endl;
+		std::cout << "##############################" << std::endl;
+		std::cout << "##############################" << std::endl;
+	}
+/*
 	pugi::xml_document doc;
 	doc.load(xml.c_str());
 	
@@ -99,6 +121,7 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 		std::cout << "##############################" << std::endl;
 		std::cout << "##############################" << std::endl;
 	}
+	*/
 /*
 		
 		chan_post op_post = parse_post("test", op.node());
