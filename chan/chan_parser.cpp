@@ -34,8 +34,24 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 	//Parse each thread <div>
 	auto ops = doc.select_nodes(xpath);
 
-	//FOr each thread...
+	//For each thread...
 	for (auto op : ops) {
+
+		std::string post_id = parse_postid(op.node());
+
+		if (post_id.empty())
+			continue;
+
+		std::string content = parse_post_text(op.node());
+		std::string img_src = parse_post_img(op.node());
+		std::string img_name = parse_post_img_name(op.node());
+
+			std::cout << "//////////////////////////////" << std::endl;
+			std::cout << "Id = " << post_id << std::endl;
+			std::cout << "Image = " << img_name << std::endl;
+			std::cout << "Image = " << img_src << std::endl;
+			std::cout << "Text = " << content << std::endl;
+			std::cout << "//////////////////////////////" << std::endl;
 
 		//Parse each reply (not OP)
 		auto nodes = op.node().select_nodes("table/tbody/tr/td");
@@ -53,6 +69,7 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 			std::cout << "Text = " << post.content << std::endl;
 			std::cout << "##############################" << std::endl;
 		}
+
 		std::cout << "##############################" << std::endl;
 		std::cout << "##############################" << std::endl;
 		std::cout << "##############################" << std::endl;
