@@ -7,10 +7,19 @@
 
 #include <fstream>
 
-std::vector<chan_parser> chan_parser::parse_a_thread(const char *board, 
+std::vector<chan_post> chan_parser::parse_a_thread(const char *board, 
 	const pugi::xml_node &node) 
 {
 
+	//Parse the op.
+	chan_post thread = parse_post("test", node);
+
+	//Parse each reply (not OP)
+	auto nodes = node.select_nodes("table/tbody/tr/td");
+	auto replies = parse_posts("test", "", std::move(nodes));
+
+	//TODO This is horrible.
+	replies.insert(replies.begin(), thread);
 }
 
 //List page.
@@ -44,6 +53,26 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 	//For each thread...
 	for (auto op : ops) {
 
+		auto thread = parse_a_thread("test", op.node());
+
+		for (const auto &post : thread) {
+
+			std::cout << "##############################" << std::endl;
+			std::cout << "Board = " << post.board << std::endl;
+			std::cout << "Thread = " << post.thread_id << std::endl;
+			std::cout << "Id = " << post.post_id << std::endl;
+			std::cout << "Image = " << post.img_url << std::endl;
+			std::cout << "Image = " << post.img<< std::endl;
+			std::cout << "Text = " << post.content << std::endl;
+			std::cout << "##############################" << std::endl;
+		}
+
+		std::cout << "##############################" << std::endl;
+		std::cout << "##############################" << std::endl;
+		std::cout << "##############################" << std::endl;
+		std::cout << "##############################" << std::endl;
+	}
+/*
 		
 		chan_post op_post = parse_post("test", op.node());
 
@@ -76,6 +105,7 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 		std::cout << "##############################" << std::endl;
 		std::cout << "##############################" << std::endl;
 	}
+	*/
 
 	return ret;
 }
