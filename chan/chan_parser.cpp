@@ -12,11 +12,11 @@ std::vector<chan_post> chan_parser::parse_a_thread(const char *board,
 {
 
 	//Parse the op.
-	chan_post thread = parse_post("test", node);
+	chan_post thread = parse_post(board, node);
 
 	//Parse each reply (not OP)
 	auto nodes = node.select_nodes("table/tbody/tr/td");
-	auto replies = parse_posts("test", "", std::move(nodes));
+	auto replies = parse_posts(board, "", std::move(nodes));
 
 	//TODO This is horrible.
 	replies.insert(replies.begin(), thread);
