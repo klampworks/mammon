@@ -39,16 +39,6 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 
 		
 		chan_post op_post = parse_post("test", op.node());
-		/*
-		std::string post_id = parse_postid(op.node());
-
-		if (post_id.empty())
-			continue;
-
-		std::string content = parse_post_text(op.node());
-		std::string img_src = parse_post_img(op.node());
-		std::string img_name = parse_post_img_name(op.node());
-		*/
 
 		std::cout << "//////////////////////////////" << std::endl;
 		std::cout << "Id = " << op_post.post_id << std::endl;
