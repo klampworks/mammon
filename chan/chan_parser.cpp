@@ -37,6 +37,9 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 	//For each thread...
 	for (auto op : ops) {
 
+		
+		chan_post op_post = parse_post(op.node());
+		/*
 		std::string post_id = parse_postid(op.node());
 
 		if (post_id.empty())
@@ -45,13 +48,14 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 		std::string content = parse_post_text(op.node());
 		std::string img_src = parse_post_img(op.node());
 		std::string img_name = parse_post_img_name(op.node());
+		*/
 
-			std::cout << "//////////////////////////////" << std::endl;
-			std::cout << "Id = " << post_id << std::endl;
-			std::cout << "Image = " << img_name << std::endl;
-			std::cout << "Image = " << img_src << std::endl;
-			std::cout << "Text = " << content << std::endl;
-			std::cout << "//////////////////////////////" << std::endl;
+		std::cout << "//////////////////////////////" << std::endl;
+		std::cout << "Id = " << op_post.post_id << std::endl;
+		std::cout << "Image = " << op_post.img << std::endl;
+		std::cout << "Image = " << op_post.img_url  << std::endl;
+		std::cout << "Text = " << op_post.content << std::endl;
+		std::cout << "//////////////////////////////" << std::endl;
 
 		//Parse each reply (not OP)
 		auto nodes = op.node().select_nodes("table/tbody/tr/td");
@@ -82,17 +86,19 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 //Returns an empty object if it cannot be parsed.
 chan_post chan_parser::parse_post(const pugi::xml_node &node) {
 
-	std::string post_id = parse_postid(op.node());
+	std::string post_id = parse_postid(node);
 
 	if (post_id.empty())
-		return chan_post;
+		return chan_post();
 
-	std::string content = parse_post_text(op.node());
-	std::string img_src = parse_post_img(op.node());
-	std::string img_name = parse_post_img_name(op.node());
+	std::string content = parse_post_text(node);
+	std::string img_src = parse_post_img(node);
+	std::string img_name = parse_post_img_name(node);
 
+	/*
 	return chan_post(board, thread, std::move(post_id), 
 			std::move(img_name), std::move(img_src), std::move(content));
+			*/
 }
 
 //Post page
