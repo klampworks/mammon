@@ -124,6 +124,12 @@ std::vector<chan_post> chan_parser::parse_posts(const char *board,
 
 	for (const auto &node : posts) {
 
+		chan_post cp = parse_post(board, node.node(), thread_id);
+
+		if (!cp.post_id.empty())
+			ret.push_back(std::move(cp));
+
+		/*
 		std::string post_id = parse_postid(node.node());
 
 		//Sometimes this matches a node that is not a reply.
@@ -136,9 +142,9 @@ std::vector<chan_post> chan_parser::parse_posts(const char *board,
 
 		//If no thread_id is given assume this is the OP.
 		const std::string &thread = thread_id.empty()? post_id : thread_id;
-
 		ret.push_back(chan_post(board, thread, std::move(post_id), 
 			std::move(img_name), std::move(img_src), std::move(content)));
+*/
 	}
 
 	return std::move(ret);
