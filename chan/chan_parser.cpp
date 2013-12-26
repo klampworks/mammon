@@ -25,6 +25,13 @@ std::vector<chan_post> chan_parser::parse_a_thread(const char *board,
 	return std::move(replies);
 }
 
+std::vector<std::vector<chan_post>> chan_parser::parse_threads(
+	const char *board,
+	const std::string &xml)
+{
+
+}
+
 //List page.
 std::vector<std::string> chan_parser::parse_thread_ids() {
 
