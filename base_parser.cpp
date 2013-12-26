@@ -26,7 +26,7 @@ std::vector<std::string> base_parser::parse_path(
 }
 
 std::string base_parser::parse_first_path(
-	pugi::xml_node &&node, 
+	const pugi::xml_node &node, 
 	const char *xpath, 
 	const char *att) 
 {

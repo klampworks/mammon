@@ -79,13 +79,17 @@ std::vector<std::string> chan_parser::parse_thread_ids() {
 	return ret;
 }
 
-//Post page
-std::string chan_parser::parse_postid(pugi::xml_node &&node) {
+chan_post chan_parser::parse_post(const pugi::xml_node &node) {
 
-	return base_parser::parse_first_path(std::move(node), "a[@name]", "name");
 }
 
-std::string chan_parser::parse_post_text(pugi::xml_node &&node) {
+//Post page
+std::string chan_parser::parse_postid(const pugi::xml_node &node) {
+
+	return base_parser::parse_first_path(node, "a[@name]", "name");
+}
+
+std::string chan_parser::parse_post_text(const pugi::xml_node &node) {
 
 	pugi::xpath_node quote = node.select_single_node("blockquote");
 
@@ -93,12 +97,12 @@ std::string chan_parser::parse_post_text(pugi::xml_node &&node) {
 	return flatten(quote.node());
 }
 
-std::string chan_parser::parse_post_img(pugi::xml_node &&node) {
+std::string chan_parser::parse_post_img(const pugi::xml_node &node) {
 
-	return base_parser::parse_first_path(std::move(node), "span[@class='filesize']/a", "href");
+	return base_parser::parse_first_path(node, "span[@class='filesize']/a", "href");
 }
 
-std::string chan_parser::parse_post_img_name(pugi::xml_node &&node) {
+std::string chan_parser::parse_post_img_name(const pugi::xml_node &node) {
 
 	pugi::xpath_node img = node.select_single_node("span[@class='filesize']/a");
 	return img.node().child_value();

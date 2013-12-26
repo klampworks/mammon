@@ -7,14 +7,18 @@
     struct chan_parser : public base_parser {
 
     	std::vector<std::string> parse_thread_ids();
-    	std::string parse_postid(pugi::xml_node &&node);
-	std::string parse_post_text(pugi::xml_node &&node);
-    	std::string parse_post_img(pugi::xml_node &&node);
-	std::string parse_post_img_name(pugi::xml_node &&node);
+
+    	std::string parse_postid(const pugi::xml_node &node);
+	std::string parse_post_text(const pugi::xml_node &node);
+    	std::string parse_post_img(const pugi::xml_node &node);
+	std::string parse_post_img_name(const pugi::xml_node &node);
+
 	std::vector<chan_post> parse_thread(const std::string &xml);
     	std::string flatten(pugi::xml_node &&quote);
 
 	std::vector<chan_post> parse_posts(const char*, 
 	const std::string&, pugi::xpath_node_set&&);
+
+	chan_post parse_post(const pugi::xml_node &node);
     };
 #endif
