@@ -48,6 +48,16 @@ std::vector<std::vector<chan_post>> chan_parser::parse_threads(
 
 bool chan_parser::final_page(const srd::string &xml) {
 
+	//Looking for the "next" button that does nothing
+	//i.e. there are no more pages.
+	const char *xpath = "//form[@method='get' and @action='none']";
+
+	//TODO reparsing this is inefficiant.
+	pugi::xml_document doc;
+	doc.load(xml.c_str());
+
+	//If select_node returns a non-null node then this is the final page, return true.
+	return (doc.select_node(xpath));
 }
 
 //Post page
