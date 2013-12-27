@@ -8,6 +8,9 @@ std::string dump_file(const char *filename) {
 
 	std::ifstream ifs;
 	ifs.open(filename);
+
+	BOOST_REQUIRE(ifs.good());
+
 	std::string xml, tmp;
 
 	while(std::getline(ifs, tmp))
