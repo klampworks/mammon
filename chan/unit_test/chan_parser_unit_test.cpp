@@ -78,3 +78,18 @@ BOOST_AUTO_TEST_CASE(check_img) {
 	BOOST_CHECK(p.parse_post_img(doc) == expected);
 }
 
+BOOST_AUTO_TEST_CASE(check_img_name) {
+
+	chan_parser p;
+
+	const char *xml("<span class=\"filesize\">File: <a target=\"_blank\""
+	" href=\"http://desuchan.net/tech/src/1356867546959.jpg\">1356867546959.jpg</a>"
+	" -(<em>165.0 KiB, 636x603</em>)</span>");
+
+	const char *expected = "1356867546959.jpg";
+
+	pugi::xml_document doc;
+	doc.load(xml);
+
+	BOOST_CHECK(p.parse_post_img_name(doc) == expected);
+}
