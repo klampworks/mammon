@@ -9,7 +9,7 @@ std::string dump_file(const char *filename) {
 	std::ifstream ifs;
 	ifs.open(filename);
 
-	BOOST_REQUIRE(ifs.good());
+	BOOST_REQUIRE_MESSAGE(ifs.good(), "Could not open file " << filename);
 
 	std::string xml, tmp;
 
@@ -20,7 +20,7 @@ std::string dump_file(const char *filename) {
 	return std::move(xml);
 }
 
-BOOST_AUTO_TEST_CASE(final_page) {
+BOOST_AUTO_TEST_CASE(check_for_final_page) {
 
 	chan_parser p;
 
