@@ -45,3 +45,20 @@ BOOST_AUTO_TEST_CASE(check_post_id) {
 
 	BOOST_CHECK(p.parse_postid(doc) == "2374");
 }
+
+BOOST_AUTO_TEST_CASE(check_text) {
+
+	chan_parser p;
+
+	const char *xml("<blockquote>\n"
+			"<p><strong>NOTHING</strong></p><p><strong>NOTHING AT ALL</strong></p>\n"
+			"</blockquote>");
+
+	const char * expected = "NOTHING NOTHING AT ALL";
+
+	pugi::xml_document doc;
+	doc.load(xml);
+
+	BOOST_CHECK(p.parse_post_text(doc) == expected);
+}
+
