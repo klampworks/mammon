@@ -11,7 +11,7 @@
     	std::string parse_post_img(const pugi::xml_node &node);
 	std::string parse_post_img_name(const pugi::xml_node &node);
 
-	bool final_page(const srd::string &xml);
+	bool final_page(const std::string &xml);
 
 	std::vector<chan_post> parse_thread(const std::string &xml);
     	std::string flatten(pugi::xml_node &&quote);
