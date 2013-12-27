@@ -46,6 +46,10 @@ std::vector<std::vector<chan_post>> chan_parser::parse_threads(
 	return threads;
 }
 
+bool chan_parser::final_page(const srd::string &xml) {
+
+}
+
 //Post page
 std::string chan_parser::parse_postid(const pugi::xml_node &node) {
 
