@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(final_page) {
 	const char *final_page = "final_page.html";
 	std::string xml;
 
-	xml = dump_file(fist_page);
+	xml = dump_file(first_page);
 	BOOST_CHECK(!p.final_page(xml));
 
 	xml = dump_file(final_page);
