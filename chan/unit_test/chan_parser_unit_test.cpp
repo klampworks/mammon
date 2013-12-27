@@ -39,9 +39,9 @@ BOOST_AUTO_TEST_CASE(check_post_id) {
 
 	chan_parser p;
 
-	std::string xml("<a name=\"2374\"></a>");
+	const char *xml("<a name=\"2374\"></a>");
 	pugi::xml_document doc;
-	doc.load(xml.c_str());
+	doc.load(xml);
 
 	BOOST_CHECK(p.parse_postid(doc) == "2374");
 }
@@ -54,11 +54,26 @@ BOOST_AUTO_TEST_CASE(check_text) {
 			"<p><strong>NOTHING</strong></p><p><strong>NOTHING AT ALL</strong></p>\n"
 			"</blockquote>");
 
-	const char * expected = "NOTHING NOTHING AT ALL";
+	const char *expected = "NOTHING NOTHING AT ALL";
 
 	pugi::xml_document doc;
 	doc.load(xml);
 
 	BOOST_CHECK(p.parse_post_text(doc) == expected);
+}
+
+BOOST_AUTO_TEST_CASE(check_img) {
+
+	chan_parser p;
+
+	const char *xml("<span class=\"filesize\">File: <a target=\"_blank\""
+	"href=\"http://desuchan.net/tech/src/1356867546959.jpg\">1356867546959.jpg</a>");
+
+	const char *expected = "http://desuchan.net/tech/src/1356867546959.jpg";
+
+	pugi::xml_document doc;
+	doc.load(xml);
+	std::cout << p.parse_post_img(doc) << std::endl;
+	BOOST_CHECK(p.parse_post_img(doc) == expected);
 }
 
