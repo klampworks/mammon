@@ -26,4 +26,7 @@ BOOST_AUTO_TEST_CASE(final_page) {
 
 	xml = dump_file(fist_page);
 	BOOST_CHECK(!p.final_page(xml));
+
+	xml = dump_file(final_page);
+	BOOST_CHECK(p.final_page(xml));
 }
