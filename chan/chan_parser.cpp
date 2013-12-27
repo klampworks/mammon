@@ -46,11 +46,12 @@ std::vector<std::vector<chan_post>> chan_parser::parse_threads(
 	return threads;
 }
 
-#include <iostream>
 bool chan_parser::final_page(const std::string &xml) {
 
 	//Looking for the "next" button that does nothing
 	//i.e. there are no more pages.
+	
+	//Parse the second form element, "next" not "previous".
 	const char *xpath = "(//form[@method='get' and @action])[last()]";
 	
 	//TODO reparsing this is inefficiant.
@@ -59,7 +60,7 @@ bool chan_parser::final_page(const std::string &xml) {
 
 	auto res = doc.select_single_node(xpath);
 
-	//If select_node returns a non-null node then this is the final page, return true.
+	//If action is "none" then this is the final page, return true.
 	return (res.node().attribute("action").value() == std::string("none"));
 }
 
