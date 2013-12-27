@@ -16,6 +16,7 @@ std::string dump_file(const char *filename) {
 	while(std::getline(ifs, tmp))
 		xml += tmp;
 
+	ifs.close();
 	return std::move(xml);
 }
 
