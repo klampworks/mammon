@@ -46,7 +46,7 @@ std::vector<std::vector<chan_post>> chan_parser::parse_threads(
 	return threads;
 }
 
-bool chan_parser::final_page(const srd::string &xml) {
+bool chan_parser::final_page(const std::string &xml) {
 
 	//Looking for the "next" button that does nothing
 	//i.e. there are no more pages.
