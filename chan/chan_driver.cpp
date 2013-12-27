@@ -14,6 +14,15 @@ void chan_driver::process_list_page(const std::string &hmtl) {
 		if (chan_db::post_exists(table_name, thread.back()))
 			break;
 
+		//Check if second post exists
+		//
+		//if it does not it means there may be earlier replies that we don't have either
+		//Download the entire thread.
+		//
+		//If it does exist then iterate through the posts in between and add them to
+		//the data base. Start from low index to high index. 
+		//Don't check thread[2] or thread.back() twice...
+		//
 		//Interate through the posts backwards.
 		for (int i = thread.size() - 1; i != -1; i--) {
 			
