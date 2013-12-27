@@ -7,7 +7,7 @@
 std::string dump_file(const char *filename) {
 
 	std::ifstream ifs;
-	ifs.open("input_2.html");
+	ifs.open(filename);
 	std::string xml, tmp;
 
 	while(std::getline(ifs, tmp))
@@ -19,5 +19,11 @@ std::string dump_file(const char *filename) {
 BOOST_AUTO_TEST_CASE(final_page) {
 
 	chan_parser p;
-	BOOST_CHECK(true);
+
+	const char *first_page = "first_page.html";
+	const char *final_page = "final_page.html";
+	std::string xml;
+
+	xml = dump_file(fist_page);
+	BOOST_CHECK(!p.final_page(xml));
 }
