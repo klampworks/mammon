@@ -15,3 +15,10 @@ add_executable(
 	chan_parser_test.cpp 
 	chan_parser.cpp 
 	../base_parser.cpp)
+
+add_executable(
+	chan_parser_unit_test 
+	chan_parser.cpp 
+	../base_parser.cpp
+	unit_test/chan_parser_unit_test.cpp
+	)
