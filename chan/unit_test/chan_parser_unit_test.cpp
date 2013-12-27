@@ -34,3 +34,14 @@ BOOST_AUTO_TEST_CASE(check_for_final_page) {
 	xml = dump_file(final_page);
 	BOOST_CHECK(p.final_page(xml));
 }
+
+BOOST_AUTO_TEST_CASE(check_post_id) {
+
+	chan_parser p;
+
+	std::string xml("<a name=\"2374\"></a>");
+	pugi::xml_document doc;
+	doc.load(xml.c_str());
+
+	BOOST_CHECK(p.parse_postid(doc) == "2374");
+}
