@@ -57,7 +57,7 @@ bool chan_parser::final_page(const std::string &xml) {
 	doc.load(xml.c_str());
 
 	//If select_node returns a non-null node then this is the final page, return true.
-	return (doc.select_node(xpath));
+	return (doc.select_single_node(xpath));
 }
 
 //Post page
