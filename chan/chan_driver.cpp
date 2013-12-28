@@ -1,10 +1,11 @@
 #include "chan_db.hpp"
 #include "chan_parser.hpp"
 #include "chan_driver.hpp"
+#include "../kyukon/kyukon.hpp"
 
 chan_driver::chan_driver() {
 
-	kyukon::signup(5, std::mem_fn(fillup));
+	kyukon::signup(5, std::bind(chan_driver::fillup, this));
 	
 }
 
