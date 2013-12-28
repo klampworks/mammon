@@ -1,6 +1,10 @@
 #ifndef CHAN_DRIVER_HPP
 #define CHAN_DRIVER_HPP
 
+#include <string>
+#include "chan_post.hpp"
+#include "chan_parser.hpp"
+
 struct chan_driver {
 
 	chan_parser parser;
@@ -10,7 +14,7 @@ struct chan_driver {
 	void grab_post_img(const chan_post &post);
 	void grab_thread(const chan_post &post);
 	void process_thread(const std::string &html);
-	chan_driver::chan_driver();
+	chan_driver();
 	void fillup();
 };
 #endif
