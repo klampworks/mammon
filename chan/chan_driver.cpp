@@ -57,13 +57,17 @@ void chan_driver::process_list_page(task *t) {
 	}
 }
 
-void chan_driver::grab_thread(const chan_post &post) {
+void chan_driver::grab_thread(const chan_post &post, const std::string &referer) {
 
 	const std::string &board = post.board;
 	const std::string &thread_id = post.thread_id;
 
 	const std::string url = "http://desuchan.net/" + board + "/res/" + thread_id + ".html"; 
-	std::string ref = ;
+
+	task *t = new task(domain_id, url, referer, task::STRING, 
+		std::bind(&chan_driver::process_thread, this));
+
+	kyukon::add_task(t);
 }
 
 void chan_driver::process_thread(const std::string &html) {
