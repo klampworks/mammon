@@ -8,6 +8,8 @@ void chan_driver::process_list_page(const std::string &hmtl) {
 	//Get a list of threads with a handful of the most recent posts for each.
 	std::vector<std::vector<chan_post>> threads = parser.parse_threads(html);
 
+	std::vector<chan_post> posts_to_get;
+
 	for (const auto &thread : threads) {
 
 		//If the final post already exists in the db then skip this thread.
@@ -26,11 +28,8 @@ void chan_driver::process_list_page(const std::string &hmtl) {
 		} else {
 
 			//Iterate through the remaining replies and add them.
-			for (int i = 3; i < (thread.size() - 1); i++) {
-			
-				//insert_post will check if a post exists before inserting.	
-				chan_db::insert_post(table_name, thread[i]);
-			}
+			for (int i = 3; i < (thread.size() - 1); i++)
+				posts_to_get.push_back(thread[i]);
 		}
 
 	}
