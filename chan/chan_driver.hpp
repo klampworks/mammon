@@ -9,5 +9,6 @@ struct chan_driver {
 	void process_list_page(const std::string &xml);
 	void grab_post_img(const chan_post &post);
 	void grab_thread(const chan_post &post);
+	void process_thread(const std::string &html);
 };
 #endif

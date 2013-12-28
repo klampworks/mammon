@@ -50,6 +50,18 @@ void chan_driver::grab_thread(const chan_post &post) {
 	std::string ref = "";
 }
 
+void chan_driver::process_thread(const std::string &html) {
+
+	//Parse the html into a list of post objects.
+	std::vector<chan_post> thread = parser::parse_thread(html);
+
+	//Add the posts tot the database and delete the existing ones from the vector.
+	chan_db::insert_posts(table_name, thread);
+
+	//For each new post, grab the image posted to by the img_url field.
+	for (const auto &new_post : thread)
+		grab_post_img(new_post);
+}
 
 void chan_driver::grab_post_img(const chan_post &post) {
 
