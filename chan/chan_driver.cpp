@@ -40,7 +40,7 @@ void chan_driver::process_list_page(const std::string &html) {
 
 			//Iterate through the remaining replies and add them.
 			for (unsigned i = 3; i < (thread.size() - 1); i++)
-				posts_to_get.push_back(thread[i]);
+				posts_to_add.push_back(thread[i]);
 		}
 	}
 
