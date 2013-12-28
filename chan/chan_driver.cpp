@@ -2,6 +2,16 @@
 #include "chan_parser.hpp"
 #include "chan_driver.hpp"
 
+chan_driver::chan_driver() {
+
+	kyukon::signup(5, std::mem_fn(fillup));
+	
+}
+
+void chan_driver::fillup(){
+
+}
+
 //Given the html souce, figure out which threads need crawling.
 void chan_driver::process_list_page(const std::string &hmtl) {
 
