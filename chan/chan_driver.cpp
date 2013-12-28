@@ -39,7 +39,7 @@ void chan_driver::process_list_page(const std::string &html) {
 		} else {
 
 			//Iterate through the remaining replies and add them.
-			for (int i = 3; i < (thread.size() - 1); i++)
+			for (unsigned i = 3; i < (thread.size() - 1); i++)
 				posts_to_get.push_back(thread[i]);
 		}
 	}
