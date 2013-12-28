@@ -65,7 +65,7 @@ int main() {
 	while(std::getline(ifs, tmp))
 		xml += tmp;
 
-	std::vector<chan_post> thread = p.parse_thread(xml);
+	std::vector<chan_post> thread = p.parse_thread("test_board", xml);
 
 	for (const auto &post : thread) {
 
