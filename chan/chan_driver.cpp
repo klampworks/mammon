@@ -41,6 +41,16 @@ void chan_driver::process_list_page(const std::string &hmtl) {
 	}
 }
 
+void chan_driver::grab_thread(const chan_post &post) {
+
+	const std::string &board = post.board;
+	const std::string &thread_id = post.thread_id;
+
+	const std::string url = "http://desuchan.net/" + board + "/res/" + thread_id + ".html"; 
+	std::string ref = "";
+}
+
+
 void chan_driver::grab_post_img(const chan_post &post) {
 
 }
