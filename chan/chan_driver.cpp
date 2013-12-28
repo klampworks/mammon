@@ -8,7 +8,7 @@ void chan_driver::process_list_page(const std::string &hmtl) {
 	//Get a list of threads with a handful of the most recent posts for each.
 	std::vector<std::vector<chan_post>> threads = parser.parse_threads(html);
 
-	std::vector<chan_post> posts_to_get;
+	std::vector<chan_post> posts_to_add;
 
 	for (const auto &thread : threads) {
 
@@ -31,6 +31,14 @@ void chan_driver::process_list_page(const std::string &hmtl) {
 			for (int i = 3; i < (thread.size() - 1); i++)
 				posts_to_get.push_back(thread[i]);
 		}
-
 	}
+
+	chan_db::insert_posts(table_name, posts_to_add);
+	//posts_to_add now contains a list of posts that were new.	
+	
+	for (const auto &new_post : posts_to_add) {
+		
+		//Download the image from the img_url field.
+	}
+
 }
