@@ -70,10 +70,10 @@ void chan_driver::grab_thread(const chan_post &post, const std::string &referer)
 	kyukon::add_task(t);
 }
 
-void chan_driver::process_thread(const std::string &html) {
+void chan_driver::process_thread(task *t) {
 
 	//Parse the html into a list of post objects.
-	std::vector<chan_post> thread = parser.parse_thread("test_board", html);
+	std::vector<chan_post> thread = parser.parse_thread("test_board", t->get_data());
 
 	//Add the posts tot the database and delete the existing ones from the vector.
 	chan_db::insert_posts(table_name, thread);
