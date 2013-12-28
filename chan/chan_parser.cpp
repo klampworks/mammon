@@ -127,7 +127,7 @@ chan_post chan_parser::parse_post(const char *board, const pugi::xml_node &node,
 			std::move(img_name), std::move(img_src), std::move(content));
 }
 
-std::vector<chan_post> chan_parser::parse_thread(const cahr *baord, const std::string &xml) {
+std::vector<chan_post> chan_parser::parse_thread(const char *board, const std::string &xml) {
 
 	//Parse file into an AST.
 	pugi::xml_document doc;
