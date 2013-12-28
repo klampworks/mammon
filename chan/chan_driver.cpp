@@ -17,7 +17,7 @@ void chan_driver::fillup(){
 void chan_driver::process_list_page(const std::string &html) {
 
 	//Get a list of threads with a handful of the most recent posts for each.
-	std::vector<std::vector<chan_post>> threads = parser.parse_threads(html);
+	std::vector<std::vector<chan_post>> threads = parser.parse_threads("test_board", html);
 
 	std::vector<chan_post> posts_to_add;
 
@@ -64,7 +64,7 @@ void chan_driver::grab_thread(const chan_post &post) {
 void chan_driver::process_thread(const std::string &html) {
 
 	//Parse the html into a list of post objects.
-	std::vector<chan_post> thread = parser::parse_thread(html);
+	std::vector<chan_post> thread = parser.parse_thread("test_board", html);
 
 	//Add the posts tot the database and delete the existing ones from the vector.
 	chan_db::insert_posts(table_name, thread);
