@@ -5,7 +5,7 @@
 
 chan_driver::chan_driver() {
 
-	kyukon::signup(5, std::bind(chan_driver::fillup, this));
+	kyukon::signup(5, std::bind(&chan_driver::fillup, this));
 	
 }
 
