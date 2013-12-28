@@ -1,12 +1,13 @@
 #include "chan_driver.hpp"
 #include "../kyukon/kyukon.hpp"
+#include <fstream>
 
 int main() {
 
 	std::ifstream ifs;
 	ifs.open("proxies");
 
-	assert(ids.good());
+	assert(ifs.good());
 
 	std::vector<std::pair<std::string, bool>> proxies;
 	std::string tmp;
