@@ -13,7 +13,7 @@ struct chan_parser : public base_parser {
 
 	bool final_page(const std::string &xml);
 
-	std::vector<chan_post> parse_thread(const std::string &xml);
+	std::vector<chan_post> parse_thread(const char *board, const std::string &xml);
 	std::string flatten(pugi::xml_node &&quote);
 
 	std::vector<chan_post> parse_posts(const char*, 
