@@ -14,10 +14,12 @@ void chan_driver::fillup(){
 }
 
 //Given the html souce, figure out which threads need crawling.
-void chan_driver::process_list_page(task *t) {
+void chan_driver::process_list_page(task *tt) {
 
+	chan_task *t = (chan_task*)tt;
+	
 	//Get a list of threads with a handful of the most recent posts for each.
-	auto threads = parser.parse_threads("test_board", t->get_data());
+	auto threads = parser.parse_threads(t->get_board().c_str(), t->get_data());
 
 	std::vector<chan_post> posts_to_add;
 
@@ -69,10 +71,12 @@ void chan_driver::grab_thread(const chan_post &post, const std::string &referer)
 	
 }
 
-void chan_driver::process_thread(task *t) {
+void chan_driver::process_thread(task *tt) {
+
+	chan_task *t = (chan_task*)tt;
 
 	//Parse the html into a list of post objects.
-	std::vector<chan_post> thread = parser.parse_thread("test_board", t->get_data());
+	std::vector<chan_post> thread = parser.parse_thread(t->get_board().c_str(), t->get_data());
 
 	//Add the posts tot the database and delete the existing ones from the vector.
 	chan_db::insert_posts(table_name, thread);
@@ -86,6 +90,8 @@ void chan_driver::process_thread(task *t) {
 
 void chan_driver::grab_post_img(const chan_post &post, const std::string &referer) {
 
-	task *t = new task(domain_id, post.img_url, referer, task::FILE, nullptr);
+	chan_task *t = new chan_task(domain_id, post.img_url, referer, 
+		task::FILE, nullptr, post.board);
+
 	kyukon::add_task(t);
 }
