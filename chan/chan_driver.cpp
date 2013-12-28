@@ -14,7 +14,7 @@ void chan_driver::fillup(){
 }
 
 //Given the html souce, figure out which threads need crawling.
-void chan_driver::process_list_page(const std::string &hmtl) {
+void chan_driver::process_list_page(const std::string &html) {
 
 	//Get a list of threads with a handful of the most recent posts for each.
 	std::vector<std::vector<chan_post>> threads = parser.parse_threads(html);
