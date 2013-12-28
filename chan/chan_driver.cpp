@@ -37,8 +37,10 @@ void chan_driver::process_list_page(const std::string &hmtl) {
 	//posts_to_add now contains a list of posts that were new.	
 	
 	for (const auto &new_post : posts_to_add) {
-		
 		//Download the image from the img_url field.
 	}
+}
+
+void chan_driver::grab_post_img(const chan_post &post) {
 
 }
