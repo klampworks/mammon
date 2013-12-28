@@ -48,13 +48,10 @@ void chan_driver::process_list_page(task *t) {
 	//posts_to_add now contains a list of posts that were new.	
 	
 	//Referer url for requesting links on this page.
-	const std::string &referer = t->get_url();
+	const std::string referer = t->get_url();
 
-	for (const auto &new_post : posts_to_add) {
-
+	for (const auto &new_post : posts_to_add)
 		grab_post_img(new_post, referer);
-		//Download the image from the img_url field.
-	}
 }
 
 void chan_driver::grab_thread(const chan_post &post, const std::string &referer) {
@@ -64,10 +61,12 @@ void chan_driver::grab_thread(const chan_post &post, const std::string &referer)
 
 	const std::string url = "http://desuchan.net/" + board + "/res/" + thread_id + ".html"; 
 
+
 	task *t = new task(domain_id, url, referer, task::STRING, 
-		std::bind(&chan_driver::process_thread, this));
+		std::bind(&chan_driver::process_thread, this, std::placeholders::_1));
 
 	kyukon::add_task(t);
+	
 }
 
 void chan_driver::process_thread(task *t) {
@@ -78,9 +77,11 @@ void chan_driver::process_thread(task *t) {
 	//Add the posts tot the database and delete the existing ones from the vector.
 	chan_db::insert_posts(table_name, thread);
 
+	const std::string &referer = t->get_url();
+
 	//For each new post, grab the image posted to by the img_url field.
 	for (const auto &new_post : thread)
-		grab_post_img(new_post);
+		grab_post_img(new_post, referer);
 }
 
 void chan_driver::grab_post_img(const chan_post &post, const std::string &referer) {
