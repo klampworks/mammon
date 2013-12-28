@@ -6,6 +6,20 @@
 #include "chan_parser.hpp"
 #include "../kyukon/task.hpp"
 
+class chan_task : public task {
+
+	std::string board;
+
+	public:
+	chan_task(unsigned dom, const std::string &url, const std::string &ref, task_target target,
+		const std::function<void(task*)> &fn, const std::string &board_p) :
+			task(dom, url, ref, target, fn), board(board_p) {}
+
+	std::string get_board() {
+		return board;
+	}
+};
+
 struct chan_driver {
 
 	chan_parser parser;
