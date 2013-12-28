@@ -22,3 +22,17 @@ add_executable(
 	../base_parser.cpp
 	unit_test/chan_parser_unit_test.cpp
 	)
+
+add_executable(
+	chan_driver_test 
+	chan_parser.cpp 
+	../base_parser.cpp
+	chan_db.cpp 
+	../base_db.cpp
+	chan_driver_test.cpp
+	chan_driver.cpp
+	)
+
+target_link_libraries(chan_driver_test sqlite3)
+target_link_libraries(chan_driver_test kyukon)
+
