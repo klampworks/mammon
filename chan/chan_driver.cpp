@@ -3,6 +3,8 @@
 #include "chan_driver.hpp"
 #include "../kyukon/kyukon.hpp"
 
+#include <iostream>
+
 chan_driver::chan_driver() {
 
 	domain_id = kyukon::signup(5, std::bind(&chan_driver::fillup, this));
@@ -25,7 +27,7 @@ void chan_driver::fillup() {
 	}
 	
 	chan_task *t = new chan_task(domain_id, url, "", task::STRING, 
-		std::bind(&chan_driver::process_list_page, this, std::placeholders::_1,
+		std::bind(&chan_driver::process_list_page, this, std::placeholders::_1),
 		board);
 
 	kyukon::add_task(t);
