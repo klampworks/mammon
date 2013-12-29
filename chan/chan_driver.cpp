@@ -61,16 +61,16 @@ void chan_driver::process_list_page(task *tt) {
 
 			posts_to_add.push_back(thread[0]);
 
-		} else if (!chan_db::post_exists(table_name, thread[2])) {
+		} else if (!chan_db::post_exists(table_name, thread[1])) {
 			//We must download the whole thread since there may be 
 			//earlier posts that we do not have.
 
-			std::string url = "http://desuchan.net/" + thread[2].board +
-				"/res/" + thread[2].thread_id + ".html";
+			std::string url = "http://desuchan.net/" + thread[1].board +
+				"/res/" + thread[1].thread_id + ".html";
 
 			chan_task *t = new chan_task(domain_id, url, referer,
 				task::STRING, std::bind(&chan_driver::process_thread, 
-				this, std::placeholders::_1), thread[2].board);
+				this, std::placeholders::_1), thread[1].board);
 
 			kyukon::add_task(t);
 
