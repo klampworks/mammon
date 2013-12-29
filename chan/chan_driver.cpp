@@ -60,13 +60,13 @@ void chan_driver::process_list_page(task *tt) {
 		//This thread has no replies, skip.
 		if (thread.size() == 1)
 			break;
-			
+
 		//Check if the second post down not exist.
 		if (!chan_db::post_exists(table_name, thread[2])) {
 			//We must download the whole thread since there may be 
 			//earlier posts that we do not have.
 
-			std::string url = "http://desuchan.net/" + board +
+			std::string url = "http://desuchan.net/" + thread[2].board +
 				"/res/" + thread[2].thread_id + ".html";
 
 			chan_task *t = new chan_task(domain_id, url, referer,
