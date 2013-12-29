@@ -57,12 +57,11 @@ void chan_driver::process_list_page(task *tt) {
 		if (chan_db::post_exists(table_name, thread.back()))
 			break;
 
-		//This thread has no replies, skip.
-		if (thread.size() == 1)
-			break;
+		if (thread.size() == 1) {
 
-		//Check if the second post down not exist.
-		if (!chan_db::post_exists(table_name, thread[2])) {
+			posts_to_add.push_back(thread[0]);
+
+		} else if (!chan_db::post_exists(table_name, thread[2])) {
 			//We must download the whole thread since there may be 
 			//earlier posts that we do not have.
 
