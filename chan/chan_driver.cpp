@@ -9,8 +9,30 @@ chan_driver::chan_driver() {
 	
 }
 
-void chan_driver::fillup(){
+std::string board = "tech";
+int page = 0;
 
+void chan_driver::fillup() {
+
+	if (page < 0) { 
+		std::cout << "Done all pages." << std::endl;
+	}
+
+	std::string url = "http://desuchan.net/" + board + "/";
+
+	if (page > 0) {
+		url += std::to_string(page) + ".html";
+	}
+	
+	chan_task *t = new chan_task(domain_id, url, "", task::STRING, 
+		std::bind(&chan_driver::process_list_page, this, std::placeholders::_1,
+		board);
+
+	kyukon::add_task(t);
+
+	page++;
+
+	kyukon::set_do_fillup(false, domain_id);
 }
 
 //Given the html souce, figure out which threads need crawling.
