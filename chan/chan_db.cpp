@@ -37,8 +37,12 @@ bool post_exists(
 	return !res.empty();
 }
 
+//Inserts a vector of posts. If the post already exists it is removed from the original vector.
 void insert_posts(const char *table_name, std::vector<chan_post> &posts) 
 {
+
+	if (posts.empty())
+		return;
 
 	posts.erase(std::remove_if(posts.begin(), posts.end(), 
 		[table_name](const chan_post &post) {
@@ -51,6 +55,7 @@ void insert_posts(const char *table_name, std::vector<chan_post> &posts)
 //Returns true if the post already exists.
 bool insert_post(const char *table_name, chan_post post)
 {
+
 	if (post_exists(table_name, post))
 		//This post already exists.
 		return true;
