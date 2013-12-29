@@ -8,7 +8,8 @@
 chan_driver::chan_driver() {
 
 	domain_id = kyukon::signup(5, std::bind(&chan_driver::fillup, this));
-	
+	kyukon::set_do_fillup(true, domain_id);
+		
 }
 
 std::string board = "tech";
@@ -47,6 +48,9 @@ void chan_driver::process_list_page(task *tt) {
 
 	std::vector<chan_post> posts_to_add;
 
+	//Referer url for requesting links on this page.
+	const std::string referer = t->get_url();
+
 	for (const auto &thread : threads) {
 
 		//If the final post already exists in the db then skip this thread.
@@ -62,6 +66,15 @@ void chan_driver::process_list_page(task *tt) {
 			//We must download the whole thread since there may be 
 			//earlier posts that we do not have.
 
+			std::string url = "http://desuchan.net/" + board +
+				"/res/" + thread[2].thread_id + ".html";
+
+			chan_task *t = new chan_task(domain_id, url, referer,
+				task::STRING, std::bind(&chan_driver::process_thread, 
+				this, std::placeholders::_1));
+
+			kyukon::add_task(t);
+
 		} else {
 
 			//Iterate through the remaining replies and add them.
@@ -72,9 +85,6 @@ void chan_driver::process_list_page(task *tt) {
 
 	chan_db::insert_posts(table_name, posts_to_add);
 	//posts_to_add now contains a list of posts that were new.	
-	
-	//Referer url for requesting links on this page.
-	const std::string referer = t->get_url();
 
 	for (const auto &new_post : posts_to_add)
 		grab_post_img(new_post, referer);
