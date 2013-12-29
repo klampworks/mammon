@@ -71,7 +71,7 @@ void chan_driver::process_list_page(task *tt) {
 
 			chan_task *t = new chan_task(domain_id, url, referer,
 				task::STRING, std::bind(&chan_driver::process_thread, 
-				this, std::placeholders::_1));
+				this, std::placeholders::_1), thread[2].board);
 
 			kyukon::add_task(t);
 
