@@ -76,6 +76,9 @@ void chan_driver::process_list_page(task *tt) {
 
 	for (const auto &new_post : posts_to_add)
 		grab_post_img(new_post, referer);
+
+	if (parser.final_page(t->get_data()))
+		page = -1;
 }
 
 void chan_driver::grab_thread(const chan_post &post, const std::string &referer) {
