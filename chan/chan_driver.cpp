@@ -19,7 +19,7 @@ int page = 0;
 
 void chan_driver::fillup() {
 
-	if (page > 0) { 
+	if (page < 0) { 
 		std::cout << "Done all pages." << std::endl;
 	}
 
@@ -37,7 +37,9 @@ void chan_driver::fillup() {
 
 	page++;
 
-	kyukon::set_do_fillup(false, domain_id);
+	//Tell Kyukon we are done filling up and it's ok to call this function
+	//again if the queue is empty again.
+	kyukon::set_do_fillup(true, domain_id);
 }
 
 //Given the html souce, figure out which threads need crawling.
