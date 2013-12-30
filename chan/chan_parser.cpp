@@ -138,6 +138,7 @@ std::vector<chan_post> chan_parser::parse_thread(const char *board, const std::s
 
 	std::vector<chan_post> thread = parse_posts(board, "", std::move(op));
 
+	//TODO this segfaults when xml is empty.
 	std::string op_postid = thread.front().thread_id;
 
 	//Parse the thread responses into a node set.
