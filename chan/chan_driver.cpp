@@ -4,6 +4,7 @@
 #include "../kyukon/kyukon.hpp"
 
 #include <iostream>
+#include <cassert>
 
 chan_driver::chan_driver() {
 
@@ -18,7 +19,7 @@ int page = 0;
 
 void chan_driver::fillup() {
 
-	if (page < 0) { 
+	if (page > 0) { 
 		std::cout << "Done all pages." << std::endl;
 	}
 
@@ -126,6 +127,10 @@ void chan_driver::process_thread(task *tt) {
 }
 
 void chan_driver::grab_post_img(const chan_post &post, const std::string &referer) {
+
+	//Not all posts have images.
+	if (post.img_url.empty())
+		return;
 
 	chan_task *t = new chan_task(domain_id, post.img_url, referer, 
 		task::FILE, nullptr, post.board);
