@@ -77,6 +77,11 @@ void chan_driver::process_list_page(task *tt) {
 
 	for (const auto &thread : threads) {
 
+		if (thread.empty()) {
+			std::cout << "Empty thread!" << std::endl;
+			continue;
+		}
+
 		//If the final post already exists in the db then skip this thread.
 		if (chan_db::post_exists(table_name, thread.back()))
 			break;
@@ -138,7 +143,7 @@ void chan_driver::process_thread(task *tt) {
 	//Parse the html into a list of post objects.
 	std::vector<chan_post> thread = parser.parse_thread(t->get_board().c_str(), t->get_data());
 
-	//Add the posts tot the database and delete the existing ones from the vector.
+	//Add the posts to the database and delete the existing ones from the vector.
 	chan_db::insert_posts(table_name, thread);
 
 	const std::string &referer = t->get_url();
@@ -177,7 +182,7 @@ bool chan_driver::check_file_error(task *t) {
 	if (!check_filesize(t))
 		return false;
 
-	//check file type
+	//TODO check file type
 
 	return true;
 }
