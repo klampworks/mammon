@@ -153,10 +153,20 @@ void chan_driver::grab_post_img(const chan_post &post, const std::string &refere
 	if (post.img_url.empty())
 		return;
 
-	chan_task *t = new chan_task(domain_id, post.img_url, referer, 
-		task::FILE, nullptr, post.board);
+	chan_task *t = new chan_task(domain_id, post.img_url, referer, task::FILE, 
+		std::bind(&chan_driver::process_image, this, std::placeholders::_1, post.board);
 
 	kyukon::add_task(t);
+}
+
+void chan_driver::process_image(task *tt) {
+
+	if (!check_error(t) || !check_img_error(t)) {
+		retry(t);
+		return;	
+	}
+
+	chan_task *t = (chan_task*)tt;
 }
 
 bool chan_driver::check_error(chan_task *t) {

@@ -30,6 +30,7 @@ struct chan_driver {
 	void grab_post_img(const chan_post &post, const std::string &referer);
 	void grab_thread(const chan_post &post, const std::string &referer);
 	void process_thread(task *t);
+	void process_image(task *t);
 	chan_driver();
 	void fillup();
 	bool check_error(chan_task *t);
