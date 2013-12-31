@@ -34,7 +34,10 @@ struct chan_driver {
 	chan_driver();
 	void fillup();
 	bool check_error(chan_task *t);
+	bool check_file_error(task *t);
 	void retry(chan_task *t);
 	unsigned max_retries;
+
+	bool check_filesize(task *t);
 };
 #endif

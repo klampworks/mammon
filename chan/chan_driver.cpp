@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <sys/stat.h>
 
 chan_driver::chan_driver() {
 
@@ -154,19 +155,47 @@ void chan_driver::grab_post_img(const chan_post &post, const std::string &refere
 		return;
 
 	chan_task *t = new chan_task(domain_id, post.img_url, referer, task::FILE, 
-		std::bind(&chan_driver::process_image, this, std::placeholders::_1, post.board);
+		std::bind(&chan_driver::process_image, this, std::placeholders::_1), post.board);
 
 	kyukon::add_task(t);
 }
 
 void chan_driver::process_image(task *tt) {
 
-	if (!check_error(t) || !check_img_error(t)) {
+	chan_task *t = (chan_task*)tt;
+
+	if (!check_error(t) || !check_file_error(t)) {
 		retry(t);
 		return;	
 	}
 
-	chan_task *t = (chan_task*)tt;
+}
+
+bool chan_driver::check_file_error(task *t) {
+
+	//check filesize
+	if (!check_filesize(t))
+		return false;
+
+	//check file type
+
+	return true;
+}
+
+bool chan_driver::check_filesize(task *t) {
+
+	struct stat filestatus;
+	stat(t->get_data().c_str(), &filestatus);
+	double real_file_size = filestatus.st_size;
+
+	if (real_file_size != t->get_data_size()) {
+
+		std::cout << "Size mismatch: real size = " << real_file_size <<
+		" but downloaded size = " << t->get_data_size() << std::endl;;
+		return false;
+	}
+
+	return true;
 }
 
 bool chan_driver::check_error(chan_task *t) {
