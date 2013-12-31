@@ -31,6 +31,7 @@ add_executable(
 	../base_db.cpp
 	chan_driver_test.cpp
 	chan_driver.cpp
+	../base_driver.cpp
 	)
 
 target_link_libraries(chan_driver_test sqlite3)

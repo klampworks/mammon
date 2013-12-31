@@ -5,7 +5,7 @@
 #include "chan_post.hpp"
 #include "chan_parser.hpp"
 #include "../kyukon/task.hpp"
-#include <magic.h>
+#include "../base_driver.hpp"
 
 class chan_task : public task {
 
@@ -21,12 +21,11 @@ class chan_task : public task {
 	}
 };
 
-struct chan_driver {
+struct chan_driver : public base_driver {
 
 	chan_parser parser;
 	const char *table_name = "desuchan";
 	unsigned domain_id;
-	magic_t magic_cookie;
 
 	void process_list_page(task *t);
 	void grab_post_img(const chan_post &post, const std::string &referer);
@@ -35,14 +34,5 @@ struct chan_driver {
 	void process_image(task *t);
 	chan_driver();
 	void fillup();
-	bool check_error(chan_task *t);
-	bool check_file_error(task *t);
-	void retry(chan_task *t);
-	unsigned max_retries;
-
-	bool check_filesize(task *t);
-	bool file_is_txt(task *t);
-	bool file_is_bin(task *t);
-	bool check_filetype(task *t);
 };
 #endif
