@@ -14,16 +14,28 @@ chan_driver::chan_driver() {
 		
 }
 
-std::string board = "tech";
+std::vector<std::string> boards({
+	"tech",
+	"vic",
+});
+
+unsigned board = 0;
 int page = 0;
 
 void chan_driver::fillup() {
 
 	if (page < 0) { 
-		std::cout << "Done all pages." << std::endl;
+		std::cout << "Done all pages for board " << boards[board]<< std::endl;
+		
+		if (++board >= boards.size()) {
+			std::cout << "No more boards available." << std::endl;
+		} else {
+			std::cout << "Moving on to board " << boards[board] << std::endl;
+			page = 0;
+		}
 	}
 
-	std::string url = "http://desuchan.net/" + board + "/";
+	std::string url = "http://desuchan.net/" + boards[board] + "/";
 
 	if (page > 0) {
 		url += std::to_string(page) + ".html";
@@ -31,7 +43,7 @@ void chan_driver::fillup() {
 	
 	chan_task *t = new chan_task(domain_id, url, "", task::STRING, 
 		std::bind(&chan_driver::process_list_page, this, std::placeholders::_1),
-		board);
+		boards[board]);
 
 	kyukon::add_task(t);
 
@@ -46,6 +58,12 @@ void chan_driver::fillup() {
 void chan_driver::process_list_page(task *tt) {
 
 	chan_task *t = (chan_task*)tt;
+
+	check_error(t);
+
+	std::cout << "curl = " << t->get_curl_result() << std::endl;
+	std::cout << "status = " << t->get_status_code() << std::endl;
+	std::cout << "dl = " << t->get_data_size() << std::endl;
 	
 	//Get a list of threads with a handful of the most recent posts for each.
 	auto threads = parser.parse_threads(t->get_board().c_str(), t->get_data());
@@ -138,4 +156,18 @@ void chan_driver::grab_post_img(const chan_post &post, const std::string &refere
 		task::FILE, nullptr, post.board);
 
 	kyukon::add_task(t);
+}
+
+bool chan_driver::check_error(chan_task *t) {
+
+	for (std::string res = t->get_curl_result(); !res.empty();) {
+		
+		std::cout << "Curl error: " << res << std::endl;
+		return false;
+	}
+
+	if (!t->get_data_size())
+		return false;
+
+	return true;
 }

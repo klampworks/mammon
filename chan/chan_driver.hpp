@@ -32,5 +32,6 @@ struct chan_driver {
 	void process_thread(task *t);
 	chan_driver();
 	void fillup();
+	bool check_error(chan_task *t);
 };
 #endif
