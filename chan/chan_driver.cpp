@@ -16,6 +16,9 @@ chan_driver::chan_driver() {
 	kyukon::set_do_fillup(true, domain_id);
 		
 	max_retries = 5;
+
+	magic_cookie = magic_open(MAGIC_MIME); 
+	magic_load(magic_cookie, NULL);
 }
 
 std::vector<std::string> boards({
@@ -231,7 +234,9 @@ bool chan_driver::check_file_error(task *t) {
 	if (!check_filesize(t))
 		return false;
 
-	//TODO check file type
+	//check file type
+	if (file_is_txt(t))
+		return false;
 
 	return true;
 }
@@ -250,6 +255,21 @@ bool chan_driver::check_filesize(task *t) {
 	}
 
 	return true;
+}
+
+bool chan_driver::file_is_txt(task *t) {
+	return check_filetype(t);
+}
+
+bool chan_driver::file_is_bin(task *t) {
+	return !check_filetype(t);
+}
+
+//Returns true if bianry, false if text.
+bool chan_driver::check_filetype(task *t) {
+
+	std::string mime = magic_file(magic_cookie, t->get_data().c_str());
+	return (mime.find("text") != std::string::npos); 
 }
 
 bool chan_driver::check_error(chan_task *t) {

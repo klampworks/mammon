@@ -35,4 +35,5 @@ add_executable(
 
 target_link_libraries(chan_driver_test sqlite3)
 target_link_libraries(chan_driver_test kyukon)
+target_link_libraries(chan_driver_test magic)
 
