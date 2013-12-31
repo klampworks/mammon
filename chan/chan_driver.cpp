@@ -12,6 +12,7 @@ chan_driver::chan_driver() {
 	domain_id = kyukon::signup(5, std::bind(&chan_driver::fillup, this));
 	kyukon::set_do_fillup(true, domain_id);
 		
+	max_retries = 5;
 }
 
 std::vector<std::string> boards({
@@ -59,12 +60,12 @@ void chan_driver::process_list_page(task *tt) {
 
 	chan_task *t = (chan_task*)tt;
 
-	check_error(t);
+	if (!check_error(t)) {
 
-	std::cout << "curl = " << t->get_curl_result() << std::endl;
-	std::cout << "status = " << t->get_status_code() << std::endl;
-	std::cout << "dl = " << t->get_data_size() << std::endl;
-	
+		retry(t);
+		return;	
+	}
+
 	//Get a list of threads with a handful of the most recent posts for each.
 	auto threads = parser.parse_threads(t->get_board().c_str(), t->get_data());
 
@@ -170,4 +171,16 @@ bool chan_driver::check_error(chan_task *t) {
 		return false;
 
 	return true;
+}
+
+void chan_driver::retry(chan_task *t) {
+
+	if (t->inc_retries() > max_retries) {
+
+		std::cout << "Giving up on " << t->get_url() << std::endl;
+		delete t;
+	} else {
+		
+		kyukon::add_task(t);
+	}
 }

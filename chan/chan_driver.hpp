@@ -33,5 +33,7 @@ struct chan_driver {
 	chan_driver();
 	void fillup();
 	bool check_error(chan_task *t);
+	void retry(chan_task *t);
+	unsigned max_retries;
 };
 #endif
