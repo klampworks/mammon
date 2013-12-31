@@ -132,24 +132,8 @@ std::vector<chan_post> chan_parser::parse_thread(const char *board, const std::s
 	//Parse file into an AST.
 	pugi::xml_document doc;
 	doc.load(xml.c_str());
-
-	//Parse the original post subtree.
-	pugi::xpath_node_set op = doc.select_nodes("//form/div[2]");
-
-	std::vector<chan_post> thread = parse_posts(board, "", std::move(op));
-
-	//TODO this segfaults when xml is empty.
-	std::string op_postid = thread.front().thread_id;
-
-	//Parse the thread responses into a node set.
-	op = doc.select_nodes("//table/tbody/tr/td");
-
-	std::vector<chan_post> replies = parse_posts(board, op_postid, std::move(op));
-	
-	//TODO is there a way to move this?
-	thread.insert(thread.end(), replies.begin(), replies.end());
-
-	return std::move(thread);
+		
+	return parse_a_thread(board, doc);
 }
 
 //Pugi XML developers have been writing too much Java...
