@@ -10,6 +10,8 @@
 chan_driver::chan_driver() {
 
 	chan_db::init();
+	chan_db::init_table(table_name);
+
 	domain_id = kyukon::signup(5, std::bind(&chan_driver::fillup, this));
 	kyukon::set_do_fillup(true, domain_id);
 		
@@ -17,8 +19,44 @@ chan_driver::chan_driver() {
 }
 
 std::vector<std::string> boards({
+	"bananas",
+	"boku",
+	"dawa",
+	"desu",
+	"jum",
+	"kashira",
+	"md",
+	"otousama",
+	"ro",
+	"unyuu",
+	"yakult",
+	"a",
+	"c",
+	"h",
+	"moonspeak",
+	"nagato",
+	"nij",
+	"nipa",
+	"touhou",
+	"tr",
+	"yan",
+	"vn",
+	"do",
+	"fi",
+	"lit",
+	"o",
+	"pro",
 	"tech",
+	"v",
 	"vic",
+	"arrrrr",
+	"brocastan",
+	"gar",
+	"gif",
+	"media",
+	"ot",
+	"r",
+	"w",
 });
 
 unsigned board = 0;
@@ -139,6 +177,12 @@ void chan_driver::grab_thread(const chan_post &post, const std::string &referer)
 void chan_driver::process_thread(task *tt) {
 
 	chan_task *t = (chan_task*)tt;
+
+	if (!check_error(t)) {
+
+		retry(t);
+		return;	
+	}
 
 	//Parse the html into a list of post objects.
 	std::vector<chan_post> thread = parser.parse_thread(t->get_board().c_str(), t->get_data());
