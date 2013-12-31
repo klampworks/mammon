@@ -157,6 +157,8 @@ void chan_driver::process_list_page(task *tt) {
 
 	if (parser.final_page(t->get_data()))
 		page = -1;
+
+	delete t;
 }
 
 void chan_driver::grab_thread(const chan_post &post, const std::string &referer) {
@@ -195,6 +197,8 @@ void chan_driver::process_thread(task *tt) {
 	//For each new post, grab the image posted to by the img_url field.
 	for (const auto &new_post : thread)
 		grab_post_img(new_post, referer);
+
+	delete tt;
 }
 
 void chan_driver::grab_post_img(const chan_post &post, const std::string &referer) {
@@ -218,6 +222,7 @@ void chan_driver::process_image(task *tt) {
 		return;	
 	}
 
+	delete tt;
 }
 
 bool chan_driver::check_file_error(task *t) {
