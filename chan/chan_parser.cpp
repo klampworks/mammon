@@ -4,16 +4,18 @@
 #include "chan_parser.hpp"
 #include "chan_post.hpp"
 
-std::vector<chan_post> chan_parser::parse_a_thread(const char *board, 
+std::vector<chan_post> chan_parser::parse_a_thread(
+	const char *xpath,
+	const char *board, 
 	const pugi::xml_node &node) 
 {
-
 	//Parse the op.
 	chan_post thread = parse_post(board, node);
 	std::string thread_id = thread.post_id;
 
 	//Parse each reply (not OP)
-	auto nodes = node.select_nodes("table/tbody/tr/td");
+	//auto nodes = node.select_nodes("table/tbody/tr/td");
+	auto nodes = node.select_nodes(xpath);
 	auto replies = parse_posts(board, thread_id, std::move(nodes));
 
 	//TODO This is horrible.
@@ -25,12 +27,10 @@ std::vector<chan_post> chan_parser::parse_a_thread(const char *board,
 //Given a list page, return a list of thread previews i.e.
 //op + the last few replies.
 std::vector<std::vector<chan_post>> chan_parser::parse_threads(
+	const char *xpath,
 	const char *board,
 	const std::string &xml)
 {
-
-	const char *xpath = "//form/div[@id and not(@style)]";
-
 	pugi::xml_document doc;
 	doc.load(xml.c_str());
 	
@@ -46,13 +46,10 @@ std::vector<std::vector<chan_post>> chan_parser::parse_threads(
 	return threads;
 }
 
-bool chan_parser::final_page(const std::string &xml) {
+bool chan_parser::final_page(const char *xpath, const std::string &xml) {
 
 	//Looking for the "next" button that does nothing
 	//i.e. there are no more pages.
-	
-	//Parse the second form element, "next" not "previous".
-	const char *xpath = "(//form[@method='get' and @action])[last()]";
 	
 	//TODO reparsing this is inefficiant.
 	pugi::xml_document doc;
