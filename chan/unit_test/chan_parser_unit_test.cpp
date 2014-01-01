@@ -113,8 +113,6 @@ std::vector<chan_post> expected({
 
 	std::vector<chan_post> ret = p.parse_thread("test", xml);
 
-	std::cout << ret.size() << " posts parsed." << std::endl;
-
 	for (unsigned i = 0; i < ret.size(); i++) {
 		BOOST_CHECK(ret[i].thread_id == expected[i].thread_id);
 		BOOST_CHECK(ret[i].post_id == expected[i].post_id);
@@ -197,9 +195,7 @@ BOOST_AUTO_TEST_CASE(check_parse_threads) {
 {"test", "2305", "2305", "1338099904487.jpg", "http://desuchan.net/tech/src/1338099904487.jpg", "Anyone here own a tablet?"},
 {"test", "2305", "2307", "1338656424342.jpg", "http://desuchan.net/tech/src/1338656424342.jpg", "I bought an Ainol Paladin.  It is a Chinese knockoff tablet that runs Android 4, but it is really not that bad."},
 }
-}); /*
-*/
-	//});
+});
 	std::string xml = dump_file("list_page.html");
 
 	std::vector<std::vector<chan_post>> ret = p.parse_threads("test", xml);
@@ -215,23 +211,4 @@ BOOST_AUTO_TEST_CASE(check_parse_threads) {
 			BOOST_CHECK(ret[j][i].img == expected[j][i].img);
 		}
 	}
-/*
-	for (const auto &r : ret) {
-
-		std::cout << "{" << std::endl;
-		for (const auto &a : r) {
-			std::cout << "{";
-			std::cout << "\"" << a.board << "\", ";
-			std::cout << "\"" << a.thread_id  << "\", ";
-			std::cout << "\"" << a.post_id  << "\", ";
-			std::cout << "\"" << a.img  << "\", ";
-			std::cout << "\"" << a.img_url  << "\", ";
-			std::cout << "\"" << a.content  << "\"";
-			std::cout << "}," << std::endl;
-
-		}
-		std::cout << "}, " << std::endl;
-	}
-*/
-
 }
