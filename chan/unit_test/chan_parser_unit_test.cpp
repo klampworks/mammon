@@ -200,8 +200,10 @@ BOOST_AUTO_TEST_CASE(check_parse_threads) {
 
 	std::vector<std::vector<chan_post>> ret = p.parse_threads("test", xml);
 
+	BOOST_CHECK(ret.size() >= expected.size());
 	for (unsigned j = 0; j < expected.size(); j++) {
 
+		BOOST_CHECK(ret[j].size() >= expected[j].size());
 		for (unsigned i = 0; i < expected[j].size(); i++) {
 
 			BOOST_CHECK(ret[j][i].thread_id == expected[j][i].thread_id);
