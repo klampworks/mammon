@@ -132,8 +132,9 @@ std::vector<chan_post> chan_parser::parse_thread(const char *board, const std::s
 	//Parse file into an AST.
 	pugi::xml_document doc;
 	doc.load(xml.c_str());
+	const char *xpath = "//form/div[@id and not(@style)]";
 		
-	return parse_a_thread(board, doc);
+	return parse_a_thread(board, doc.select_single_node(xpath).node());
 }
 
 //Pugi XML developers have been writing too much Java...
