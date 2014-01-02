@@ -25,7 +25,6 @@ std::vector<std::vector<chan_post>> wakachan_parser::parse_threads(
 	//Instead they separate each tread with a <hr>
 	auto subtree = doc.select_single_node(xpath);
 
-
 	auto st = subtree.node().begin();
 	auto en = subtree.node().end();
 
@@ -44,17 +43,7 @@ std::vector<std::vector<chan_post>> wakachan_parser::parse_threads(
 		}
 	}
 
-	auto ops = new_doc.select_nodes("div");
-
-	std::cout << ops.size() << " divs" << std::endl;
-	std::vector<std::vector<chan_post>> threads;
-
-	//For each thread...
-	for (auto op : ops)
-		threads.push_back(parse_a_thread(board, op.node()));
-
-	return threads;
-	//return chan_parser::parse_threads(board, );
+	return chan_parser::parse_threads("div", board, new_doc);
 }
 
 bool wakachan_parser::final_page(const std::string &xml) 
