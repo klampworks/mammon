@@ -34,10 +34,17 @@ struct chan_parser : public base_parser {
 		const char *board,
 		const std::string &xml);
 
+	std::vector<std::vector<chan_post>> parse_threads(
+		const char *xpath,
+		const char *board,
+		const pugi::xml_document &xml);
+
 	virtual std::vector<std::vector<chan_post>> parse_threads(
 		const char *board,
 		const std::string &xml)=0;
 
 	chan_post parse_post(const char *board, const pugi::xml_node &node, const std::string &thread=std::string());
+
+	virtual ~chan_parser(){};
 };
 #endif
