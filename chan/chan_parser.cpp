@@ -34,6 +34,14 @@ std::vector<std::vector<chan_post>> chan_parser::parse_threads(
 	pugi::xml_document doc;
 	doc.load(xml.c_str());
 	
+	return parse_threads(xpath, board, doc);
+}
+
+std::vector<std::vector<chan_post>> chan_parser::parse_threads(
+	const char *xpath,
+	const char *board,
+	const pugi::xml_document &doc)
+{
 	//Parse each thread <div>
 	auto ops = doc.select_nodes(xpath);
 
