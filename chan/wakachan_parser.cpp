@@ -27,6 +27,10 @@ std::vector<std::vector<chan_post>> wakachan_parser::parse_threads(
 	auto st = subtree.node().begin();
 	auto en = subtree.node().end();
 
+	//If we can't parse this then don't waste time with the other crap.
+	if (st == en)
+		return std::vector<std::vector<chan_post>>();
+
 	pugi::xml_document new_doc;
 	pugi::xml_node div;
 
@@ -34,14 +38,14 @@ START:
 	div = new_doc.append_child("div");
 	div.append_attribute("id") = "mammon";
 
-	for (;st != en; st++) {
-
+	do {
 		if (!strcmp(st->name(), "hr")) {
 			st++;
 			goto START;
 		}
+
 		div.append_copy(*st);
-	}
+	} while (st++, st != en);
 
 	return chan_parser::parse_threads("div[@id='mammon']", board, new_doc);
 }
