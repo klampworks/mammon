@@ -137,7 +137,7 @@ std::vector<chan_post> chan_parser::parse_thread(const char *board, const std::s
 	//Reuse te parse_threads method and only return the first element.
 	auto res = parse_threads(board, xml);
 
-	if (res.size() == 1)
+	if (!res.empty())
 		return res.front();
 
 	return std::vector<chan_post>();
