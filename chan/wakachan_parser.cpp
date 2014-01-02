@@ -25,39 +25,36 @@ std::vector<std::vector<chan_post>> wakachan_parser::parse_threads(
 	//Instead they separate each tread with a <hr>
 	auto subtree = doc.select_single_node(xpath);
 
-	std::vector<std::vector<chan_post>> threads;
 
 	auto st = subtree.node().begin();
 	auto en = subtree.node().end();
 
-	threads.push_back(std::vector<chan_post>());
-	unsigned index = 0;
+	pugi::xml_document new_doc;
+	pugi::xml_node div = new_doc.append_child("div");
 
 	for (;st != en; st++) {
 
-		//std::cout << st->name() << std::endl;
-		if (!strcmp(st->name(), "table")) {
+		if (!strcmp(st->name(), "hr")) {
 
-			auto node = st->select_single_node("tbody/tr/td[@class='reply']").node();
+			div = new_doc.append_child("div");
+			assert(div);
+		} else {
 
-			if (threads[index].empty())
-				threads[index].push_back(chan_parser::parse_post(board, node));
-			else 
-				threads[index].push_back(
-					chan_parser::parse_post(board, node, 
-						threads[index].front().thread_id));
-
-		} else if (!strcmp(st->name(), "hr")) {
-
-			threads.push_back(std::vector<chan_post>());
-			index++;	
+			div.append_copy(*st);
 		}
-			
-
 	}
 
+	auto ops = new_doc.select_nodes("div");
+
+	std::cout << ops.size() << " divs" << std::endl;
+	std::vector<std::vector<chan_post>> threads;
+
+	//For each thread...
+	for (auto op : ops)
+		threads.push_back(parse_a_thread(board, op.node()));
+
 	return threads;
-	//return chan_parser::parse_threads( board, xml);
+	//return chan_parser::parse_threads(board, );
 }
 
 bool wakachan_parser::final_page(const std::string &xml) 
