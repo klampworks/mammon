@@ -23,8 +23,8 @@ class chan_task : public task {
 
 struct chan_driver : public base_driver {
 
-	chan_parser parser;
-	const char *table_name = "desuchan";
+	chan_parser *parser;
+	const char *table_name;
 	unsigned domain_id;
 
 	void process_list_page(task *t);
@@ -32,7 +32,9 @@ struct chan_driver : public base_driver {
 	void grab_thread(const chan_post &post, const std::string &referer);
 	void process_thread(task *t);
 	void process_image(task *t);
-	chan_driver();
 	void fillup();
+
+	protected:
+		chan_driver(const char *table_name, chan_parser *p);
 };
 #endif

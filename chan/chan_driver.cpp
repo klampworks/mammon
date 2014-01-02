@@ -6,8 +6,10 @@
 #include <iostream>
 #include <cassert>
 
-chan_driver::chan_driver() : base_driver() {
+chan_driver::chan_driver(const char *table_name, chan_parser *p) : base_driver() {
 
+	this->table_name = table_name;
+	this->parser = p;
 	chan_db::init();
 	chan_db::init_table(table_name);
 
@@ -104,7 +106,7 @@ void chan_driver::process_list_page(task *tt) {
 	}
 
 	//Get a list of threads with a handful of the most recent posts for each.
-	auto threads = parser.parse_threads(t->get_board().c_str(), t->get_data());
+	auto threads = parser->parse_threads(t->get_board().c_str(), t->get_data());
 
 	std::vector<chan_post> posts_to_add;
 
@@ -153,7 +155,7 @@ void chan_driver::process_list_page(task *tt) {
 	for (const auto &new_post : posts_to_add)
 		grab_post_img(new_post, referer);
 
-	if (parser.final_page(t->get_data()))
+	if (parser->final_page(t->get_data()))
 		page = -1;
 
 	delete t;
@@ -185,7 +187,7 @@ void chan_driver::process_thread(task *tt) {
 	}
 
 	//Parse the html into a list of post objects.
-	std::vector<chan_post> thread = parser.parse_thread(t->get_board().c_str(), t->get_data());
+	std::vector<chan_post> thread = parser->parse_thread(t->get_board().c_str(), t->get_data());
 
 	//Add the posts to the database and delete the existing ones from the vector.
 	chan_db::insert_posts(table_name, thread);
