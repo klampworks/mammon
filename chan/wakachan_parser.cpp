@@ -11,7 +11,6 @@ std::vector<chan_post> wakachan_parser::parse_a_thread(
 	return chan_parser::parse_a_thread("table/tbody/tr/td", board, node);
 }
 
-#include <iostream>
 std::vector<std::vector<chan_post>> wakachan_parser::parse_threads(
 	const char *board,
 	const std::string &xml)
@@ -29,21 +28,22 @@ std::vector<std::vector<chan_post>> wakachan_parser::parse_threads(
 	auto en = subtree.node().end();
 
 	pugi::xml_document new_doc;
-	pugi::xml_node div = new_doc.append_child("div");
+	pugi::xml_node div;
+
+START:
+	div = new_doc.append_child("div");
+	div.append_attribute("id") = "mammon";
 
 	for (;st != en; st++) {
 
 		if (!strcmp(st->name(), "hr")) {
-
-			div = new_doc.append_child("div");
-			assert(div);
-		} else {
-
-			div.append_copy(*st);
+			st++;
+			goto START;
 		}
+		div.append_copy(*st);
 	}
 
-	return chan_parser::parse_threads("div", board, new_doc);
+	return chan_parser::parse_threads("div[@id='mammon']", board, new_doc);
 }
 
 bool wakachan_parser::final_page(const std::string &xml) 
