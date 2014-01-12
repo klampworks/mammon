@@ -21,8 +21,16 @@ int main() {
 	assert(!proxies.empty());
 
 	kyukon::init(proxies);
+	ifs.close();
 
-	desuchan_driver d;
+	ifs.open("desuchan_baords");
+	std::vector<std::string> boards;
+
+	while(std::getline(ifs, tmp))
+		boards.push_back(tmp);
+
+
+	desuchan_driver d(std::move(boards));
 
 	while(1);
 }
