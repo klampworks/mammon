@@ -23,7 +23,7 @@ int main() {
 	kyukon::init(proxies);
 	ifs.close();
 
-	ifs.open("desuchan_baords");
+	ifs.open("desuchan_boards");
 	std::vector<std::string> boards;
 
 	while(std::getline(ifs, tmp))
