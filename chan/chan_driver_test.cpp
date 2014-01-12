@@ -1,4 +1,5 @@
 #include "desuchan_driver.hpp"
+#include "wakachan_driver.hpp"
 #include "../kyukon/kyukon.hpp"
 #include <fstream>
 
@@ -29,8 +30,8 @@ int main() {
 	while(std::getline(ifs, tmp))
 		boards.push_back(tmp);
 
-
-	desuchan_driver d(std::move(boards));
+	//desuchan_driver d(std::move(boards));
+	wakachan_driver d(std::move(boards));
 
 	while(1);
 }

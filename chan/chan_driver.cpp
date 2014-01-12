@@ -7,10 +7,11 @@
 #include <cassert>
 
 chan_driver::chan_driver(const char *table_name, chan_parser *p, 
-	std::vector<std::string> &&boards_p) : 
+	std::vector<std::string> &&boards_p, const char *url) : 
 		base_driver(), boards(std::move(boards_p)) {
 
 	this->table_name = table_name;
+	this->base_url = url;
 	this->parser = p;
 	chan_db::init();
 	chan_db::init_table(table_name);
@@ -37,7 +38,7 @@ void chan_driver::fillup() {
 		}
 	}
 
-	std::string url = "http://desuchan.net/" + boards[board] + "/";
+	std::string url = base_url + boards[board] + "/";
 
 	if (page > 0) {
 		url += std::to_string(page) + ".html";

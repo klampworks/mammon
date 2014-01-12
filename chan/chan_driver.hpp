@@ -25,6 +25,7 @@ struct chan_driver : public base_driver {
 
 	chan_parser *parser;
 	const char *table_name;
+	const char *base_url;
 	unsigned domain_id;
 
 	std::vector<std::string> boards;
@@ -37,6 +38,7 @@ struct chan_driver : public base_driver {
 	void fillup();
 
 	protected:
-		chan_driver(const char *, chan_parser*, std::vector<std::string>&&);
+		chan_driver(const char *, chan_parser*, 
+			std::vector<std::string>&&, const char*);
 };
 #endif
