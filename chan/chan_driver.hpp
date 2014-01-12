@@ -27,6 +27,8 @@ struct chan_driver : public base_driver {
 	const char *table_name;
 	unsigned domain_id;
 
+	std::vector<std::string> boards;
+
 	void process_list_page(task *t);
 	void grab_post_img(const chan_post &post, const std::string &referer);
 	void grab_thread(const chan_post &post, const std::string &referer);

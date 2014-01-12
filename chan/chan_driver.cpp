@@ -13,51 +13,10 @@ chan_driver::chan_driver(const char *table_name, chan_parser *p) : base_driver()
 	chan_db::init();
 	chan_db::init_table(table_name);
 
-	domain_id = kyukon::signup(5, std::bind(&chan_driver::fillup, this));
+	domain_id = kyukon::signup(10, std::bind(&chan_driver::fillup, this));
 	kyukon::set_do_fillup(true, domain_id);
 		
 }
-
-std::vector<std::string> boards({
-	"bananas",
-	"boku",
-	"dawa",
-	"desu",
-	"jum",
-	"kashira",
-	"md",
-	"otousama",
-	"ro",
-	"unyuu",
-	"yakult",
-	"a",
-	"c",
-	"h",
-	"moonspeak",
-	"nagato",
-	"nij",
-	"nipa",
-	"touhou",
-	"tr",
-	"yan",
-	"vn",
-	"do",
-	"fi",
-	"lit",
-	"o",
-	"pro",
-	"tech",
-	"v",
-	"vic",
-	"arrrrr",
-	"brocastan",
-	"gar",
-	"gif",
-	"media",
-	"ot",
-	"r",
-	"w",
-});
 
 unsigned board = 0;
 int page = 0;
@@ -69,6 +28,7 @@ void chan_driver::fillup() {
 		
 		if (++board >= boards.size()) {
 			std::cout << "No more boards available." << std::endl;
+			return;
 		} else {
 			std::cout << "Moving on to board " << boards[board] << std::endl;
 			page = 0;
@@ -84,6 +44,8 @@ void chan_driver::fillup() {
 	chan_task *t = new chan_task(domain_id, url, "", task::STRING, 
 		std::bind(&chan_driver::process_list_page, this, std::placeholders::_1),
 		boards[board]);
+
+	t->set_priority(1);
 
 	kyukon::add_task(t);
 
@@ -139,6 +101,7 @@ void chan_driver::process_list_page(task *tt) {
 				task::STRING, std::bind(&chan_driver::process_thread, 
 				this, std::placeholders::_1), thread[1].board);
 
+			t->set_priority(2);
 			kyukon::add_task(t);
 
 		} else {
@@ -172,6 +135,7 @@ void chan_driver::grab_thread(const chan_post &post, const std::string &referer)
 	task *t = new task(domain_id, url, referer, task::STRING, 
 		std::bind(&chan_driver::process_thread, this, std::placeholders::_1));
 
+	t->set_priority(3);
 	kyukon::add_task(t);
 	
 }
@@ -210,6 +174,7 @@ void chan_driver::grab_post_img(const chan_post &post, const std::string &refere
 	chan_task *t = new chan_task(domain_id, post.img_url, referer, task::FILE, 
 		std::bind(&chan_driver::process_image, this, std::placeholders::_1), post.board);
 
+	t->set_priority(4);	
 	kyukon::add_task(t);
 }
 
