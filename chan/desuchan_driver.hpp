@@ -5,7 +5,7 @@
 
 struct desuchan_driver : public chan_driver {
 
-	desuchan_driver();
+	desuchan_driver(std::vector<std::string>&&);
 	~desuchan_driver();
 };
 #endif

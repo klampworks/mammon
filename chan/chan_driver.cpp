@@ -6,7 +6,9 @@
 #include <iostream>
 #include <cassert>
 
-chan_driver::chan_driver(const char *table_name, chan_parser *p) : base_driver() {
+chan_driver::chan_driver(const char *table_name, chan_parser *p, 
+	std::vector<std::string> &&boards_p) : 
+		base_driver(), boards(std::move(boards_p)) {
 
 	this->table_name = table_name;
 	this->parser = p;

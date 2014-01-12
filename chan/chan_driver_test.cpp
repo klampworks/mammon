@@ -1,4 +1,4 @@
-#include "chan_driver.hpp"
+#include "desuchan_driver.hpp"
 #include "../kyukon/kyukon.hpp"
 #include <fstream>
 
@@ -22,5 +22,7 @@ int main() {
 
 	kyukon::init(proxies);
 
-	chan_driver d;
+	desuchan_driver d;
+
+	while(1);
 }

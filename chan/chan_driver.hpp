@@ -37,6 +37,6 @@ struct chan_driver : public base_driver {
 	void fillup();
 
 	protected:
-		chan_driver(const char *table_name, chan_parser *p);
+		chan_driver(const char *, chan_parser*, std::vector<std::string>&&);
 };
 #endif
