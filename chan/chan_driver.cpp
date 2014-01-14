@@ -56,7 +56,7 @@ void chan_driver::fillup() {
 
 	//Tell Kyukon we are done filling up and it's ok to call this function
 	//again if the queue is empty again.
-	kyukon::set_do_fillup(true, domain_id);
+	//kyukon::set_do_fillup(true, domain_id);
 }
 
 //Given the html souce, figure out which threads need crawling.
@@ -70,6 +70,7 @@ void chan_driver::process_list_page(task *tt) {
 		return;	
 	}
 
+//	std::cout << t->get_data() << std::endl;
 	//Get a list of threads with a handful of the most recent posts for each.
 	auto threads = parser->parse_threads(t->get_board().c_str(), t->get_data());
 
@@ -125,6 +126,7 @@ void chan_driver::process_list_page(task *tt) {
 		page = -1;
 
 	delete t;
+	kyukon::set_do_fillup(true, domain_id);
 }
 
 void chan_driver::grab_thread(const chan_post &post, const std::string &referer) {
