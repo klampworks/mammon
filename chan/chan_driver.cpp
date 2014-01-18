@@ -44,7 +44,7 @@ void chan_driver::fillup() {
 		url += std::to_string(page) + ".html";
 	}
 	
-	chan_task *t = new chan_task(domain_id, url, "", task::STRING, 
+	chan_task *t = new chan_task(domain_id, url, base_url, task::STRING, 
 		std::bind(&chan_driver::process_list_page, this, std::placeholders::_1),
 		boards[board]);
 
