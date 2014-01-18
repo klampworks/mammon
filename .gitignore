@@ -11,3 +11,15 @@
 *.lai
 *.la
 *.a
+
+*.sw*
+a.out
+*.html
+*.sqlite
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.flv
+*.swf
+*.tar.*
