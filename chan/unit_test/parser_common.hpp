@@ -48,15 +48,14 @@ void print_threads(const std::vector<std::vector<chan_post>> &threads)
 	}
 }
 
+/* TODO repeated code. Even if it is 3 lines... */
 bool parse_list_page(
 	const char *filename,
 	chan_parser *p,
 	size_t expected_size)
 {
 	std::string xml = dump_file(filename);
-
 	auto ret = p->parse_threads("test", xml);
-
 	return ret.size() == expected_size;
 }
 
@@ -66,9 +65,7 @@ bool parse_thread_page(
 	size_t expected_size)
 {
 	std::string xml = dump_file(filename);
-
 	auto ret = p->parse_thread("test", xml);
-
 	return ret.size() == expected_size;
 }
 
@@ -78,5 +75,23 @@ bool parse_final_page(
 {
 	std::string xml = dump_file(filename);
 	return p->final_page(xml);
+}
+
+void print_thread_page(
+	const char *filename,
+	chan_parser *p)
+{
+	std::string xml = dump_file(filename);
+	auto ret = p->parse_thread("test", xml);
+	std::cout << ret.size() << std::endl;
+}
+
+void print_list_page(
+	const char *filename,
+	chan_parser *p)
+{
+	std::string xml = dump_file(filename);
+	auto ret = p->parse_threads("test", xml);
+	std::cout << ret.size() << std::endl;
 }
 #endif
