@@ -50,20 +50,21 @@ void print_threads(const std::vector<std::vector<chan_post>> &threads)
 
 bool parse_list_page(
 	const char *filename,
-	chan_parser p,
+	chan_parser *p,
 	size_t expected_size)
 {
 	std::string xml = dump_file(filename);
 
-	auto ret = p.parse_thread("test", xml);
+	auto ret = p->parse_thread("test", xml);
 
 	return ret.size() == expected_size;
 }
 
 bool parse_final_page(
 	const char *filename,
-	chan_parser p)
+	chan_parser *p)
 {
 	std::string xml = dump_file(filename);
-	return p.final_page(xml);
+	return p->final_page(xml);
 }
+#endif
