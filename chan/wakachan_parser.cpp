@@ -34,8 +34,6 @@ std::vector<std::vector<chan_post>> wakachan_parser::parse_threads(
 	//Instead they separate each tread with a <hr>
 	auto subtree = doc.select_single_node(xpath);
 
-	std::cout << (bool)subtree << std::endl;
-
 	auto st = subtree.node().begin();
 	auto en = subtree.node().end();
 
