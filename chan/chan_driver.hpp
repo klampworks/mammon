@@ -31,7 +31,7 @@ struct chan_driver : public base_driver {
 	std::vector<std::string> boards;
 
 	void process_list_page(task *t);
-	void grab_post_img(const chan_post &post, const std::string &referer);
+	virtual void grab_post_img(const chan_post &post, const std::string &referer);
 	void grab_thread(const chan_post &post, const std::string &referer);
 	void process_thread(task *t);
 	void process_image(task *t);
