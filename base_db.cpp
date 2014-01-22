@@ -16,7 +16,10 @@ void format_table(const char *table_name, const std::vector<std::string> &column
 //Initialise connection with database file.
 void init() {
  
-	sqlite3_open(database_file, &database);
+	if (sqlite3_open(database_file, &database) != SQLITE_OK) {
+		std::cout << "Error opening database, " << sqlite3_errmsg(database) << std::endl;
+		exit(1);
+	}
 }
 
 //Check if a table exists, if not them create it.
