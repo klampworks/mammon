@@ -3,7 +3,7 @@
 
 desuchan_driver::desuchan_driver(std::vector<std::string> &&board_p) :
 	chan_driver("desuchan", new desuchan_parser(), 
-	std::move(board_p), "http://desuchan.net"){}
+	std::move(board_p), "http://desuchan.net/"){}
 
 desuchan_driver::~desuchan_driver() 
 {
