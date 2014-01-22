@@ -16,7 +16,7 @@ chan_driver::chan_driver(const char *table_name, chan_parser *p,
 	chan_db::init();
 	chan_db::init_table(table_name);
 
-	domain_id = kyukon::signup(10, std::bind(&chan_driver::fillup, this));
+	domain_id = kyukon::signup(30, std::bind(&chan_driver::fillup, this));
 	kyukon::set_do_fillup(true, domain_id);
 		
 }
@@ -98,7 +98,7 @@ void chan_driver::process_list_page(task *tt) {
 			//We must download the whole thread since there may be 
 			//earlier posts that we do not have.
 
-			std::string url = "http://desuchan.net/" + thread[1].board +
+			std::string url = base_url + thread[1].board +
 				"/res/" + thread[1].thread_id + ".html";
 
 			chan_task *t = new chan_task(domain_id, url, referer,
@@ -134,7 +134,7 @@ void chan_driver::grab_thread(const chan_post &post, const std::string &referer)
 	const std::string &board = post.board;
 	const std::string &thread_id = post.thread_id;
 
-	const std::string url = "http://desuchan.net/" + board + "/res/" + thread_id + ".html"; 
+	const std::string url = base_url + board + "/res/" + thread_id + ".html"; 
 
 
 	task *t = new task(domain_id, url, referer, task::STRING, 
