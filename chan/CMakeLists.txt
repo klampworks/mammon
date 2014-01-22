@@ -16,7 +16,10 @@ add_executable(
 	chan_parser.cpp 
 	../base_parser.cpp
 	unit_test/wakachan_parser_unit_test.cpp
+	../tidy.cpp
 	)
+
+target_link_libraries(wakachan_parser_unit_test tidy)
 
 if(0)
 add_executable(
@@ -55,8 +58,10 @@ add_executable(
 	desuchan_driver.cpp
 	chan_driver.cpp
 	../base_driver.cpp
+	../tidy.cpp
 	)
 
 target_link_libraries(chan_driver_test sqlite3)
 target_link_libraries(chan_driver_test kyukon)
 target_link_libraries(chan_driver_test magic)
+target_link_libraries(chan_driver_test tidy)
