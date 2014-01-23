@@ -19,7 +19,17 @@ add_executable(
 	../tidy.cpp
 	)
 
+add_executable(
+	shanachan_parser_unit_test 
+	wakachan_parser.cpp 
+	chan_parser.cpp 
+	../base_parser.cpp
+	unit_test/shanachan_parser_unit_test.cpp
+	../tidy.cpp
+	)
+
 target_link_libraries(wakachan_parser_unit_test tidy)
+target_link_libraries(shanachan_parser_unit_test tidy)
 
 if(0)
 add_executable(
