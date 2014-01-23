@@ -84,6 +84,7 @@ void print_thread_page(
 	std::string xml = dump_file(filename);
 	auto ret = p->parse_thread("test", xml);
 	std::cout << ret.size() << std::endl;
+	print_posts(ret);
 }
 
 void print_list_page(
@@ -93,5 +94,6 @@ void print_list_page(
 	std::string xml = dump_file(filename);
 	auto ret = p->parse_threads("test", xml);
 	std::cout << ret.size() << std::endl;
+	print_threads(ret);
 }
 #endif
