@@ -1,9 +1,12 @@
 #include "desuchan_driver.hpp"
+#include "shanachan_driver.hpp"
 #include "wakachan_driver.hpp"
 #include "../kyukon/kyukon.hpp"
 #include <fstream>
 
-int main() {
+int main(int argc, char **argv) {
+
+	assert(argc > 1);
 
 	std::ifstream ifs;
 	ifs.open("proxies");
@@ -30,8 +33,18 @@ int main() {
 	while(std::getline(ifs, tmp))
 		boards.push_back(tmp);
 
-	//desuchan_driver d(std::move(boards));
-	wakachan_driver d(std::move(boards));
+	chan_driver *driver;
+
+	if (!strcmp(argv[1], "desu")) {
+		driver = new desuchan_driver(std::move(boards));
+	} else if (!strcmp(argv[1], "waka")) {
+		driver = new wakachan_driver(std::move(boards));
+	} else if (!strcmp(argv[1], "shana")) {
+		driver = new shanachan_driver(std::move(boards));
+	} else {
+		printf("Invalid domain %s\n", argv[1]);
+		exit(1);
+	}
 
 	while(1);
 }
