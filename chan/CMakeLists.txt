@@ -88,6 +88,7 @@ add_executable(
 	chan_driver_test.cpp
 	desuchan_driver.cpp
 	shanachan_driver.cpp
+	secchan_driver.cpp
 	chan_driver.cpp
 	../base_driver.cpp
 	../tidy.cpp
