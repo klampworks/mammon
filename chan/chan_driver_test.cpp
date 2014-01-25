@@ -4,6 +4,17 @@
 #include "wakachan_driver.hpp"
 #include "../kyukon/kyukon.hpp"
 #include <fstream>
+#include <signal.h>
+#include <iostream>
+
+static chan_driver *driver;
+
+void quit(int) 
+{
+	std::cout << "SIGINT recieved, finishing surrent operations"
+	"and shutting down the system." << std::endl;
+	driver->quit();
+}
 
 int main(int argc, char **argv) {
 
@@ -34,8 +45,6 @@ int main(int argc, char **argv) {
 	while(std::getline(ifs, tmp))
 		boards.push_back(tmp);
 
-	chan_driver *driver;
-
 	if (!strcmp(argv[1], "desu")) {
 		driver = new desuchan_driver(std::move(boards));
 	} else if (!strcmp(argv[1], "waka")) {
@@ -49,5 +58,6 @@ int main(int argc, char **argv) {
 		exit(1);
 	}
 
+	signal(SIGINT, &quit);
 	while(1);
 }

@@ -194,3 +194,7 @@ void chan_driver::process_image(task *tt) {
 
 	delete tt;
 }
+
+void chan_driver::quit() {
+	kyukon::stop();
+}

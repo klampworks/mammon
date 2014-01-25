@@ -36,6 +36,7 @@ struct chan_driver : public base_driver {
 	void process_thread(task *t);
 	void process_image(task *t);
 	void fillup();
+	void quit();
 
 	protected:
 		chan_driver(const char *, chan_parser*, 
