@@ -40,6 +40,9 @@ std::vector<std::vector<chan_post>> wakachan_parser::parse_threads(
 	//If we can't parse this then don't waste time with the other crap.
 	if (st == en) {
 		std::cout << "Initial xpath failed." << std::endl;
+		std::cout << "##############################" << std::endl;
+		std::cout << xml2 << std::endl;
+		std::cout << "##############################" << std::endl;
 		return std::vector<std::vector<chan_post>>();
 	}
 
