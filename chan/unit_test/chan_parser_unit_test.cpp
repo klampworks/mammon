@@ -112,6 +112,8 @@ std::vector<chan_post> expected({
 	std::string xml = dump_file("thread_page.html");
 
 	std::vector<chan_post> ret = p.parse_thread("test", xml);
+	
+	std::cout << ret.size() << std::endl;
 
 	for (unsigned i = 0; i < ret.size(); i++) {
 		BOOST_CHECK(ret[i].thread_id == expected[i].thread_id);
