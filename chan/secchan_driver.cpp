@@ -4,7 +4,7 @@
 
 secchan_driver::secchan_driver(std::vector<std::string> &&boards_p) :
 	chan_driver("secchan", new wakachan_parser(), 
-	std::move(boards_p), "https://secchan.org/") {}
+	std::move(boards_p), "http://secchan.net/") {}
 
 secchan_driver::~secchan_driver() 
 {
