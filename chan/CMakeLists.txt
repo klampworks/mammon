@@ -29,6 +29,15 @@ add_executable(
 	)
 
 add_executable(
+	secchan_parser_unit_test 
+	wakachan_parser.cpp 
+	chan_parser.cpp 
+	../base_parser.cpp
+	unit_test/secchan_parser_unit_test.cpp
+	../tidy.cpp
+	)
+
+add_executable(
 	initial_parser_test
 	wakachan_parser.cpp 
 	desuchan_parser.cpp 
@@ -40,6 +49,7 @@ add_executable(
 
 target_link_libraries(wakachan_parser_unit_test tidy)
 target_link_libraries(shanachan_parser_unit_test tidy)
+target_link_libraries(secchan_parser_unit_test tidy)
 target_link_libraries(initial_parser_test tidy)
 
 if(0)
