@@ -1,5 +1,6 @@
 #include "desuchan_driver.hpp"
 #include "shanachan_driver.hpp"
+#include "secchan_driver.hpp"
 #include "wakachan_driver.hpp"
 #include "../kyukon/kyukon.hpp"
 #include <fstream>
@@ -41,6 +42,8 @@ int main(int argc, char **argv) {
 		driver = new wakachan_driver(std::move(boards));
 	} else if (!strcmp(argv[1], "shana")) {
 		driver = new shanachan_driver(std::move(boards));
+	} else if (!strcmp(argv[1], "sec")) {
+		driver = new secchan_driver(std::move(boards));
 	} else {
 		printf("Invalid domain %s\n", argv[1]);
 		exit(1);
