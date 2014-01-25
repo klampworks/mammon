@@ -28,8 +28,19 @@ add_executable(
 	../tidy.cpp
 	)
 
+add_executable(
+	initial_parser_test
+	wakachan_parser.cpp 
+	desuchan_parser.cpp 
+	chan_parser.cpp 
+	../base_parser.cpp
+	unit_test/initial_parser_test.cpp
+	../tidy.cpp
+	)
+
 target_link_libraries(wakachan_parser_unit_test tidy)
 target_link_libraries(shanachan_parser_unit_test tidy)
+target_link_libraries(initial_parser_test tidy)
 
 if(0)
 add_executable(
@@ -66,6 +77,7 @@ add_executable(
 	../base_db.cpp
 	chan_driver_test.cpp
 	desuchan_driver.cpp
+	shanachan_driver.cpp
 	chan_driver.cpp
 	../base_driver.cpp
 	../tidy.cpp
