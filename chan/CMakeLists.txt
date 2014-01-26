@@ -47,10 +47,31 @@ add_executable(
 	../tidy.cpp
 	)
 
+add_executable(
+	chan_driver_unit_test
+	chan_driver.cpp 
+	../base_driver.cpp
+	unit_test/chan_driver_unit_test.cpp
+	../tidy.cpp
+	chan_driver.cpp
+	desuchan_driver.cpp
+	chan_parser.cpp 
+	desuchan_parser.cpp 
+	../base_parser.cpp
+	chan_db.cpp 
+	../base_db.cpp
+	../base_driver.cpp
+	../tidy.cpp
+	)
+
 target_link_libraries(wakachan_parser_unit_test tidy)
 target_link_libraries(shanachan_parser_unit_test tidy)
 target_link_libraries(secchan_parser_unit_test tidy)
 target_link_libraries(initial_parser_test tidy)
+target_link_libraries(chan_driver_unit_test sqlite3)
+target_link_libraries(chan_driver_unit_test kyukon)
+target_link_libraries(chan_driver_unit_test magic)
+target_link_libraries(chan_driver_unit_test tidy)
 
 if(0)
 add_executable(
@@ -78,6 +99,7 @@ endif(0)
 
 add_executable(
 	chan_driver_test 
+	chan_driver.cpp
 	desuchan_parser.cpp 
 	wakachan_parser.cpp 
 	wakachan_driver.cpp 
@@ -89,7 +111,6 @@ add_executable(
 	desuchan_driver.cpp
 	shanachan_driver.cpp
 	secchan_driver.cpp
-	chan_driver.cpp
 	../base_driver.cpp
 	../tidy.cpp
 	)
