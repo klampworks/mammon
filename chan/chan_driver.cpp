@@ -5,6 +5,8 @@
 
 #include <iostream>
 #include <cassert>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 chan_driver::chan_driver(const char *table_name, chan_parser *p, 
 	std::vector<std::string> &&boards_p, const char *url) : 
@@ -19,6 +21,8 @@ chan_driver::chan_driver(const char *table_name, chan_parser *p,
 	domain_id = kyukon::signup(30, std::bind(&chan_driver::fillup, this));
 	kyukon::set_do_fillup(true, domain_id);
 		
+	/* Create a base directory for this class. */
+	create_path(std::string(table_name) + "/");
 }
 
 unsigned board = 0;
@@ -198,3 +202,53 @@ void chan_driver::process_image(task *tt) {
 void chan_driver::quit() {
 	kyukon::stop();
 }
+
+bool chan_driver::create_path(const std::string &path)
+{
+	struct stat stat_buf;
+	int res = stat(path.c_str(), &stat_buf);
+
+	/* No errors from stat. */
+	if (!res) {
+		
+		/* What we want exists and is a directory. */
+		if (S_ISDIR(stat_buf.st_mode)) {
+			goto good;
+		}
+
+		std::cout << "Error file exists but is not a directory." 
+			<< std::endl; 
+		goto bad;
+	}
+
+	/* Path does not exist, good. */
+	if (errno == ENOENT) {
+		if (!mkdir(path.c_str(), 0777)) {
+			goto good;
+		} else {
+			std::cout << "Error creating directory: " << 
+			errno << std::endl;
+			goto bad;
+		}
+	}
+
+	std::cout << "Stat error " << errno << std::endl;
+	goto bad;
+
+	good:
+		return true;
+	bad:
+		return false;
+}
+
+std::string chan_driver::create_path()
+{
+	std::string path(table_name);
+	path += "/" + boards[board] + "/";  
+
+	if (create_path(path.c_str()))
+		return path;
+	else
+		return "";
+}
+
