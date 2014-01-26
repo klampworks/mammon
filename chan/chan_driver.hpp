@@ -37,6 +37,8 @@ struct chan_driver : public base_driver {
 	void process_image(task *t);
 	void fillup();
 	void quit();
+	std::string create_path();
+	bool create_path(const std::string &path);
 
 	protected:
 		chan_driver(const char *, chan_parser*, 
