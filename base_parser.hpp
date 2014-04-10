@@ -6,11 +6,19 @@
 #include <string>
 #include <vector>
 
+namespace boost {
+	class regex;
+}
+
 struct base_parser {
 
 	std::vector<std::string> parse_path(const char*, const char*, const char*);
 	std::string parse_first_path(const pugi::xml_node &node, const char *xpath, const char *att);
 
+	std::vector<std::string> parse_list(
+		const std::string &input,
+		const boost::regex &expr);
+	
 };
 
 #endif

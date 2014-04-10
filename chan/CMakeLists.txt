@@ -68,7 +68,13 @@ target_link_libraries(wakachan_parser_unit_test tidy)
 target_link_libraries(shanachan_parser_unit_test tidy)
 target_link_libraries(secchan_parser_unit_test tidy)
 target_link_libraries(initial_parser_test tidy)
+target_link_libraries(wakachan_parser_unit_test boost_regex)
+target_link_libraries(shanachan_parser_unit_test boost_regex)
+target_link_libraries(secchan_parser_unit_test boost_regex)
+target_link_libraries(initial_parser_test boost_regex)
+
 target_link_libraries(chan_driver_unit_test sqlite3)
+target_link_libraries(chan_driver_unit_test boost_regex)
 target_link_libraries(chan_driver_unit_test kyukon)
 target_link_libraries(chan_driver_unit_test magic)
 target_link_libraries(chan_driver_unit_test tidy)
@@ -119,3 +125,13 @@ target_link_libraries(chan_driver_test sqlite3)
 target_link_libraries(chan_driver_test kyukon)
 target_link_libraries(chan_driver_test magic)
 target_link_libraries(chan_driver_test tidy)
+target_link_libraries(chan_driver_test boost_regex)
+
+add_executable(
+	chan_lookup
+	chan_lookup.cpp
+	chan_db.cpp
+	../base_db.cpp
+)
+
+target_link_libraries(chan_lookup sqlite3)

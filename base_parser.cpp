@@ -1,4 +1,5 @@
 #include "base_parser.hpp"
+#include <boost/regex.hpp>
 #include <iostream>
 
 std::vector<std::string> base_parser::parse_path(
@@ -35,3 +36,21 @@ std::string base_parser::parse_first_path(
 	return res.node().attribute(att).value();
 }
 
+std::vector<std::string> base_parser::parse_list(
+	const std::string &input,
+	const boost::regex &expr)
+{
+	std::vector<std::string> ret;
+	std::string::const_iterator st, en;
+	st= input.begin();
+	en = input.end();
+	boost::match_results<std::string::const_iterator> what;
+
+	while(regex_search(st, en, what, expr, boost::match_default)) {
+
+		ret.push_back(what[1]);
+		st= what[0].second;
+	}
+
+	return ret;
+}
