@@ -1,6 +1,7 @@
 #include "base_parser.hpp"
 #include <boost/regex.hpp>
 #include <iostream>
+#include <algorithm>
 
 std::vector<std::string> base_parser::parse_path(
 	const char *filename, 
@@ -53,4 +54,12 @@ std::vector<std::string> base_parser::parse_list(
 	}
 
 	return ret;
+}
+
+void base_parser::refine_list(
+	std::vector<std::string> &input,
+	const std::function<bool(const std::string&)> &pred)
+{
+	input.erase(std::remove_if(input.begin(), input.end(), 
+		pred), input.end());
 }

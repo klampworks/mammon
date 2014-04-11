@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <boost/regex.hpp>
+#include <functional>
 
 struct base_parser {
 
@@ -16,6 +17,9 @@ struct base_parser {
 		const std::string &input,
 		const boost::regex &expr);
 	
-};
+	void refine_list(
+		std::vector<std::string> &input,
+		const std::function<bool(const std::string&)> &pred);
 
+};
 #endif
