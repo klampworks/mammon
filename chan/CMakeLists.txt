@@ -9,6 +9,7 @@ add_executable(
 	../base_parser.cpp
 	unit_test/desuchan_parser_unit_test.cpp
 	)
+target_link_libraries(desuchan_parser_unit_test boost_regex)
 
 add_executable(
 	wakachan_parser_unit_test 

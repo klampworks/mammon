@@ -5,10 +5,7 @@
 #include "pugi_lib/pugixml.cpp"
 #include <string>
 #include <vector>
-
-namespace boost {
-	class regex;
-}
+#include <boost/regex.hpp>
 
 struct base_parser {
 
