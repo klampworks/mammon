@@ -5,32 +5,18 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 std::vector<std::string> reddit_parser::parse_posts(const std::string &value)
 {
-	std::vector<std::string> return_v;
-
-	std::string::const_iterator start, end;
-	start = value.begin();
-	end = value.end();
-	boost::match_results<std::string::const_iterator> what;
-	boost::match_flag_type flags = boost::match_default;
-	
-	boost::regex expression("blank \" href=\"([^\"]+)\"");
-
-	while(regex_search(start, end, what, expression, flags)) {
-		
-		return_v.push_back(what[1]);
-		start = what[0].second;
-	}
-
-	return return_v;
+	static const boost::regex expression("blank \" href=\"([^\"]+)\"");
+	return parse_list(value, expression);
 }
 
 std::vector<std::string> reddit_parser::parse_images(const std::string &value)
 {
 	auto ret = parse_posts(value);
-	ret.erase(ret.remove_if(ret.begin(), ret.end(), 
+	ret.erase(std::remove_if(ret.begin(), ret.end(), 
 		[](const std::string &a)
 		{
 			return a[4] != 's';
