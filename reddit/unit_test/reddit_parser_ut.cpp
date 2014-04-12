@@ -21,7 +21,7 @@ std::string dump_file(const char *filename) {
 	return std::move(xml);
 }
 
-BOOST_AUTO_TEST_CASE(a)
+BOOST_AUTO_TEST_CASE(parse_posts_ut)
 {
 	std::string xml = dump_file("reddit_list");
 
@@ -84,4 +84,41 @@ BOOST_AUTO_TEST_CASE(a)
 	});
 
 	BOOST_CHECK(ret == expected);
+}
+
+BOOST_AUTO_TEST_CASE(parse_imates_ut)
+{
+	std::string xml = dump_file("reddit_list");
+
+	reddit_parser p;
+	auto ret = p.parse_images(xml);
+
+	const std::vector<std::string> exp({
+"http://i.imgur.com/9chXMDF.jpg",
+"http://i.imgur.com/9chXMDF.jpg",
+"http://i.imgur.com/xn4zN1o.jpg",
+"http://i.imgur.com/xn4zN1o.jpg",
+"http://i.imgur.com/4MusuVn.jpg",
+"http://i.imgur.com/4MusuVn.jpg",
+"http://i.imgur.com/WKODOkn.jpg",
+"http://i.imgur.com/WKODOkn.jpg",
+"http://i.imgur.com/j7EuzaJ.jpg",
+"http://i.imgur.com/j7EuzaJ.jpg",
+"http://i.imgur.com/ShhozE0.gif",
+"http://i.imgur.com/ShhozE0.gif",
+"http://i.imgur.com/UAKVH02.jpg",
+"http://i.imgur.com/UAKVH02.jpg",
+"http://i.imgur.com/x0fEu4j.jpg",
+"http://i.imgur.com/x0fEu4j.jpg",
+"http://i.imgur.com/lZ4HDVC.jpg",
+"http://i.imgur.com/lZ4HDVC.jpg",
+"http://ppcdn.500px.org/65863805/43c02a3c8e520e6a5c400028949f8904bfd9db49/2048.jpg",
+"http://ppcdn.500px.org/65863805/43c02a3c8e520e6a5c400028949f8904bfd9db49/2048.jpg",
+"http://i.imgur.com/pYsPaT2.jpg",
+"http://i.imgur.com/pYsPaT2.jpg",
+"http://i.imgur.com/sJFjG5R.jpg",
+"http://i.imgur.com/sJFjG5R.jpg",
+});
+
+	BOOST_CHECK(ret == exp);
 }
