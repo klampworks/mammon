@@ -8,8 +8,15 @@ add_executable(
 	../base_parser.cpp
 	../reddit/unit_test/reddit_parser_ut.cpp
 	)
-
 target_link_libraries(reddit_parser_ut boost_regex)
+
+add_executable(
+	reddit_db_ut
+	../reddit/reddit_db.cpp 
+	../base_db.cpp
+	../reddit/unit_test/reddit_db_ut.cpp
+	)
+target_link_libraries(reddit_db_ut sqlite3)
 
 add_executable(
 	dump_tags	
