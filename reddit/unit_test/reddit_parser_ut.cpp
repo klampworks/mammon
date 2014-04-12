@@ -29,8 +29,6 @@ BOOST_AUTO_TEST_CASE(parse_posts_ut)
 	auto ret =p.parse_posts(xml);
 
 	std::vector<std::string> expected({
-"/r/foxes/comments/21g25a/rfoxes_has_launched_a_donation_drive_for_the/",
-"/r/foxes/comments/21g25a/rfoxes_has_launched_a_donation_drive_for_the/",
 "http://imgur.com/gallery/AeTFk",
 "http://imgur.com/gallery/AeTFk",
 "http://i.imgur.com/9chXMDF.jpg",
@@ -120,5 +118,17 @@ BOOST_AUTO_TEST_CASE(parse_imates_ut)
 "http://i.imgur.com/sJFjG5R.jpg",
 });
 
+	BOOST_CHECK(ret == exp);
+}
+
+BOOST_AUTO_TEST_CASE(a)
+{
+	std::string xml = dump_file("reddit_list");
+
+	reddit_parser p;
+	auto ret = p.parse_next(xml);
+	const char *exp = 
+		"http://www.reddit.com/r/foxes/?count=25&amp;after=t3_223rvw";
+	
 	BOOST_CHECK(ret == exp);
 }
