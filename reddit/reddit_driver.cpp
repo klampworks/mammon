@@ -11,7 +11,7 @@
 reddit_driver::reddit_driver(std::vector<std::string> &&subreddits_p) 
 	: base_driver(), subreddits(std::move(subreddits_p)) 
 {
-	this->table_name = "redit";
+	this->table_name = "reddit";
 	this->base_url = "http://reddit.com/r/";
 
 	reddit_db::init();
@@ -62,7 +62,7 @@ void reddit_driver::fillup() {
 }
 
 //Given the html souce, figure out which threads need crawling.
-void reddit_driver::process_list_page(task *tt) {
+void reddit_driver::process_list_page(task *t) {
 
 	if (!check_error(t)) {
 
@@ -77,7 +77,7 @@ void reddit_driver::process_list_page(task *tt) {
 		if (reddit_db::url_exists(table_name, url))
 			continue;
 
-		task *tt = new task(domain_id, url, referer, task::FILE, 
+		task *tt = new task(domain_id, url, t->get_url(), task::FILE, 
 			std::bind(&reddit_driver::process_image, this, 
 			std::placeholders::_1));
 
@@ -86,10 +86,22 @@ void reddit_driver::process_list_page(task *tt) {
 		kyukon::add_task(tt);
 	}
 
-	next_page = parser.parse_next(t->get_data());
+	next_url = parser.parse_next(t->get_data());
 
 	delete t;
 	kyukon::set_do_fillup(true, domain_id);
+}
+
+void reddit_driver::process_image(task *t) {
+
+#if 0
+	if (!check_error(t) || !check_file_error(t)) {
+		retry(t);
+		return;	
+	}
+#endif
+
+	delete t;
 }
 
 #if 0
@@ -157,22 +169,11 @@ void reddit_driver::grab_post_img(
 	kyukon::add_task(t);
 }
 
-void reddit_driver::process_image(task *tt) {
-
-	reddit_task *t = (reddit_task*)tt;
-
-	if (!check_error(t) || !check_file_error(t)) {
-		retry(t);
-		return;	
-	}
-
-	delete tt;
-}
-
 void reddit_driver::quit() {
 	kyukon::stop();
 }
 
+#endif
 bool reddit_driver::create_path(const std::string &path)
 {
 	struct stat stat_buf;
@@ -210,7 +211,6 @@ bool reddit_driver::create_path(const std::string &path)
 	bad:
 		return false;
 }
-#endif
 
 std::string reddit_driver::create_path()
 {

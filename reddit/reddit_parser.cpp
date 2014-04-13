@@ -6,7 +6,7 @@
 #include <algorithm>
 
 /* Parse posted links on a page. */
-std::vector<std::string> reddit_parser::parse_posts(const std::string &value)
+std::vector<std::string> reddit_parser::parse_urls(const std::string &value)
 {
 	static const boost::regex expression("blank \" href=\"(http[^\"]+)\"");
 	return parse_list(value, expression);

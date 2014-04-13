@@ -24,3 +24,18 @@ add_executable(
 	../tidy.cpp
 	)
 target_link_libraries(dump_tags tidy)
+
+add_executable(
+	reddit_driver_test
+	../reddit/reddit_driver_test.cpp
+	../reddit/reddit_driver.cpp
+	../base_driver.cpp
+	../reddit/reddit_parser.cpp
+	../base_parser.cpp
+	../reddit/reddit_db.cpp
+	../base_db.cpp
+)
+target_link_libraries(reddit_driver_test sqlite3)
+target_link_libraries(reddit_driver_test boost_regex)
+target_link_libraries(reddit_driver_test kyukon)
+target_link_libraries(reddit_driver_test magic)

@@ -21,12 +21,12 @@ std::string dump_file(const char *filename) {
 	return std::move(xml);
 }
 
-BOOST_AUTO_TEST_CASE(parse_posts_ut)
+BOOST_AUTO_TEST_CASE(parse_urls_ut)
 {
 	std::string xml = dump_file("reddit_list");
 
 	reddit_parser p;
-	auto ret =p.parse_posts(xml);
+	auto ret =p.parse_urls(xml);
 
 	std::vector<std::string> expected({
 "http://imgur.com/gallery/AeTFk",
