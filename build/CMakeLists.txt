@@ -42,6 +42,7 @@ target_link_libraries(reddit_driver_test magic)
 
 add_executable(
 	driver_test 
+	../driver_test.cpp
 	../base_driver.cpp
 	../chan/chan_driver.cpp
 	../chan/desuchan_parser.cpp 
@@ -51,7 +52,6 @@ add_executable(
 	../base_parser.cpp
 	../chan/chan_db.cpp 
 	../base_db.cpp
-	../chan/chan_driver_test.cpp
 	../chan/desuchan_driver.cpp
 	../chan/shanachan_driver.cpp
 	../chan/secchan_driver.cpp

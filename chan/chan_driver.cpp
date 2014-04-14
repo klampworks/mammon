@@ -41,7 +41,8 @@ void chan_driver::fillup() {
 			page = 0;
 		}
 	}
-
+	
+	std::string path = create_path();
 	std::string url = base_url + boards[board] + "/";
 
 	if (page > 0) {
@@ -53,6 +54,7 @@ void chan_driver::fillup() {
 		boards[board]);
 
 	t->set_priority(1);
+	t->set_filepath(path);
 
 	kyukon::add_task(t);
 
@@ -110,6 +112,7 @@ void chan_driver::process_list_page(task *tt) {
 				this, std::placeholders::_1), thread[1].board);
 
 			t->set_priority(2);
+			t->set_filepath(tt->get_filepath());
 			kyukon::add_task(t);
 
 		} else {
@@ -124,7 +127,7 @@ void chan_driver::process_list_page(task *tt) {
 	//posts_to_add now contains a list of posts that were new.	
 
 	for (const auto &new_post : posts_to_add)
-		grab_post_img(new_post, referer);
+		grab_post_img(new_post, referer, tt->get_filepath());
 
 	if (parser->final_page(t->get_data()))
 		page = -1;
@@ -133,8 +136,11 @@ void chan_driver::process_list_page(task *tt) {
 	kyukon::set_do_fillup(true, domain_id);
 }
 
-void chan_driver::grab_thread(const chan_post &post, const std::string &referer) {
-
+void chan_driver::grab_thread(
+	const chan_post &post, 
+	const std::string &referer,
+	const std::string &filepath) 
+{
 	const std::string &board = post.board;
 	const std::string &thread_id = post.thread_id;
 
@@ -144,6 +150,7 @@ void chan_driver::grab_thread(const chan_post &post, const std::string &referer)
 	task *t = new task(domain_id, url, referer, task::STRING, 
 		std::bind(&chan_driver::process_thread, this, std::placeholders::_1));
 
+	t->set_filepath(filepath);
 	t->set_priority(3);
 	kyukon::add_task(t);
 	
@@ -166,16 +173,20 @@ void chan_driver::process_thread(task *tt) {
 	chan_db::insert_posts(table_name, thread);
 
 	const std::string &referer = t->get_url();
+	const std::string &filepath = t->get_filepath();
 
 	//For each new post, grab the image posted to by the img_url field.
 	for (const auto &new_post : thread)
-		grab_post_img(new_post, referer);
+		grab_post_img(new_post, referer, filepath);
 
 	delete tt;
 }
 
-void chan_driver::grab_post_img(const chan_post &post, const std::string &referer) {
-
+void chan_driver::grab_post_img(
+	const chan_post &post, 
+	const std::string &referer,
+	const std::string &filepath) 
+{
 	//Not all posts have images.
 	if (post.img_url.empty())
 		return;
@@ -183,6 +194,7 @@ void chan_driver::grab_post_img(const chan_post &post, const std::string &refere
 	chan_task *t = new chan_task(domain_id, post.img_url, referer, task::FILE, 
 		std::bind(&chan_driver::process_image, this, std::placeholders::_1), post.board);
 
+	t->set_filepath(filepath);
 	t->set_priority(4);	
 	kyukon::add_task(t);
 }
@@ -197,10 +209,6 @@ void chan_driver::process_image(task *tt) {
 	}
 
 	delete tt;
-}
-
-void chan_driver::quit() {
-	kyukon::stop();
 }
 
 bool chan_driver::create_path(const std::string &path)

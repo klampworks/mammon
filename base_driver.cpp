@@ -84,3 +84,8 @@ bool base_driver::check_filetype(task *t) {
 	std::string mime = magic_file(magic_cookie, t->get_data().c_str());
 	return (mime.find("text") != std::string::npos); 
 }
+
+void base_driver::quit()
+{
+	kyukon::stop();
+}

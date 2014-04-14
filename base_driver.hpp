@@ -17,5 +17,6 @@ struct base_driver {
 	bool file_is_bin(task *t);
 	bool check_filetype(task *t);
 	magic_t magic_cookie;
+	void quit();
 };
 #endif
