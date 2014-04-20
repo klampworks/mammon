@@ -13,7 +13,8 @@ secchan_driver::~secchan_driver()
 
 /* TODO Duplicate code. */
 void secchan_driver::grab_post_img(const chan_post &post, 
-	const std::string &referer) 
+	const std::string &referer,
+	const std::string &pathname) 
 {
 
 	//Not all posts have images.
@@ -25,6 +26,7 @@ void secchan_driver::grab_post_img(const chan_post &post,
 	chan_task *t = new chan_task(domain_id, url, referer, task::FILE, 
 		std::bind(&chan_driver::process_image, this, std::placeholders::_1), post.board);
 
+	t->set_filepath(pathname);
 	t->set_priority(4);	
 	kyukon::add_task(t);
 }
