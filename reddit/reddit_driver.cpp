@@ -12,23 +12,25 @@ reddit_driver::reddit_driver(std::vector<std::string> &&subreddits_p)
 	: base_driver(), subreddits(std::move(subreddits_p)) 
 {
 	this->table_name = "reddit";
-	this->base_url = "http://reddit.com/r/";
+	this->base_url = "http://www.reddit.com/r/";
 
 	reddit_db::init();
 	reddit_db::init_table(table_name);
 
 	domain_id = kyukon::signup(30, std::bind(&reddit_driver::fillup, this));
 	kyukon::set_do_fillup(true, domain_id);
+	std::cout << domain_id << std::endl;
 		
 	/* Create a base directory for this class. */
 	create_path(std::string(table_name) + "/");
 }
 
 unsigned subreddit = 0;
-std::string next_url = 0;
+std::string next_url;
 
 void reddit_driver::fillup() {
 
+	/* TODO This logic ignores the first subreddit given. */
 	if (next_url.empty()) { 
 		std::cout << "Done all pages for subreddit " << 
 			subreddits[subreddit]<< std::endl;
@@ -54,6 +56,7 @@ void reddit_driver::fillup() {
 	t->set_priority(1);
 	t->set_filepath(path);
 
+	std::cout << t->get_url() << std::endl;
 	kyukon::add_task(t);
 
 	//Tell Kyukon we are done filling up and it's ok to call this function
@@ -70,7 +73,7 @@ void reddit_driver::process_list_page(task *t) {
 		return;	
 	}
 
-	auto urls = parser.parse_urls(t->get_data());
+	auto urls = parser.parse_images(t->get_data());
 	for (const auto url : urls) {
 
 		/* Skip this url if it already in the database. */
