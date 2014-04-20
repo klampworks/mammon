@@ -1,3 +1,7 @@
+#define CPP_LOG_INFO_COUT
+#define CPP_LOG_ERR_COUT
+#define CPP_LOG_WARN_COUT
+
 #include "kyukon/kyukon.hpp"
 #include <fstream>
 #include <signal.h>
@@ -56,7 +60,7 @@ int main(int argc, char **argv)
 	} else if (!strcmp(argv[1], "sec")) {
 		driver = new secchan_driver(std::move(boards));
 	} else if (!strcmp(argv[1], "reddit")) {
-		driver = new secchan_driver(std::move(boards));
+		driver = new reddit_driver(std::move(boards));
 	} else {
 		printf("Invalid domain %s\n", argv[1]);
 		exit(1);
