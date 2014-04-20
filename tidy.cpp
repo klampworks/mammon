@@ -1,6 +1,7 @@
 #include <tidy.h>
 #include <buffio.h>
 #include <string>
+#include <cassert>
 
 namespace tidy {
 
@@ -16,6 +17,7 @@ namespace tidy {
 		tidyCleanAndRepair(tdoc);
 		tidySaveBuffer(tdoc, &output);
 
+		assert(output.bp);
 		input = std::string((const char*)output.bp);
 		
 		tidyBufFree(&output);
