@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(a)
 	reddit_parser p;
 	auto ret = p.parse_next(xml);
 	const char *exp = 
-		"http://www.reddit.com/r/foxes/?count=25&amp;after=t3_223rvw";
+		"?count=25&amp;after=t3_223rvw";
 	
 	BOOST_CHECK(ret == exp);
 }

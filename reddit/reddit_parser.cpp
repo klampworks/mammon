@@ -24,13 +24,17 @@ std::vector<std::string> reddit_parser::parse_images(const std::string &value)
 std::string reddit_parser::parse_next(const std::string &value)
 {
 	/* TODO Add a parse single string function to base_parser. */
-	static const boost::regex expression(
-		"href=\"([^\"]+)\" rel=\"nofollow next\"");
 
-	auto tmp =  parse_list(value, expression);
+	/* TODO figure out why &amp;=&amp; strings magically appear in the 
+	 * middle of urls until it is so long that Reddit servers reject the 
+	 * request. */
+	static const boost::regex expression(
+		"href=\"[^\"]+(count[^\"]+)\" rel=\"nofollow next\"");
+
+	auto tmp = parse_list(value, expression);
 
 	if (tmp.empty())
 		return "";
 	else
-		return tmp[0];
+		return "?" + tmp[0];
 }

@@ -44,6 +44,10 @@ void reddit_driver::fillup() {
 				subreddits[subreddit] << std::endl;
 			next_url = base_url + subreddits[subreddit];
 		}
+	} else {
+		/* After parsing the list page, next_url will only contain 
+		 * thr count and after parts of the url. */
+		next_url = base_url + subreddits[subreddit] + next_url;
 	}
 	
 	std::string path = create_path();
