@@ -108,6 +108,7 @@ void reddit_driver::process_image(task *t) {
 	}
 #endif
 
+	reddit_db::insert_url(table_name, t->get_url());
 	delete t;
 }
 
