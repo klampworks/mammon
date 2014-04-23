@@ -11,7 +11,9 @@ std::vector<chan_post> fourchan_parser::parse_a_thread(
 	const char *board, 
 	const pugi::xml_node &node) 
 {
-	return chan_parser::parse_a_thread("table/tbody/tr/td", board, node);
+	/* TODO test this. Is it class=thread? */
+	return chan_parser::parse_a_thread(
+		"//form[@id='delform']/div[@class='thread']" board, node);
 }
 
 std::vector<std::vector<chan_post>> fourchan_parser::parse_threads(
@@ -50,20 +52,9 @@ std::vector<std::vector<chan_post>> fourchan_parser::parse_threads(
 	pugi::xml_document new_doc;
 	pugi::xml_node div;
 
-START:
-	div = new_doc.append_child("div");
-	div.append_attribute("id") = "mammon";
-
-	do {
-		if (!strcmp(st->name(), "hr")) {
-			st++;
-			goto START;
-		}
-
-		div.append_copy(*st);
-	} while (st++, st != en);
-
-	return chan_parser::parse_threads("div[@id='mammon']", board, new_doc);
+	/* Parse all divs from the subtree. */
+	/* TODO Check that these are all relevant. */
+	return chan_parser::parse_threads("div", board, new_doc);
 }
 
 bool fourchan_parser::final_page(const std::string &input) 
@@ -74,6 +65,7 @@ bool fourchan_parser::final_page(const std::string &input)
 	pugi::xml_document doc;
 	doc.load(xml.c_str());
 
-	const char *xpath = "//form[@method='get' and @action]/input[@value='Next']";
+	/* TODO test this. */
+	const char *xpath = "//form[@class='classSwitcherForm' and @action]/input[@value='Next']";
 	return !doc.select_single_node(xpath);
 }

@@ -95,10 +95,11 @@ std::string chan_parser::parse_post_img_name(const pugi::xml_node &node) {
 }
 
 //Given a subtree will return a vector of posts.
-std::vector<chan_post> chan_parser::parse_posts(const char *board, 
-	const std::string &thread_id, pugi::xpath_node_set &&posts) 
+std::vector<chan_post> chan_parser::parse_posts(
+	const char *board, 
+	const std::string &thread_id, 
+	pugi::xpath_node_set &&posts) 
 {
-
 	std::vector<chan_post> ret;
 
 	for (const auto &node : posts) {
@@ -113,10 +114,11 @@ std::vector<chan_post> chan_parser::parse_posts(const char *board,
 }
 
 //Returns an empty object if it cannot be parsed.
-chan_post chan_parser::parse_post(const char *board, const pugi::xml_node &node, 
+chan_post chan_parser::parse_post(
+	const char *board, 
+	const pugi::xml_node &node, 
 	const std::string &thread_id) 
 {
-
 	std::string post_id = parse_postid(node);
 
 	if (post_id.empty())
