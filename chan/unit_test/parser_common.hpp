@@ -56,6 +56,7 @@ bool parse_list_page(
 {
 	std::string xml = dump_file(filename);
 	auto ret = p->parse_threads("test", xml);
+	std::cout << "Parsed " << ret.size() << " threads." << std::endl;
 	return ret.size() == expected_size;
 }
 
@@ -66,6 +67,8 @@ bool parse_thread_page(
 {
 	std::string xml = dump_file(filename);
 	auto ret = p->parse_thread("test", xml);
+	std::cout << "Parsed " << ret.size() << " posts." << std::endl;
+	return ret.size() == expected_size;
 	return ret.size() == expected_size;
 }
 
