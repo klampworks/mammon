@@ -51,14 +51,16 @@ std::vector<std::vector<chan_post>> fourchan_parser::parse_threads(
 bool fourchan_parser::final_page(const std::string &input) 
 {
 	std::string xml = input;
-	//tidy::tidy(xml);
+	tidy::tidy(xml);
 
 	pugi::xml_document doc;
 	doc.load(xml.c_str());
 
 	/* TODO test this. */
 	const char *xpath = 
-	"//form[@class='classSwitcherForm' and @action]/input[@value='Next']";
+	"/html/body/div[@class='pagelist desktop']/div[@class='next']/"
+	"form[@class='pageSwitcherForm' and @action='2']/input[@value='Next']";
+
 	return !doc.select_single_node(xpath);
 }
 
