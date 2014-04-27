@@ -61,8 +61,8 @@ std::vector<std::vector<chan_post>> fourchan_parser::parse_threads(
 
 		std::cout << st->attribute("id").value() << std::endl;
 		auto a = parse_a_thread(board, *st);
+		
 		//std::cout << "Image name = " << a[0].img << std::endl;
-		std::cout << std::endl;
 	}
 	return ret;
 
@@ -86,4 +86,41 @@ bool fourchan_parser::final_page(const std::string &input)
 	/* TODO test this. */
 	const char *xpath = "//form[@class='classSwitcherForm' and @action]/input[@value='Next']";
 	return !doc.select_single_node(xpath);
+}
+
+/* Return a subnode div which contains the rest of the post,
+ * 4chan devs seem to call this postContainter. */
+pugi::xml_node fourchan_parser::parse_post_node(const pugi::xml_node &node)
+{
+	return node.select_single_node(
+		"(div[@class='post op'] | div[@class='post reply'])").node();
+}
+
+std::string fourchan_parser::parse_postid(const pugi::xml_node &node) 
+{
+	auto nn = parse_post_node(node);
+	return nn.attribute("id").value();
+}
+
+std::string fourchan_parser::parse_post_text(const pugi::xml_node &node) 
+{
+	auto nn = parse_post_node(node);
+	pugi::xpath_node quote = nn.select_single_node("blockquote");
+
+	//Flatten the subtree of html nodes into a single string.
+	return flatten(quote.node());
+}
+
+std::string fourchan_parser::parse_post_img(const pugi::xml_node &node) 
+{
+	auto nn = parse_post_node(node);
+	return base_parser::parse_first_path(nn, 
+		"div[@class='file']/div[@class='fileText']/a", "href");
+}
+
+std::string fourchan_parser::parse_post_img_name(const pugi::xml_node &node) 
+{
+	auto nn = parse_post_node(node);
+	return base_parser::parse_first_path(nn, 
+		"div[@class='file']/div[@class='fileText']/a", "title");
 }

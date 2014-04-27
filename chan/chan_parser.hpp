@@ -6,10 +6,10 @@
 
 struct chan_parser : public base_parser {
 
-	std::string parse_postid(const pugi::xml_node &node);
-	std::string parse_post_text(const pugi::xml_node &node);
-	std::string parse_post_img(const pugi::xml_node &node);
-	std::string parse_post_img_name(const pugi::xml_node &node);
+	virtual std::string parse_postid(const pugi::xml_node &node);
+	virtual std::string parse_post_text(const pugi::xml_node &node);
+	virtual std::string parse_post_img(const pugi::xml_node &node);
+	virtual std::string parse_post_img_name(const pugi::xml_node &node);
 
 	virtual bool final_page(const std::string &xml)=0;
 	bool final_page(const char *xpath, const std::string &xml);

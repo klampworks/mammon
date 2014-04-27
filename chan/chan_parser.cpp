@@ -131,20 +131,14 @@ chan_post chan_parser::parse_post(
 	const pugi::xml_node &node, 
 	const std::string &thread_id) 
 {
-	auto ss = node.select_single_node(
-		"(div[@class='post op'] | div[@class='post reply'])");
-
-	auto subnode = ss.node();
-	std::cout << subnode.attribute("id").value() << std::endl;
-	//std::string post_id = parse_postid(subnode);
-	std::string post_id = subnode.attribute("id").value();
+	std::string post_id = parse_postid(node);
 
 	if (post_id.empty())
 		return chan_post();
 
-	std::string content = parse_post_text(subnode);
-	std::string img_src = parse_post_img(subnode);
-	std::string img_name = parse_post_img_name(subnode);
+	std::string content = parse_post_text(node);
+	std::string img_src = parse_post_img(node);
+	std::string img_name = parse_post_img_name(node);
 
 	std::cout << "^^^^^^^^^^" << std::endl;
 	std::cout << "parse post id = " << post_id << std::endl;
@@ -152,10 +146,12 @@ chan_post chan_parser::parse_post(
 	std::cout << "parse img_src = " << img_src << std::endl;
 	std::cout << "parse content = " << content << std::endl;
 	std::cout << "$$$$$$$$$$" << std::endl;
+
 	const std::string &thread = thread_id.empty()? post_id : thread_id;
 
 	return chan_post(board, thread, std::move(post_id), 
-			std::move(img_name), std::move(img_src), std::move(content));
+			std::move(img_name), std::move(img_src), 
+			std::move(content));
 }
 
 std::vector<chan_post> chan_parser::parse_thread(const char *board, const std::string &xml) {
