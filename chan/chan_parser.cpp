@@ -10,9 +10,6 @@ std::vector<chan_post> chan_parser::parse_a_thread(
 	const pugi::xml_node &node) 
 {
 	//Parse the op.
-	std::cout << "chan_parser::parse_a_thread " 
-		<< node.attribute("id").value() << std::endl;
-
 	chan_post thread = parse_post(board, node);
 	std::string thread_id = thread.post_id;
 
@@ -73,15 +70,13 @@ bool chan_parser::final_page(const char *xpath, const std::string &xml) {
 }
 
 //Post page
-std::string chan_parser::parse_postid(const pugi::xml_node &node) {
-
-	//return base_parser::parse_first_path(node, "a[@name]", "name");
-	return base_parser::parse_first_path(node, 
-		"(div[@class='post op'] | div[@class='post reply'])", "id");
+std::string chan_parser::parse_postid(const pugi::xml_node &node) 
+{
+	return base_parser::parse_first_path(node, "a[@name]", "name");
 }
 
-std::string chan_parser::parse_post_text(const pugi::xml_node &node) {
-
+std::string chan_parser::parse_post_text(const pugi::xml_node &node) 
+{
 	//pugi::xpath_node quote = node.select_single_node("div[1]/blockquote");
 	pugi::xpath_node quote = node.select_single_node("blockquote");
 
@@ -89,20 +84,16 @@ std::string chan_parser::parse_post_text(const pugi::xml_node &node) {
 	return flatten(quote.node());
 }
 
-std::string chan_parser::parse_post_img(const pugi::xml_node &node) {
-
-	//return base_parser::parse_first_path(node, "span[@class='filesize']/a", "href");
+std::string chan_parser::parse_post_img(const pugi::xml_node &node) 
+{
 	return base_parser::parse_first_path(node, 
-		//"div[1]/div[@class='file']/div[@class='fileText']/a", "href");
-		"div[@class='file']/div[@class='fileText']/a", "href");
+		"span[@class='filesize']/a", "href");
 }
 
-std::string chan_parser::parse_post_img_name(const pugi::xml_node &node) {
-
-	//pugi::xpath_node img = node.select_single_node("span[@class='filesize']/a");
+std::string chan_parser::parse_post_img_name(const pugi::xml_node &node) 
+{
 	return base_parser::parse_first_path(node, 
-		//"div[1]/div[@class='file']/div[@class='fileText']/a", "title");
-		"div[@class='file']/div[@class='fileText']/a", "title");
+		"span[@class='filesize']/a", "title");
 }
 
 //Given a subtree will return a vector of posts.
@@ -111,7 +102,6 @@ std::vector<chan_post> chan_parser::parse_posts(
 	const std::string &thread_id, 
 	pugi::xpath_node_set &&posts) 
 {
-	std::cout << "parse_posts" << std::endl;
 	std::vector<chan_post> ret;
 
 	for (const auto &node : posts) {
@@ -140,12 +130,14 @@ chan_post chan_parser::parse_post(
 	std::string img_src = parse_post_img(node);
 	std::string img_name = parse_post_img_name(node);
 
+#if 0
 	std::cout << "^^^^^^^^^^" << std::endl;
 	std::cout << "parse post id = " << post_id << std::endl;
 	std::cout << "parse img_name = " << img_name << std::endl;
 	std::cout << "parse img_src = " << img_src << std::endl;
 	std::cout << "parse content = " << content << std::endl;
 	std::cout << "$$$$$$$$$$" << std::endl;
+#endif
 
 	const std::string &thread = thread_id.empty()? post_id : thread_id;
 

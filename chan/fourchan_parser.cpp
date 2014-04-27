@@ -11,9 +11,7 @@ std::vector<chan_post> fourchan_parser::parse_a_thread(
 	const char *board, 
 	const pugi::xml_node &node) 
 {
-	/* TODO test this. Is it class=thread? */
 	return chan_parser::parse_a_thread(
-		//"//form[@id='delform']/div[@class='thread']", board, node);
 		"*", board, node);
 }
 
@@ -38,41 +36,16 @@ std::vector<std::vector<chan_post>> fourchan_parser::parse_threads(
 	auto st = subtree.node().begin();
 	auto en = subtree.node().end();
 
-	//std::cout << subtree.node().begin()->attribute("id").value() 
-		//<< std::endl;
-
-	//If we can't parse this then don't waste time with the other crap.
-	/* TODO Why does this test fail? */
-	#if 0
-	if (st == en) {
-		std::cout << "Initial xpath failed." << std::endl;
-		std::cout << "##############################" << std::endl;
-//		std::cout << xml << std::endl;
-		std::cout << "##############################" << std::endl;
-		return std::vector<std::vector<chan_post>>();
-	}
-	#endif
-
 	std::vector<std::vector<chan_post>> ret;
 	for (;st != en; ++st) {
 
 		if (!strcmp(st->name(), "hr"))
 			continue;
 
-		std::cout << st->attribute("id").value() << std::endl;
-		auto a = parse_a_thread(board, *st);
-		
-		//std::cout << "Image name = " << a[0].img << std::endl;
+		ret.push_back(parse_a_thread(board, *st));	
 	}
+
 	return ret;
-
-	//pugi::xml_document new_doc;
-	//new_doc.append_child(*st);
-	//pugi::xml_node div;
-
-	/* Parse all divs from the subtree. */
-	/* TODO Check that these are all relevant. */
-//	return chan_parser::parse_threads("div", board, new_doc);
 }
 
 bool fourchan_parser::final_page(const std::string &input) 
@@ -84,7 +57,8 @@ bool fourchan_parser::final_page(const std::string &input)
 	doc.load(xml.c_str());
 
 	/* TODO test this. */
-	const char *xpath = "//form[@class='classSwitcherForm' and @action]/input[@value='Next']";
+	const char *xpath = 
+	"//form[@class='classSwitcherForm' and @action]/input[@value='Next']";
 	return !doc.select_single_node(xpath);
 }
 
