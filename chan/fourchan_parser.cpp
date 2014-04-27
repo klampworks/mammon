@@ -13,7 +13,8 @@ std::vector<chan_post> fourchan_parser::parse_a_thread(
 {
 	/* TODO test this. Is it class=thread? */
 	return chan_parser::parse_a_thread(
-		"//form[@id='delform']/div[@class='thread']", board, node);
+		//"//form[@id='delform']/div[@class='thread']", board, node);
+		"*", board, node);
 }
 
 std::vector<std::vector<chan_post>> fourchan_parser::parse_threads(
@@ -53,10 +54,15 @@ std::vector<std::vector<chan_post>> fourchan_parser::parse_threads(
 	#endif
 
 	std::vector<std::vector<chan_post>> ret;
-	for (;st != en; ++st, ++st) {
+	for (;st != en; ++st) {
+
+		if (!strcmp(st->name(), "hr"))
+			continue;
+
 		std::cout << st->attribute("id").value() << std::endl;
 		auto a = parse_a_thread(board, *st);
-		std::cout << a[0].post_id << std::endl;
+		//std::cout << "Image name = " << a[0].img << std::endl;
+		std::cout << std::endl;
 	}
 	return ret;
 
