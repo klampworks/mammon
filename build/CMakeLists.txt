@@ -59,6 +59,8 @@ add_executable(
 	../reddit/reddit_driver.cpp
 	../reddit/reddit_parser.cpp
 	../reddit/reddit_db.cpp
+	../chan/fourchan_parser.cpp
+	../chan/fourchan_driver.cpp
 	)
 
 target_link_libraries(driver_test sqlite3)
