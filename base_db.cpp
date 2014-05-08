@@ -17,7 +17,8 @@ void format_table(const char *table_name, const std::vector<std::string> &column
 void init() {
  
 	if (sqlite3_open(database_file, &database) != SQLITE_OK) {
-		std::cout << "Error opening database, " << sqlite3_errmsg(database) << std::endl;
+		std::cout << "Error opening database, " 
+			<< sqlite3_errmsg(database) << std::endl;
 		exit(1);
 	}
 }
@@ -32,8 +33,10 @@ void init_table(const char *table_name, const std::vector<std::string> &columns)
 }
 
 //Returns true if the table name exists along with all its required columns.
-bool check_table(const char *table_name, const std::vector<std::string> &columns) {
-
+bool check_table(
+	const char *table_name, 
+	const std::vector<std::string> &columns) 
+{
 	sqlite3_stmt *stmt;
 
 	std::string statement =  "PRAGMA table_info(" + std::string(table_name) + ")";
@@ -112,17 +115,26 @@ std::string lookup_single_value(
 	const std::string &statement, 
 	const std::vector<std::string> &value) 
 {
-
 	sqlite3_stmt *stmt;
 		
-	if (sqlite3_prepare_v2(database, statement.c_str(), -1, &stmt, 0) != SQLITE_OK) 
+	if (sqlite3_prepare_v2(database, statement.c_str(), -1, &stmt, 0) 
+		!= SQLITE_OK) {
+
+		std::cout << "Error preparing statment." << std::endl;
 		return "";
+	}
 
 	unsigned i = 0;
 	for (const auto &val : value) {
 	
-		if (sqlite3_bind_text(stmt, ++i, val.c_str(), val.length(), 0) != SQLITE_OK)
+		if (sqlite3_bind_text(stmt, ++i, val.c_str(), val.length(), 0) 
+			!= SQLITE_OK) {
+
+			std::cout << "Error binding value <" 
+				<< val << ">." << std::endl;
 			return "";
+
+		}
 	}
 
 	sqlite3_step(stmt);
@@ -140,15 +152,22 @@ std::string lookup_single_value(
 	const std::string &statement, 
 	const std::string &value) 
 {
-
 	sqlite3_stmt *stmt;
 		
-	if (sqlite3_prepare_v2(database, statement.c_str(), -1, &stmt, 0 ) != SQLITE_OK) 
+	if (sqlite3_prepare_v2(database, statement.c_str(), -1, &stmt, 0 ) 
+		!= SQLITE_OK) {
+
+		std::cout << "Error preparing statment." << std::endl;
 		return "";
+	}
 
 	
-	if (sqlite3_bind_text(stmt, 1, value.c_str(), value.length(), 0 ) != SQLITE_OK)
+	if (sqlite3_bind_text(stmt, 1, value.c_str(), value.length(), 0 ) 
+		!= SQLITE_OK) {
+
+		std::cout << "Error binding statment." << std::endl;
 		return "";
+	}
 
 	sqlite3_step(stmt);
 
@@ -157,7 +176,6 @@ std::string lookup_single_value(
 	std::string res = tmp_ptr? std::string(tmp_ptr) : "";
 
 	sqlite3_finalize(stmt);
-	
 	return res;
 }
 
