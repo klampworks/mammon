@@ -5,8 +5,6 @@
 #include "chan_post.hpp"
 #include "../tidy.hpp"
 
-#include <iostream>
-
 std::vector<chan_post> fourchan_parser::parse_a_thread(
 	const char *board, 
 	const pugi::xml_node &node) 
