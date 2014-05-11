@@ -59,9 +59,9 @@ int main(int argc, char **argv)
 	} else if (!strcmp(argv[1], "shana")) {
 		driver = new shanachan_driver(std::move(boards));
 	} else if (!strcmp(argv[1], "sec")) {
-		driver = new fourchan_driver(std::move(boards));
-	} else if (!strcmp(argv[1], "four")) {
 		driver = new secchan_driver(std::move(boards));
+	} else if (!strcmp(argv[1], "four")) {
+		driver = new fourchan_driver(std::move(boards));
 	} else if (!strcmp(argv[1], "reddit")) {
 		driver = new reddit_driver(std::move(boards));
 	} else {
