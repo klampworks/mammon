@@ -93,13 +93,22 @@ std::string fourchan_parser::parse_post_text(const pugi::xml_node &node)
 std::string fourchan_parser::parse_post_img(const pugi::xml_node &node) 
 {
 	auto nn = parse_post_node(node);
-	return base_parser::parse_first_path(nn, 
+	std::string url =  base_parser::parse_first_path(nn, 
 		"div[@class='file']/div[@class='fileText']/a", "href");
+
+	/* Remove the leading "//" from the url. */
+	if (url.size() > 1)
+		url = url.substr(2);
+
+	return url;
 }
 
 std::string fourchan_parser::parse_post_img_name(const pugi::xml_node &node) 
 {
 	auto nn = parse_post_node(node);
-	return base_parser::parse_first_path(nn, 
-		"div[@class='file']/div[@class='fileText']/a", "title");
+	pugi::xpath_node res = nn.select_single_node(
+		"div[@class='file']/div[@class='fileText']/a");
+
+	return res.node().text().get();
 }
+
