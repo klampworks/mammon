@@ -3,6 +3,7 @@
 #include "../base_parser.hpp"
 #include "chan_parser.hpp"
 #include "chan_post.hpp"
+#include <iostream>
 
 std::vector<chan_post> chan_parser::parse_a_thread(
 	const char *xpath,
@@ -17,7 +18,6 @@ std::vector<chan_post> chan_parser::parse_a_thread(
 	//auto nodes = node.select_nodes("table/tbody/tr/td");
 	auto nodes = node.select_nodes(xpath);
 	auto replies = parse_posts(board, thread_id, std::move(nodes));
-
 	//TODO This is horrible.
 	replies.insert(replies.begin(), thread);
 

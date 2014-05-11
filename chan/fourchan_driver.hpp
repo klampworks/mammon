@@ -7,5 +7,6 @@ struct fourchan_driver : public chan_driver {
 
 	fourchan_driver(std::vector<std::string>&&);
 	~fourchan_driver();
+	void increment_page();
 };
 #endif

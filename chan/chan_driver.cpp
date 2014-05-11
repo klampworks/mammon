@@ -23,10 +23,10 @@ chan_driver::chan_driver(const char *table_name, chan_parser *p,
 		
 	/* Create a base directory for this class. */
 	create_path(std::string(table_name) + "/");
+	page = 0;
 }
 
 unsigned board = 0;
-int page = 0;
 
 void chan_driver::fillup() {
 
@@ -58,11 +58,16 @@ void chan_driver::fillup() {
 
 	kyukon::add_task(t);
 
-	page++;
+	increment_page();
 
 	//Tell Kyukon we are done filling up and it's ok to call this function
 	//again if the queue is empty again.
 	//kyukon::set_do_fillup(true, domain_id);
+}
+
+void chan_driver::increment_page()
+{
+	++page;
 }
 
 //Given the html souce, figure out which threads need crawling.
@@ -92,7 +97,8 @@ void chan_driver::process_list_page(task *tt) {
 			continue;
 		}
 
-		//If the final post already exists in the db then skip this thread.
+		/* If the final post already exists in the db then 
+		 * skip this thread. */
 		if (chan_db::post_exists(table_name, thread.back()))
 			break;
 
