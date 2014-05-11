@@ -73,7 +73,12 @@ pugi::xml_node fourchan_parser::parse_post_node(const pugi::xml_node &node)
 std::string fourchan_parser::parse_postid(const pugi::xml_node &node) 
 {
 	auto nn = parse_post_node(node);
-	return nn.attribute("id").value();
+	const char *id =  nn.attribute("id").value();
+
+	/* Remove leading 'p'. */
+	if (*id) ++id;
+
+	return std::string(id);
 }
 
 std::string fourchan_parser::parse_post_text(const pugi::xml_node &node) 
