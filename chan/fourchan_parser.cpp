@@ -57,7 +57,7 @@ bool fourchan_parser::final_page(const std::string &input)
 	/* TODO test this. */
 	const char *xpath = 
 	"/html/body/div[@class='pagelist desktop']/div[@class='next']/"
-	"form[@class='pageSwitcherForm' and @action='2']/input[@value='Next']";
+	"form[@class='pageSwitcherForm']/input[@value='Next']";
 
 	return !doc.select_single_node(xpath);
 }
