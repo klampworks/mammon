@@ -9,7 +9,7 @@ struct base_driver {
 	base_driver();
 	bool check_error(task *t);
 	bool check_file_error(task *t);
-	void retry(task *t);
+	bool retry(task *t);
 	unsigned max_retries;
 
 	bool check_filesize(task *t);

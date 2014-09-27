@@ -42,6 +42,7 @@ struct chan_driver : public base_driver {
 	bool create_path(const std::string &path);
 	virtual void increment_page();
 	int page;
+	void mark_task(task*);
 
 	protected:
 		chan_driver(const char *, chan_parser*, 

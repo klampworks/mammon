@@ -40,7 +40,7 @@ bool base_driver::check_file_error(task *t) {
 	return true;
 }
 
-void base_driver::retry(task *t) {
+bool base_driver::retry(task *t) {
 
 	if (t->inc_retries() > max_retries) {
 
@@ -48,10 +48,12 @@ void base_driver::retry(task *t) {
 		/* TODO Base class should know what the domain id. */
 		kyukon::set_do_fillup(true, t->get_domain_id());
 		delete t;
+		return false;
 	} else {
 		
 		std::cout << "Retrying " << t->get_url() << std::endl;
 		kyukon::add_task(t);
+		return true;
 	}
 }
 

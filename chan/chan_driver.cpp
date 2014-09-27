@@ -24,6 +24,7 @@ chan_driver::chan_driver(const char *table_name, chan_parser *p,
 	/* Create a base directory for this class. */
 	create_path(std::string(table_name) + "/");
 	page = 0;
+	fillup();
 }
 
 unsigned board = 0;
@@ -70,6 +71,18 @@ void chan_driver::increment_page()
 	++page;
 }
 
+/*
+ * Given a task, wrap its callback to call the fillup function first.
+ */
+void chan_driver::mark_task(task *t)
+{
+	auto original_fn = t->get_callback();
+	t->set_callback([this, original_fn](task *tt) {
+		std::cout << "Extended callback..." << std::endl;
+		fillup();
+		original_fn(tt);});
+}
+
 //Given the html souce, figure out which threads need crawling.
 void chan_driver::process_list_page(task *tt) {
 
@@ -81,14 +94,17 @@ void chan_driver::process_list_page(task *tt) {
 		return;	
 	}
 
-//	std::cout << t->get_data() << std::endl;
-	//Get a list of threads with a handful of the most recent posts for each.
-	auto threads = parser->parse_threads(t->get_board().c_str(), t->get_data());
+	/* Parse a list of threads with a handful of the 
+	 * most recent posts for each. */
+	auto threads = parser->parse_threads(
+		t->get_board().c_str(), t->get_data());
 
 	std::vector<chan_post> posts_to_add;
 
 	//Referer url for requesting links on this page.
 	const std::string referer = t->get_url();
+
+	std::vector<task*> tasks_to_add;
 
 	for (const auto &thread : threads) {
 
@@ -119,7 +135,8 @@ void chan_driver::process_list_page(task *tt) {
 
 			t->set_priority(2);
 			t->set_filepath(tt->get_filepath());
-			kyukon::add_task(t);
+	//		kyukon::add_task(t);
+			tasks_to_add.push_back(t);
 
 		} else {
 
@@ -127,6 +144,15 @@ void chan_driver::process_list_page(task *tt) {
 			for (unsigned i = 3; i < (thread.size() - 1); i++)
 				posts_to_add.push_back(thread[i]);
 		}
+	}
+
+	if (tasks_to_add.empty()) {
+		fillup();
+	} else {
+		mark_task(tasks_to_add.back());
+
+		for (const auto &task_to_add : tasks_to_add)
+			kyukon::add_task(task_to_add);
 	}
 
 	chan_db::insert_posts(table_name, posts_to_add);
@@ -147,35 +173,42 @@ void chan_driver::grab_thread(
 	const std::string &referer,
 	const std::string &filepath) 
 {
-	const std::string &board = post.board;
-	const std::string &thread_id = post.thread_id;
-
-	const std::string url = base_url + board + "/res/" + thread_id + ".html"; 
-
+	const std::string url = gen_thread_url(post);
 
 	task *t = new task(domain_id, url, referer, task::STRING, 
-		std::bind(&chan_driver::process_thread, this, std::placeholders::_1));
+		std::bind(&chan_driver::process_thread, this, 
+			std::placeholders::_1));
 
 	t->set_filepath(filepath);
 	t->set_priority(3);
 	kyukon::add_task(t);
-	
 }
 
-void chan_driver::process_thread(task *tt) {
-
+void chan_driver::process_thread(task *tt) 
+{
+	std::cout << "Processing thread " << tt->get_url() << std::endl;
 	chan_task *t = (chan_task*)tt;
 
-	if (!check_error(t)) {
+	if (!check_error(t))
+		goto ERROR;
 
-		retry(t);
-		return;	
-	}
+{
+	/* Parse the html into a list of post objects. */
+	std::vector<chan_post> thread = parser->parse_thread(
+		t->get_board().c_str(), t->get_data());
 
-	//Parse the html into a list of post objects.
-	std::vector<chan_post> thread = parser->parse_thread(t->get_board().c_str(), t->get_data());
+	std::cout << "This thread has " << thread.size() 
+		<< " posts." << std::endl;
 
-	//Add the posts to the database and delete the existing ones from the vector.
+	/* TODO If this happens log why check_error failed to 
+	 * 	detect 404 or 403. 
+	 * 	Possible parsing issue.
+	 */ 	
+	if (thread.empty())
+		goto ERROR;
+
+	/* Add the posts to the database and delete the existing 
+	 * ones from the vector. */
 	chan_db::insert_posts(table_name, thread);
 
 	const std::string &referer = t->get_url();
@@ -186,6 +219,18 @@ void chan_driver::process_thread(task *tt) {
 		grab_post_img(new_post, referer, filepath);
 
 	delete tt;
+	return;
+}
+
+ERROR:
+	std::cout << "Error processing thread." << std::endl;
+
+	/* If retry decided to give up, fillup. */
+	if (!retry(t))
+		fillup();
+
+	return;	
+
 }
 
 void chan_driver::grab_post_img(
