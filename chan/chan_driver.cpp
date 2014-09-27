@@ -126,8 +126,7 @@ void chan_driver::process_list_page(task *tt) {
 			//We must download the whole thread since there may be 
 			//earlier posts that we do not have.
 
-			std::string url = base_url + thread[1].board +
-				"/res/" + thread[1].thread_id + ".html";
+			std::string url = gen_thread_url(thread[0]);
 
 			chan_task *t = new chan_task(domain_id, url, referer,
 				task::STRING, std::bind(&chan_driver::process_thread, 
@@ -311,3 +310,14 @@ std::string chan_driver::create_path()
 		return "";
 }
 
+/*
+ * Generate a URL for a thread.
+ */
+std::string chan_driver::gen_thread_url(
+	const chan_post &op) const
+{
+	assert(!op.board.empty());
+	assert(!op.thread_id.empty());
+
+	return base_url + op.board + "/res/" + op.thread_id;
+}

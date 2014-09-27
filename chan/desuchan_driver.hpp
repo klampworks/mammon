@@ -6,6 +6,7 @@
 struct desuchan_driver : public chan_driver {
 
 	desuchan_driver(std::vector<std::string>&&);
+	std::string gen_thread_url(const chan_post&) const;
 	~desuchan_driver();
 };
 #endif

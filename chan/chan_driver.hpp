@@ -41,6 +41,7 @@ struct chan_driver : public base_driver {
 	std::string create_path();
 	bool create_path(const std::string &path);
 	virtual void increment_page();
+	virtual std::string gen_thread_url(const chan_post&) const;
 	int page;
 	void mark_task(task*);
 

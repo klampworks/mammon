@@ -9,3 +9,14 @@ desuchan_driver::~desuchan_driver()
 {
 	delete parser;
 }
+
+/*
+ * Generate a URL for a thread.
+ *
+ * Desuchan requires a .html prefix.
+ */
+std::string desuchan_driver::gen_thread_url(
+	const chan_post &op) const
+{
+	return chan_driver::gen_thread_url(op) + ".html";
+}
