@@ -1,4 +1,5 @@
 #include "chan_db.hpp"
+#include "chan_db.hpp"
 #include "chan_parser.hpp"
 #include "chan_driver.hpp"
 #include "../kyukon/kyukon.hpp"
@@ -36,7 +37,8 @@ void chan_driver::fillup() {
 		
 		if (++board >= boards.size()) {
 			std::cout << "No more boards available." << std::endl;
-			return;
+			//TODO lol
+			exit(0);
 		} else {
 			std::cout << "Moving on to board " << boards[board] << std::endl;
 			page = 0;
@@ -47,7 +49,7 @@ void chan_driver::fillup() {
 	std::string url = base_url + boards[board] + "/";
 
 	if (page > 0) {
-		url += std::to_string(page) + ".html";
+		url += std::to_string(page)/* + ".html"*/;
 	}
 	
 	chan_task *t = new chan_task(domain_id, url, base_url, task::STRING, 
@@ -78,7 +80,6 @@ void chan_driver::mark_task(task *t)
 {
 	auto original_fn = t->get_callback();
 	t->set_callback([this, original_fn](task *tt) {
-		std::cout << "Extended callback..." << std::endl;
 		fillup();
 		original_fn(tt);});
 }
@@ -90,9 +91,12 @@ void chan_driver::process_list_page(task *tt) {
 
 	if (!check_error(t)) {
 
+		dump_html("error", t);
 		retry(t);
 		return;	
 	}
+
+	dump_html("good", t);
 
 	/* Parse a list of threads with a handful of the 
 	 * most recent posts for each. */
@@ -206,6 +210,8 @@ void chan_driver::process_thread(task *tt)
 	if (thread.empty())
 		goto ERROR;
 
+	dump_html("good", t);
+
 	/* Add the posts to the database and delete the existing 
 	 * ones from the vector. */
 	chan_db::insert_posts(table_name, thread);
@@ -224,12 +230,13 @@ void chan_driver::process_thread(task *tt)
 ERROR:
 	std::cout << "Error processing thread." << std::endl;
 
+	dump_html("error", t);
+
 	/* If retry decided to give up, fillup. */
 	if (!retry(t))
 		fillup();
 
 	return;	
-
 }
 
 void chan_driver::grab_post_img(
@@ -320,4 +327,91 @@ std::string chan_driver::gen_thread_url(
 	assert(!op.thread_id.empty());
 
 	return base_url + op.board + "/res/" + op.thread_id;
+}
+
+void chan_driver::unique_fn(std::string &fn)
+{
+	struct stat sb;
+	std::string original(fn);
+	int post = 0; 
+
+	for (;;) {
+
+		int res = stat(fn.c_str(), &sb);
+
+
+		if (res == -1) {
+			if (errno == ENOENT) { 
+
+				/* File does not exist, good. */
+				return;
+			}
+
+			std::cout << "Stat failed for file <" << fn 
+				<< "> because " << strerror(errno) << 
+				" HTML was probably not dumped." 
+				<< std::endl;
+			return;
+		}
+
+		/* Prevent integer overflow from leading to an infinit loop. */
+		if (post < INT_MAX)
+			++post;
+		else
+			return;
+			/* If you have 4 billion files with the same name, 
+			 * overwriting the last one is the least of your 
+			 * problems.*/
+
+		fn = original + "_" + std::to_string(post);
+	}
+}
+
+#include <fstream>
+void chan_driver::dump_html(std::string path, const chan_task *t)
+{
+	if (!path.empty()) {
+		
+		/* Make sure the path ends with a forward slash. */
+		if (path.rfind("/") + 1 != path.size())
+			path += "/";
+
+		if (mkdir(path.c_str(), 0777)) {
+			if (errno == EEXIST) {
+				/* TODO Make sure it is a writable directory. */
+			} else {
+				/* Some other error. */
+				std::cout << "Error, could not create "
+				"file path <" << path << ">" << std::endl;
+				path = "";
+			}
+		}
+	}
+
+	std::string fp;
+	size_t st = t->get_url().rfind('/');
+	size_t en = std::string::npos;
+	
+	/* Deal with URLs that end with a backslash. */
+	if (st + 1 == t->get_url().size()) {
+		en = st - 1;
+		st = t->get_url().rfind('/', st-1);
+	}
+
+	if (en != st) {
+		fp = path + t->get_board() + "-" 
+			+ t->get_url().substr(st+1, en-st);
+	} else if (st == std::string::npos) {
+		/* No forward slashes in this URL...*/
+		fp = path + t->get_board() + "-" + t->get_url();
+	} else {
+		fp = "mangled_url";
+	}
+
+	unique_fn(fp);
+
+	std::ofstream ofs;
+	ofs.open(fp);
+	ofs << t->get_data();
+	ofs.close();
 }

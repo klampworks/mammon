@@ -12,11 +12,18 @@ class chan_task : public task {
 	std::string board;
 
 	public:
-	chan_task(unsigned dom, const std::string &url, const std::string &ref, task_target target,
-		const std::function<void(task*)> &fn, const std::string &board_p) :
+	chan_task() : task() {}
+	chan_task(unsigned dom, const std::string &url, 
+		const std::string &ref, task_target target,
+		const std::function<void(task*)> &fn, 
+		const std::string &board_p) :
 			task(dom, url, ref, target, fn), board(board_p) {}
 
-	std::string get_board() {
+	void set_board(std::string b) {
+		board = b;
+	}
+
+	std::string get_board() const {
 		return board;
 	}
 };
@@ -42,6 +49,9 @@ struct chan_driver : public base_driver {
 	bool create_path(const std::string &path);
 	virtual void increment_page();
 	virtual std::string gen_thread_url(const chan_post&) const;
+	static void dump_html(std::string path, const chan_task*);
+	static void unique_fn(std::string&);
+
 	int page;
 	void mark_task(task*);
 
