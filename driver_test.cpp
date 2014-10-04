@@ -14,6 +14,9 @@
 #include "chan/fourchan_driver.hpp"
 #include "reddit/reddit_driver.hpp"
 
+#include <thread>
+#include <chrono>
+
 static base_driver *driver;
 
 void quit(int) 
@@ -21,6 +24,10 @@ void quit(int)
 	std::cout << "SIGINT recieved, finishing surrent operations"
 	"and shutting down the system." << std::endl;
 	driver->quit();
+
+	/* TODO Fix that weird deadlock situation. */
+	std::this_thread::sleep_for(std::chrono::seconds(60));
+	return 0;
 }
 
 int main(int argc, char **argv) 
