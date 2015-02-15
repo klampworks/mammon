@@ -11,7 +11,7 @@ std::string dorb(const char *name)
         std::cerr << StringValuePtr(rbError) << std::endl;
     };
     
-    VALUE result = rb_gv_get("$result");
+    VALUE result = rb_funcall(Qnil, rb_intern("hello"), 1, rb_str_new2("alice"));
     return std::string(StringValuePtr(result));
 }
 
@@ -21,7 +21,6 @@ int main()
     ruby_init_loadpath();
 
     std::cout << "Hello, world from C++" << std::endl;
-    std::cout << "Ruby says <" << dorb("./test.rb") << ">" << std::endl;
     std::cout << "Ruby says <" << dorb("./test2.rb") << ">" << std::endl;
 
     ruby_finalize();
