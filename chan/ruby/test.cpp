@@ -1,6 +1,29 @@
 #include <iostream>
 #include <ruby.h>
 
+static VALUE t_init(VALUE self)
+{
+    VALUE a, b;
+    a = rb_str_new2("pair a ");
+    b = rb_str_new2("pair b ");
+    rb_iv_set(self, "@a", a);
+    rb_iv_set(self, "@b", b);
+    return self;
+}
+
+
+static VALUE a(VALUE self)
+{
+    VALUE a = rb_iv_get(self, "@a");
+    return a;
+}
+
+static VALUE b(VALUE self)
+{
+    VALUE b = rb_iv_get(self, "@b");
+    return b;
+}
+
 std::string dorb(const char *name)
 {
     int status;
@@ -23,6 +46,11 @@ int main()
 {
     ruby_init();
     ruby_init_loadpath();
+
+    VALUE test_pair = rb_define_class("TestPair", rb_cObject);
+    rb_define_method(test_pair, "initialize", (VALUE(*)(...))t_init, 0);
+    rb_define_method(test_pair, "a", (VALUE(*)(...))a, 0);
+    rb_define_method(test_pair, "b", (VALUE(*)(...))b, 0);
 
     std::cout << "Hello, world from C++" << std::endl;
     std::cout << "Ruby says <" << dorb("./test2.rb") << ">" << std::endl;
