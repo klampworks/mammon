@@ -71,5 +71,9 @@ def parse(str)
 end
 
 def final_page?(str)
-    return true
+    doc = Nokogiri::HTML(str) do |config|
+      config.noent.nonet
+    end
+
+    return doc.css('input[value=Next]').empty?
 end
