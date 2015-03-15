@@ -141,9 +141,8 @@ chan_post chan_parser::parse_post(
 
 	const std::string &thread = thread_id.empty()? post_id : thread_id;
 
-	return chan_post(board, thread, std::move(post_id), 
-			std::move(img_name), std::move(img_src), 
-			std::move(content));
+	return chan_post(board, thread, post_id, 
+			{img_name}, {img_src}, content);
 }
 
 std::vector<chan_post> chan_parser::parse_thread(const char *board, const std::string &xml) {

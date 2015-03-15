@@ -1,4 +1,4 @@
-#include "chan_post_multi.hpp"
+#include "chan_post.hpp"
 #include "eightchan_parser.hpp"
 #include "rb_chan_post_multi.hpp"
 #include <ruby.h>
@@ -16,7 +16,7 @@ eightchan_parser::eightchan_parser()
     };
 }
 
-std::vector<std::vector<chan_post_multi>> eightchan_parser::parse_threads(
+std::vector<std::vector<chan_post>> eightchan_parser::parse_threads(
     const char *board, const std::string &xml)
 {
     VALUE result = rb_funcall(Qnil, rb_intern("parse"), 1, 

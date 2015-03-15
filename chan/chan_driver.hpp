@@ -58,5 +58,8 @@ struct chan_driver : public base_driver {
 	protected:
 		chan_driver(const char *, chan_parser*, 
 			std::vector<std::string>&&, const char*);
+        virtual std::string mk_file_url(std::string url);
+        std::string mk_file_url_relative(std::string url);
+        std::string mk_file_url_value(std::string url);
 };
 #endif

@@ -1,5 +1,4 @@
 #include "chan_db.hpp"
-#include "chan_db.hpp"
 #include "chan_parser.hpp"
 #include "chan_driver.hpp"
 #include "../kyukon/kyukon.hpp"
@@ -239,21 +238,40 @@ ERROR:
 	return;	
 }
 
+/* Sometimes links are relative and need extra processing. */
+std::string chan_driver::mk_file_url_value(std::string url)
+{
+    return url;
+}
+
+std::string chan_driver::mk_file_url_relative(std::string url)
+{
+	return base_url + url.substr(1);
+}
+
+std::string chan_driver::mk_file_url(std::string url)
+{
+    return mk_file_url_value(url);
+}
+
+//TODO grab_post_files
 void chan_driver::grab_post_img(
 	const chan_post &post, 
 	const std::string &referer,
 	const std::string &filepath) 
 {
 	//Not all posts have images.
-	if (post.img_url.empty())
-		return;
+	for (const auto &file_url : post.file_urls) {
 
-	chan_task *t = new chan_task(domain_id, post.img_url, referer, task::FILE, 
-		std::bind(&chan_driver::process_image, this, std::placeholders::_1), post.board);
+        auto url = mk_file_url(file_url);
+        chan_task *t = new chan_task(domain_id, url, referer, task::FILE, 
+            std::bind(&chan_driver::process_image, this, 
+                std::placeholders::_1), post.board);
 
-	t->set_filepath(filepath);
-	t->set_priority(4);	
-	kyukon::add_task(t);
+        t->set_filepath(filepath);
+        t->set_priority(4);	
+        kyukon::add_task(t);
+    }
 }
 
 void chan_driver::process_image(task *tt) {

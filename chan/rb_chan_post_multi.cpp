@@ -1,5 +1,5 @@
 #include "rb_chan_post_multi.hpp"
-#include "chan_post_multi.hpp"
+#include "chan_post.hpp"
 #include <functional>
 #include <ruby.h>
 
@@ -17,10 +17,10 @@ namespace rb_chan_post_multi {
         return rbstr_to_str(f);
     }
 
-    chan_post_multi unwrap(VALUE rb_cpm) 
+    chan_post unwrap(VALUE rb_cpm) 
     {
 std::cout <<"a\n";
-        chan_post_multi cpm(
+        chan_post cpm(
             field_to_str(rb_cpm, "@board"),
             field_to_str(rb_cpm, "@thread_id"),
             field_to_str(rb_cpm, "@post_id"),
@@ -66,10 +66,10 @@ std::cout <<"a\n";
         return self;
     }
 
-    std::vector<std::vector<chan_post_multi>> unwrap_threads(VALUE threads)
+    std::vector<std::vector<chan_post>> unwrap_threads(VALUE threads)
     {
-        return unwrap_multi<std::vector<chan_post_multi>>(threads, 
-            std::bind(unwrap_multi<chan_post_multi>, std::placeholders::_1, unwrap));
+        return unwrap_multi<std::vector<chan_post>>(threads, 
+            std::bind(unwrap_multi<chan_post>, std::placeholders::_1, unwrap));
     }
 
     void define()
