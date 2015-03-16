@@ -2,6 +2,7 @@
 #include "chan_parser.hpp"
 #include "chan_driver.hpp"
 #include "../kyukon/kyukon.hpp"
+#include "../filesystem.hpp"
 
 #include <iostream>
 #include <cassert>
@@ -22,7 +23,7 @@ chan_driver::chan_driver(const char *table_name, chan_parser *p,
 	kyukon::set_do_fillup(true, domain_id);
 		
 	/* Create a base directory for this class. */
-	create_path(std::string(table_name) + "/");
+	fs::create_path(std::string(table_name) + "/");
 	page = 0;
 	fillup();
 }
@@ -286,55 +287,6 @@ void chan_driver::process_image(task *tt) {
 	delete tt;
 }
 
-bool chan_driver::create_path(const std::string &path)
-{
-	struct stat stat_buf;
-	int res = stat(path.c_str(), &stat_buf);
-
-	/* No errors from stat. */
-	if (!res) {
-		
-		/* What we want exists and is a directory. */
-		if (S_ISDIR(stat_buf.st_mode)) {
-			goto good;
-		}
-
-		std::cout << "Error file exists but is not a directory." 
-			<< std::endl; 
-		goto bad;
-	}
-
-	/* Path does not exist, good. */
-	if (errno == ENOENT) {
-		if (!mkdir(path.c_str(), 0777)) {
-			goto good;
-		} else {
-			std::cout << "Error creating directory: " << 
-			errno << std::endl;
-			goto bad;
-		}
-	}
-
-	std::cout << "Stat error " << errno << std::endl;
-	goto bad;
-
-	good:
-		return true;
-	bad:
-		return false;
-}
-
-std::string chan_driver::create_path()
-{
-	std::string path(table_name);
-	path += "/" + boards[board] + "/";  
-
-	if (create_path(path.c_str()))
-		return path;
-	else
-		return "";
-}
-
 /*
  * Generate a URL for a thread.
  */
@@ -432,4 +384,15 @@ void chan_driver::dump_html(std::string path, const chan_task *t)
 	ofs.open(fp);
 	ofs << t->get_data();
 	ofs.close();
+}
+
+std::string chan_driver::create_path()
+{
+    std::string path(table_name);
+    path += "/" + boards[board] + "/";  
+
+    if (fs::create_path(path.c_str()))
+        return path;
+    else
+        return "";
 }
