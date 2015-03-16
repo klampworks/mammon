@@ -342,20 +342,13 @@ void chan_driver::dump_html(std::string path, const chan_task *t)
 {
 	if (!path.empty()) {
 		
-		/* Make sure the path ends with a forward slash. */
-		if (path.rfind("/") + 1 != path.size())
-			path += "/";
-
-		if (mkdir(path.c_str(), 0777)) {
-			if (errno == EEXIST) {
-				/* TODO Make sure it is a writable directory. */
-			} else {
-				/* Some other error. */
-				std::cout << "Error, could not create "
-				"file path <" << path << ">" << std::endl;
-				path = "";
-			}
-		}
+        if (!fs::create_path(path)) {
+            path = "";
+         } else {
+            /* Make sure the path ends with a forward slash. */
+            if (path.rfind("/") + 1 != path.size())
+                path += "/";
+         }
 	}
 
 	std::string fp;
