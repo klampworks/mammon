@@ -302,15 +302,8 @@ std::string chan_driver::gen_thread_url(
 #include <fstream>
 void chan_driver::dump_html(std::string path, const chan_task *t)
 {
-	if (!path.empty()) {
-		
-        if (!fs::create_path_m(path)) {
+	if (!path.empty() && !fs::create_path_m(path))
             path = "";
-         } else {
-            if (path.rfind("/") + 1 != path.size())
-                path += "/";
-         }
-	}
 
 	std::string fp;
 	size_t st = t->get_url().rfind('/');
