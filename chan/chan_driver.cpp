@@ -304,10 +304,9 @@ void chan_driver::dump_html(std::string path, const chan_task *t)
 {
 	if (!path.empty()) {
 		
-        if (!fs::create_path(path)) {
+        if (!fs::create_path_m(path)) {
             path = "";
          } else {
-            /* Make sure the path ends with a forward slash. */
             if (path.rfind("/") + 1 != path.size())
                 path += "/";
          }
