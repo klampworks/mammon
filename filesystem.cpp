@@ -9,13 +9,11 @@
 namespace fs {
 
 
-    bool create_path_m(std::string &path)
+    void append_slash(std::string &path)
     {
         /* Make sure the path ends with a forward slash. */
         if (path.size() > 1 && path.rfind("/") + 1 != path.size())
             path += "/";
-
-        return create_path(path);
     }
 
     bool create_path(const std::string &path)
