@@ -6,8 +6,7 @@
 
 #include <iostream>
 #include <cassert>
-#include <sys/stat.h>
-#include <sys/types.h>
+#include <fstream>
 
 chan_driver::chan_driver(const char *table_name, chan_parser *p, 
 	std::vector<std::string> &&boards_p, const char *url) : 
@@ -299,7 +298,6 @@ std::string chan_driver::gen_thread_url(
 	return base_url + op.board + "/res/" + op.thread_id;
 }
 
-#include <fstream>
 void chan_driver::dump_html(std::string path, const chan_task *t)
 {
 	if (!path.empty() && !fs::create_path(path))
