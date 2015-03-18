@@ -103,15 +103,15 @@ void chan_driver::process_list_page(task *tt) {
 		t->get_board().c_str(), t->get_data());
 
 	std::vector<chan_post> posts_to_add;
+	std::vector<task*> tasks_to_add;
 
 	//Referer url for requesting links on this page.
 	const std::string referer = t->get_url();
 
-	std::vector<task*> tasks_to_add;
-
 	for (const auto &thread : threads) {
 
 		if (thread.empty()) {
+            // TODO assert? Should this happen?
 			std::cout << "Empty thread!" << std::endl;
 			continue;
 		}
@@ -119,15 +119,17 @@ void chan_driver::process_list_page(task *tt) {
 		/* If the final post already exists in the db then 
 		 * skip this thread. */
 		if (chan_db::post_exists(table_name, thread.back()))
-			break;
+			continue;
 
 		if (thread.size() == 1) {
 
+            // TODO what about long text content?
+            // A preview may not be good enough.
 			posts_to_add.push_back(thread[0]);
 
 		} else if (!chan_db::post_exists(table_name, thread[1])) {
-			//We must download the whole thread since there may be 
-			//earlier posts that we do not have.
+			// We must download the whole thread since there may be 
+			// earlier posts that we do not have.
 
 			std::string url = gen_thread_url(thread[0]);
 
@@ -137,12 +139,14 @@ void chan_driver::process_list_page(task *tt) {
 
 			t->set_priority(2);
 			t->set_filepath(tt->get_filepath());
-	//		kyukon::add_task(t);
 			tasks_to_add.push_back(t);
 
 		} else {
 
 			//Iterate through the remaining replies and add them.
+            // TODO Again, trimming the previews may not be good enough.
+            // Either look for truncated posts or blindly download the full 
+            // thread each time.
 			for (unsigned i = 3; i < (thread.size() - 1); i++)
 				posts_to_add.push_back(thread[i]);
 		}
