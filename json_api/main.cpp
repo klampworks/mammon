@@ -1,6 +1,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include "fourchan_parser_json.hpp"
 
 std::string read_file(const char *filename)
 {
@@ -24,5 +25,7 @@ int main(int argc, char **argv)
     }
 
     auto s = read_file(argv[1]);
-    std::cout << s << std::endl;
+    auto threads = parse_threads(s);
+    for (const auto &thread : threads)
+        std::cout << thread << std::endl;
 }

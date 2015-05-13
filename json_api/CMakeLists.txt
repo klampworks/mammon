@@ -4,6 +4,7 @@ project(mammon)
 
 add_executable(
     json_test
-    main.cpp)
+    main.cpp
+    fourchan_parser_json.cpp)
 
 
