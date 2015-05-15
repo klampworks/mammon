@@ -34,6 +34,7 @@ template <typename T>
 std::string sget(T &pt, const char *node)
 {
     try {
+        /* https://stackoverflow.com/a/1840318 */
         return pt.second.template get<std::string>(node);
     } catch (...) {
         return "";
@@ -46,12 +47,13 @@ std::vector<chan_post> parse_posts(const std::string &json)
 
     std::vector<chan_post> ret;
     for (const auto &v : pt.get_child("posts")) {
+
         chan_post cp;
         cp.id = v.second.get<std::string>("no");
-        std::cout << sget(v, "sub") << std::endl;
-        std::cout << sget(v, "com") << std::endl;
-        std::cout << sget(v, "tim") << std::endl;
-        std::cout << sget(v, "ext") << std::endl;
+        cp.sub = sget(v, "sub");
+        cp.com = sget(v, "com");
+        cp.set_filename(sget(v, "tim"), sget(v, "ext"));
+        ret.push_back(cp);
     }
 
     return ret;
