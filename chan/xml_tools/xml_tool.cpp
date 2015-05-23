@@ -1,5 +1,9 @@
 #include <libxml/HTMLparser.h>
 #include <libxml/HTMLtree.h>
+#include <libxml/tree.h>
+#include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
+#include <cassert>
 
 void print_element_names(xmlNode *a_node, int indent)
 {
@@ -36,22 +40,66 @@ void print_element_names(xmlNode *a_node, int indent)
 	}
 }
 
-int parse_file(const char *f_doc) 
+int run_xpath(xmlDoc *doc, const char *xpath)
 {
-	xmlDocPtr doc = htmlParseFile(f_doc, NULL);
+	xmlXPathContext *xpath_ctx = xmlXPathNewContext(doc);
+	if (!xpath_ctx) {
+		printf("Could not create new xpath context.\n");
+		//xmlFreeDoc(doc);
+		return 1;
+	}
+
+	xmlChar *xml_xpath = xmlCharStrdup(xpath);
+	xmlXPathObject *xpath_obj = xmlXPathEvalExpression(xml_xpath, xpath_ctx);
+	if (!xpath_obj) {
+		puts("Could not evaluate xpath expression.\n");
+		free(xml_xpath);
+		return 1;
+	}
+
+    assert(xpath_obj->nodesetval->nodeTab);
+    for (auto n = *xpath_obj->nodesetval->nodeTab; n; n = n->next) {
+        printf("----------------------------------------"
+                "----------------------------------------\n");
+        print_element_names(n, 0);
+        printf("----------------------------------------"
+                "----------------------------------------\n");
+    }
+
+	//xmlXPathFreeObject(xpath_obj);
+	free(xml_xpath);
+
+	//xmlXPathFreeContext(xpath_ctx); 
+	//xmlFreeDoc(doc);
+	return 0;
+}
+
+#include <string>
+#include <fstream>
+#include <streambuf>
+#include "../../tidy.hpp"
+int main(int argc, char **argv)
+{
+    assert(argv[1]); 
+    std::ifstream t(argv[1]);
+    std::string str((std::istreambuf_iterator<char>(t)),
+        std::istreambuf_iterator<char>());
+
+    //tidy::tidy(str);
+	//xmlDocPtr doc = htmlParseFile(f_doc, NULL);
+	xmlDocPtr doc = htmlParseDoc(BAD_CAST str.c_str(), NULL);
 	if (!doc) {
-		printf("libxml failed to parse file <%s>\n", f_doc);
+		printf("libxml failed to parse file <%s>\n", argv[1]);
 		return 1;
 	}
 
 	xmlNode *doc_head = xmlDocGetRootElement(doc);
-    print_element_names(doc_head, 0);
+    if (argc < 3) {
+        print_element_names(doc_head, 0);
+    } else {
+        run_xpath(doc, argv[2]);
+    } 
 
-	xmlFree(doc_head);
+	//xmlFree(doc_head);
 	return 0;
-}
-
-int main(int argc, char **argv)
-{
-    parse_file(argv[1]);
 }
