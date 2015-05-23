@@ -1,5 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
-set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall -Wextra")
+#set(CMAKE_CXX_FLAGS "-std=c++11 -g 
+#-I/usr/include/ruby/x86_64-linux/ -I/usr/include/ruby")
+set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall -Wextra  -I/usr/include/ruby/x86_64-linux/ -I/usr/include/ruby")
 project (test)
 
 add_executable(
@@ -61,6 +63,7 @@ add_executable(
 	../reddit/reddit_db.cpp
 	../chan/fourchan_parser.cpp
 	../chan/fourchan_driver.cpp
+    ../filesystem.cpp
 	)
 
 target_link_libraries(driver_test sqlite3)
@@ -68,4 +71,21 @@ target_link_libraries(driver_test kyukon)
 target_link_libraries(driver_test magic)
 target_link_libraries(driver_test tidy)
 target_link_libraries(driver_test boost_regex)
+
+add_executable(
+    xml_tool
+	../chan/xml_tools/xml_tool.cpp 
+    ../tidy.cpp
+	)
+
+target_link_libraries(xml_tool xml2)
+target_link_libraries(xml_tool tidy)
+
+add_executable(
+    eight
+	../chan/eightchan_parser.cpp
+	../chan/ruby/eightchan_parser_main.cpp
+	../chan/rb_chan_post_multi.cpp
+)
+target_link_libraries(eight ruby20)
 
