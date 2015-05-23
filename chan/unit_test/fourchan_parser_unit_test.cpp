@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_CASE(check_parse_a_thread)
 {
 	fourchan_parser p;
 	BOOST_CHECK(
-		parse_thread_page("fourchan_thread_page.html", &p, 139));
+		parse_thread_page("fourchan_thread_page.html", &p, 108));
 }
 
 BOOST_AUTO_TEST_CASE(check_parse_threads) 
