@@ -1,11 +1,9 @@
 #include "fourchan_parser_json.hpp"
-#include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <sstream>
 
-#include <iostream>
-
-boost::property_tree::ptree parse_json(const std::string &json)
+boost::property_tree::ptree fourchan_parser_json::parse_json(
+    const std::string &json)
 {
     boost::property_tree::ptree pt;
     std::stringstream ss; 
@@ -16,7 +14,8 @@ boost::property_tree::ptree parse_json(const std::string &json)
 }
 
 /* Parse the thread ids from a threads.json page. */
-std::vector<std::string> parse_threads(const std::string &json)
+std::vector<std::string> fourchan_parser_json::parse_threads(
+    const std::string &json)
 {
     auto pt(parse_json(json));
 
@@ -31,7 +30,7 @@ std::vector<std::string> parse_threads(const std::string &json)
 }
 
 template <typename T>
-std::string sget(T &pt, const char *node)
+std::string fourchan_parser_json::sget(T &pt, const char *node)
 {
     try {
         /* https://stackoverflow.com/a/1840318 */
@@ -41,7 +40,8 @@ std::string sget(T &pt, const char *node)
     }
 }
 
-std::vector<chan_post> parse_posts(const std::string &json)
+std::vector<chan_post> fourchan_parser_json::parse_posts(
+    const std::string &json)
 {
     auto pt(parse_json(json));
 
