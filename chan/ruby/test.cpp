@@ -39,7 +39,20 @@ std::string dorb(const char *name)
     VALUE result = rb_funcall(Qnil, rb_intern("parse"), 1, 
         rb_str_new2("./test.html"));
 
-    return std::string(StringValuePtr(result));
+    int type = TYPE(result);
+    std::cout << "result " << type << std::endl;
+
+    VALUE t = rb_ary_pop(result);
+    std::cout << "t = " << TYPE(t) << std::endl;
+    ///while (TYPE(t) == T_STRING) {
+    for(;;) {
+        VALUE t = rb_ary_pop(result);
+        std::cout << "t = " << TYPE(t) << std::endl;
+        ///std::cout << std::string(StringValuePtr(t)) << std::endl;
+        ///break;
+    }
+    //return std::string(StringValuePtr(result));
+    return "";
 }
 
 int main()

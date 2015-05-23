@@ -11,5 +11,5 @@ def parse(file)
     puts test.b
 
     a = doc.xpath("(//h1)[1]")
-    return a[0]
+    return a.to_a
 end
