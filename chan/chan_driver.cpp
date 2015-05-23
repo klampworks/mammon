@@ -1,13 +1,12 @@
 #include "chan_db.hpp"
-#include "chan_db.hpp"
 #include "chan_parser.hpp"
 #include "chan_driver.hpp"
 #include "../kyukon/kyukon.hpp"
+#include "../filesystem.hpp"
 
 #include <iostream>
 #include <cassert>
-#include <sys/stat.h>
-#include <sys/types.h>
+#include <fstream>
 
 chan_driver::chan_driver(const char *table_name, chan_parser *p, 
 	std::vector<std::string> &&boards_p, const char *url) : 
@@ -23,7 +22,7 @@ chan_driver::chan_driver(const char *table_name, chan_parser *p,
 	kyukon::set_do_fillup(true, domain_id);
 		
 	/* Create a base directory for this class. */
-	create_path(std::string(table_name) + "/");
+	fs::create_path(std::string(table_name) + "/");
 	page = 0;
 	fillup();
 }
@@ -104,15 +103,15 @@ void chan_driver::process_list_page(task *tt) {
 		t->get_board().c_str(), t->get_data());
 
 	std::vector<chan_post> posts_to_add;
+	std::vector<task*> tasks_to_add;
 
 	//Referer url for requesting links on this page.
 	const std::string referer = t->get_url();
 
-	std::vector<task*> tasks_to_add;
-
 	for (const auto &thread : threads) {
 
 		if (thread.empty()) {
+            // TODO assert? Should this happen?
 			std::cout << "Empty thread!" << std::endl;
 			continue;
 		}
@@ -120,15 +119,17 @@ void chan_driver::process_list_page(task *tt) {
 		/* If the final post already exists in the db then 
 		 * skip this thread. */
 		if (chan_db::post_exists(table_name, thread.back()))
-			break;
+			continue;
 
 		if (thread.size() == 1) {
 
+            // TODO what about long text content?
+            // A preview may not be good enough.
 			posts_to_add.push_back(thread[0]);
 
 		} else if (!chan_db::post_exists(table_name, thread[1])) {
-			//We must download the whole thread since there may be 
-			//earlier posts that we do not have.
+			// We must download the whole thread since there may be 
+			// earlier posts that we do not have.
 
 			std::string url = gen_thread_url(thread[0]);
 
@@ -138,12 +139,14 @@ void chan_driver::process_list_page(task *tt) {
 
 			t->set_priority(2);
 			t->set_filepath(tt->get_filepath());
-	//		kyukon::add_task(t);
 			tasks_to_add.push_back(t);
 
 		} else {
 
 			//Iterate through the remaining replies and add them.
+            // TODO Again, trimming the previews may not be good enough.
+            // Either look for truncated posts or blindly download the full 
+            // thread each time.
 			for (unsigned i = 3; i < (thread.size() - 1); i++)
 				posts_to_add.push_back(thread[i]);
 		}
@@ -239,21 +242,40 @@ ERROR:
 	return;	
 }
 
+/* Sometimes links are relative and need extra processing. */
+std::string chan_driver::mk_file_url_value(std::string url)
+{
+    return url;
+}
+
+std::string chan_driver::mk_file_url_relative(std::string url)
+{
+	return base_url + url.substr(1);
+}
+
+std::string chan_driver::mk_file_url(std::string url)
+{
+    return mk_file_url_value(url);
+}
+
+//TODO grab_post_files
 void chan_driver::grab_post_img(
 	const chan_post &post, 
 	const std::string &referer,
 	const std::string &filepath) 
 {
 	//Not all posts have images.
-	if (post.img_url.empty())
-		return;
+	for (const auto &file_url : post.file_urls) {
 
-	chan_task *t = new chan_task(domain_id, post.img_url, referer, task::FILE, 
-		std::bind(&chan_driver::process_image, this, std::placeholders::_1), post.board);
+        auto url = mk_file_url(file_url);
+        chan_task *t = new chan_task(domain_id, url, referer, task::FILE, 
+            std::bind(&chan_driver::process_image, this, 
+                std::placeholders::_1), post.board);
 
-	t->set_filepath(filepath);
-	t->set_priority(4);	
-	kyukon::add_task(t);
+        t->set_filepath(filepath);
+        t->set_priority(4);	
+        kyukon::add_task(t);
+    }
 }
 
 void chan_driver::process_image(task *tt) {
@@ -268,55 +290,6 @@ void chan_driver::process_image(task *tt) {
 	delete tt;
 }
 
-bool chan_driver::create_path(const std::string &path)
-{
-	struct stat stat_buf;
-	int res = stat(path.c_str(), &stat_buf);
-
-	/* No errors from stat. */
-	if (!res) {
-		
-		/* What we want exists and is a directory. */
-		if (S_ISDIR(stat_buf.st_mode)) {
-			goto good;
-		}
-
-		std::cout << "Error file exists but is not a directory." 
-			<< std::endl; 
-		goto bad;
-	}
-
-	/* Path does not exist, good. */
-	if (errno == ENOENT) {
-		if (!mkdir(path.c_str(), 0777)) {
-			goto good;
-		} else {
-			std::cout << "Error creating directory: " << 
-			errno << std::endl;
-			goto bad;
-		}
-	}
-
-	std::cout << "Stat error " << errno << std::endl;
-	goto bad;
-
-	good:
-		return true;
-	bad:
-		return false;
-}
-
-std::string chan_driver::create_path()
-{
-	std::string path(table_name);
-	path += "/" + boards[board] + "/";  
-
-	if (create_path(path.c_str()))
-		return path;
-	else
-		return "";
-}
-
 /*
  * Generate a URL for a thread.
  */
@@ -329,64 +302,12 @@ std::string chan_driver::gen_thread_url(
 	return base_url + op.board + "/res/" + op.thread_id;
 }
 
-void chan_driver::unique_fn(std::string &fn)
-{
-	struct stat sb;
-	std::string original(fn);
-	int post = 0; 
-
-	for (;;) {
-
-		int res = stat(fn.c_str(), &sb);
-
-
-		if (res == -1) {
-			if (errno == ENOENT) { 
-
-				/* File does not exist, good. */
-				return;
-			}
-
-			std::cout << "Stat failed for file <" << fn 
-				<< "> because " << strerror(errno) << 
-				" HTML was probably not dumped." 
-				<< std::endl;
-			return;
-		}
-
-		/* Prevent integer overflow from leading to an infinit loop. */
-		if (post < INT_MAX)
-			++post;
-		else
-			return;
-			/* If you have 4 billion files with the same name, 
-			 * overwriting the last one is the least of your 
-			 * problems.*/
-
-		fn = original + "_" + std::to_string(post);
-	}
-}
-
-#include <fstream>
 void chan_driver::dump_html(std::string path, const chan_task *t)
 {
-	if (!path.empty()) {
-		
-		/* Make sure the path ends with a forward slash. */
-		if (path.rfind("/") + 1 != path.size())
-			path += "/";
+	if (!path.empty() && !fs::create_path(path))
+            path = "";
 
-		if (mkdir(path.c_str(), 0777)) {
-			if (errno == EEXIST) {
-				/* TODO Make sure it is a writable directory. */
-			} else {
-				/* Some other error. */
-				std::cout << "Error, could not create "
-				"file path <" << path << ">" << std::endl;
-				path = "";
-			}
-		}
-	}
+    fs::append_slash(path);
 
 	std::string fp;
 	size_t st = t->get_url().rfind('/');
@@ -408,10 +329,21 @@ void chan_driver::dump_html(std::string path, const chan_task *t)
 		fp = "mangled_url";
 	}
 
-	unique_fn(fp);
+	fs::unique_fn(fp);
 
 	std::ofstream ofs;
 	ofs.open(fp);
 	ofs << t->get_data();
 	ofs.close();
+}
+
+std::string chan_driver::create_path()
+{
+    std::string path(table_name);
+    path += "/" + boards[board] + "/";  
+
+    if (fs::create_path(path.c_str()))
+        return path;
+    else
+        return "";
 }

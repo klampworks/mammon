@@ -27,7 +27,7 @@ void quit(int)
 
 	/* TODO Fix that weird deadlock situation. */
 	std::this_thread::sleep_for(std::chrono::seconds(60));
-	return 0;
+	exit(0);
 }
 
 int main(int argc, char **argv) 

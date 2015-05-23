@@ -11,19 +11,8 @@ wakachan_driver::~wakachan_driver()
 	delete parser;
 }
 
-void wakachan_driver::grab_post_img(const chan_post &post, 
-	const std::string &referer) 
+/* Sometimes links are relative and need extra processing. */
+std::string wakachan_driver::mk_file_url(std::string url)
 {
-
-	//Not all posts have images.
-	if (post.img_url.empty())
-		return;
-
-	std::string url = base_url + post.img_url.substr(1);
-
-	chan_task *t = new chan_task(domain_id, url, referer, task::FILE, 
-		std::bind(&chan_driver::process_image, this, std::placeholders::_1), post.board);
-
-	t->set_priority(4);	
-	kyukon::add_task(t);
+    return mk_file_url_relative(url);
 }

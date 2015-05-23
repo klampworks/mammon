@@ -23,3 +23,16 @@ a.out
 *.flv
 *.swf
 *.tar.*
+*.plist
+
+build/tmp/*
+chan/build/*
+*.old
+confuse_ex/
+cscope.out
+debug/
+kyukon/
+pugi_lib
+pugi_tests/pugi_lib/
+test/pugi_lib
+

@@ -23,6 +23,7 @@ BOOST_AUTO_TEST_CASE(create_file)
 	chdir("/tmp/mammon");
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(constructor) 
 {	
 	std::vector<std::string> k;
@@ -33,7 +34,9 @@ BOOST_AUTO_TEST_CASE(constructor)
 	BOOST_CHECK(!res);
 	BOOST_CHECK(S_ISDIR(stat_buf.st_mode));
 }
+#endif
 
+#if 0
 BOOST_AUTO_TEST_CASE(create_dir) 
 {	
 	std::vector<std::string> k({"tmp"});;
@@ -43,8 +46,19 @@ BOOST_AUTO_TEST_CASE(create_dir)
 	BOOST_CHECK(!t.empty());
 	BOOST_CHECK(t == "desuchan/tmp/");
 }
+#endif
 
 BOOST_AUTO_TEST_CASE(cleanup) 
 {
 	BOOST_CHECK(!system("rm -rf /tmp/mammon"));
+}
+
+BOOST_AUTO_TEST_CASE(create_dir) 
+{	
+	std::vector<std::string> k({"tmp"});;
+	desuchan_driver d(std::move(k));
+	std::string t(d.create_path());
+
+	BOOST_CHECK(!t.empty());
+	BOOST_CHECK(t == "desuchan/tmp/");
 }

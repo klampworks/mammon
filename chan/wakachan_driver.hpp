@@ -7,6 +7,6 @@ struct wakachan_driver : public chan_driver {
 
 	wakachan_driver(std::vector<std::string>&&);
 	~wakachan_driver();
-	void grab_post_img(const chan_post&, const std::string&);
+    std::string mk_file_url(std::string url);
 };
 #endif
