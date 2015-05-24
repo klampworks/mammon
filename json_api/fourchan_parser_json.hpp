@@ -14,6 +14,14 @@ struct chan_post {
     {
         filename = tim + ext;
     }
+
+    bool operator==(const chan_post &other) const
+    {
+        return this->id == other.id 
+            && this->sub == other.sub
+            && this->filename == other.filename
+            && this->com == other.com;
+    }
 };
 
 class fourchan_parser_json {
