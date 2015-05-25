@@ -47,21 +47,31 @@ std::vector<std::string> read_file_vector(const char *filename)
     }
 
 #include <iostream>
-#include <boost/algorithm/string.hpp> // include Boost, a C++ library
-void mkgold(const std::vector<chan_post> &posts)
+#include <fstream>
+
+#include <boost/algorithm/string.hpp> 
+void mkgold(
+    const char *filename, 
+    const std::vector<chan_post> &posts,
+    const char *name)
 {
-    std::cout << "std::vector<chan_post>({" << std::endl;
+    std::ofstream ofs;
+    ofs.open(filename);
+    ofs << "#pragma once\n";
+    ofs << "namespace golden {\n";
+
+    ofs << "const std::vector<chan_post> " << name << "({\n";
     for (const auto &r : posts) {
         auto t = r.com;
         boost::replace_all(t, "\"", "\\\"");
 
-        std::cout << "{\"" << r.id << "\",\n"
+        ofs << "{\"" << r.id << "\",\n"
         << "\"" << r.sub << "\",\n"
         << "\"" << t << "\",\n"
-        << "\"" << r.filename << "\"}," << std::endl;
+        << "\"" << r.filename << "\"},\n";
     }
-    std::cout << "});" << std::endl;
-
+    ofs << "});\n";
+    ofs << "} //namespace";
 }
 
 BOOST_AUTO_TEST_CASE(parse_threads) 
@@ -90,5 +100,6 @@ BOOST_AUTO_TEST_CASE(parse_posts)
     fourchan_parser_json p;
     auto res = p.parse_posts(json);
 
-    CHECK_VECTOR(res, posts_g);
+//    mkgold("47962086.json.g.hpp", res, "posts_g");
+    CHECK_VECTOR(res, golden::posts_g);
 }
