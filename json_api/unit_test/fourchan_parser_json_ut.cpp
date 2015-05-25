@@ -5,7 +5,9 @@
 #include <functional>
 
 template <typename T>
-T read_file(const char *filename, std::function<void(T&, const std::string&)> fn)
+T read_file(   
+    const char *filename, 
+    std::function<void(T&, const std::string&)> fn)
 {
     std::ifstream ifs;
     ifs.open(filename);
@@ -33,6 +35,16 @@ std::vector<std::string> read_file_vector(const char *filename)
         [](std::vector<std::string> &col, const std::string &line) {
             col.push_back(line); });
 }
+
+#define CHECK_VECTOR(a, b) \
+    { \
+    BOOST_REQUIRE_MESSAGE(a.size() == b.size(), \
+        "Length mismatch, vector one has " << a.size() << " item(s) and " \
+        "vector two has " << b.size() << " item(s)."); \
+    if (a.size() == b.size()) \
+        for (size_t i = 0; i < a.size(); ++i) \
+            BOOST_CHECK(a[i] == b[i]); \
+    }
 
 #include <iostream>
 #include <boost/algorithm/string.hpp> // include Boost, a C++ library
@@ -64,11 +76,7 @@ BOOST_AUTO_TEST_CASE(parse_threads)
 
     auto g = read_file_vector(golden_file);
 
-    BOOST_REQUIRE_MESSAGE(res.size() == g.size(), 
-        "Length mismatch, vector one has " << res.size() << " item(s) and "
-        "vector two has " << g.size() << " item(s).");
-    for (size_t i = 0; i < res.size(); ++i)
-        BOOST_CHECK(res[i] == g[i]);
+    CHECK_VECTOR(res, g);
 }
 
 BOOST_AUTO_TEST_CASE(parse_posts)
@@ -82,10 +90,5 @@ BOOST_AUTO_TEST_CASE(parse_posts)
     fourchan_parser_json p;
     auto res = p.parse_posts(json);
 
-    BOOST_REQUIRE_MESSAGE(res.size() == posts_g.size(), 
-        "Length mismatch, vector one has " << res.size() << " item(s) and "
-        "vector two has " << posts_g.size() << " item(s).");
-    for (size_t i = 0; i < res.size(); ++i)
-        BOOST_CHECK(res[i] == posts_g[i]);
-    
+    CHECK_VECTOR(res, posts_g);
 }
