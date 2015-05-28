@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ptree_fwd.hpp>
 
 struct chan_post {
     std::string id;
