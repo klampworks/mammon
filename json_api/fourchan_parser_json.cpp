@@ -17,9 +17,15 @@ boost::property_tree::ptree fourchan_parser_json::parse_json(
 std::vector<std::string> fourchan_parser_json::parse_threads(
     const std::string &json)
 {
-    auto pt(parse_json(json));
-
     std::vector<std::string> ret;
+    boost::property_tree::ptree pt;
+
+    try {
+        pt = (parse_json(json));
+    } catch (...) {
+        return ret;
+    }
+
     for (const auto &v : pt) {
         for (const auto &w : v.second.get_child("threads")) {
             ret.push_back(w.second.get<std::string>("no"));
@@ -43,9 +49,15 @@ std::string fourchan_parser_json::sget(T &pt, const char *node)
 std::vector<chan_post> fourchan_parser_json::parse_posts(
     const std::string &json)
 {
-    auto pt(parse_json(json));
-
     std::vector<chan_post> ret;
+    boost::property_tree::ptree pt;
+
+    try {
+        pt = (parse_json(json));
+    } catch (...) {
+        return ret;
+    }
+
     for (const auto &v : pt.get_child("posts")) {
 
         chan_post cp;
