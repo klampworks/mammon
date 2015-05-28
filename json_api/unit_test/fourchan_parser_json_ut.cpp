@@ -40,3 +40,33 @@ BOOST_AUTO_TEST_CASE(parse_invalid_posts_1)
     std::vector<chan_post> g;
     CHECK_VECTOR(res, g);
 }
+
+BOOST_AUTO_TEST_CASE(parse_invalid_posts_2)
+{
+    const std::string json("");
+    fourchan_parser_json p;
+    auto res = p.parse_posts(json);
+
+    std::vector<chan_post> g;
+    CHECK_VECTOR(res, g);
+}
+
+BOOST_AUTO_TEST_CASE(parse_invalid_threads_1)
+{
+    const std::string json("null");
+    fourchan_parser_json p;
+    auto res = p.parse_threads(json);
+
+    std::vector<std::string> g;
+    CHECK_VECTOR(res, g);
+}
+
+BOOST_AUTO_TEST_CASE(parse_invalid_threads_2)
+{
+    const std::string json("");
+    fourchan_parser_json p;
+    auto res = p.parse_threads(json);
+
+    std::vector<std::string> g;
+    CHECK_VECTOR(res, g);
+}
