@@ -5,11 +5,17 @@
 #include <boost/property_tree/ptree_fwd.hpp>
 
 struct chan_post {
+    std::string thread_id;
     std::string id;
     std::string sub;
     std::string com;
     std::string filename;
 
+    /* Constructor for golden output unit tests. */
+    chan_post(std::string id, std::string sub, 
+        std::string com, std::string filename) :
+            thread_id("0"), id(id), sub(sub), com(com), filename(filename)
+    {}
     void set_filename(std::string tim, std::string ext)
     {
         filename = tim + ext;
