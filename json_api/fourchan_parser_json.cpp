@@ -61,11 +61,12 @@ std::vector<chan_post> fourchan_parser_json::parse_posts(
 
     for (const auto &v : pt.get_child("posts")) {
 
-        chan_post cp = proto;
-        cp.id = v.second.get<std::string>("no");
-        cp.sub = sget(v, "sub");
-        cp.com = sget(v, "com");
-        cp.set_filename(sget(v, "tim"), sget(v, "ext"));
+        chan_post cp = proto.finish(
+            v.second.get<std::string>("no"),
+            sget(v, "sub"),
+            sget(v, "com"),
+            sget(v, "tim"), 
+            sget(v, "ext"));
         ret.push_back(cp);
     }
 
