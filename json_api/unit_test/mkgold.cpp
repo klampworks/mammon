@@ -22,7 +22,9 @@ void mkgold_chan_posts(
         auto t = r.com;
         boost::replace_all(t, "\"", "\\\"");
 
-        ofs << "{\"" << r.id << "\",\n"
+        ofs  
+        << "{\"" << r.thread_id << "\",\n"
+        << "\"" << r.id << "\",\n"
         << "\"" << r.sub << "\",\n"
         << "\"" << t << "\",\n"
         << "\"" << r.filename << "\"},\n";
@@ -37,7 +39,7 @@ void mkgold_parse_chan_posts()
     auto json = common_ut::read_file_string(input_file.c_str());
 
     fourchan_parser_json p;
-    auto res = p.parse_posts(json);
+    auto res = p.parse_posts(json, chan_post("666"));
 
     mkgold_chan_posts(std::string(input_file + ".g.hpp").c_str(), res, "posts_g");
 }
