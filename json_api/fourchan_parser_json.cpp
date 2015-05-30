@@ -47,7 +47,8 @@ std::string fourchan_parser_json::sget(T &pt, const char *node)
 }
 
 std::vector<chan_post> fourchan_parser_json::parse_posts(
-    const std::string &json)
+    const std::string &json,
+    const chan_post proto)
 {
     std::vector<chan_post> ret;
     boost::property_tree::ptree pt;
@@ -60,7 +61,7 @@ std::vector<chan_post> fourchan_parser_json::parse_posts(
 
     for (const auto &v : pt.get_child("posts")) {
 
-        chan_post cp;
+        chan_post cp = proto;
         cp.id = v.second.get<std::string>("no");
         cp.sub = sget(v, "sub");
         cp.com = sget(v, "com");

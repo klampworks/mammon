@@ -38,7 +38,8 @@ struct chan_post {
 class fourchan_parser_json {
     public:
         std::vector<std::string> parse_threads(const std::string &json);
-        std::vector<chan_post> parse_posts(const std::string &json);
+        std::vector<chan_post> parse_posts(const std::string &json, 
+            const chan_post=chan_post("0"));
     protected:
         boost::property_tree::ptree parse_json(const std::string &json);
 
