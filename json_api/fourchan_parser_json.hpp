@@ -16,6 +16,11 @@ struct chan_post {
         std::string com, std::string filename) :
             thread_id("0"), id(id), sub(sub), com(com), filename(filename)
     {}
+    
+    chan_post(std::string thread_id) :
+        thread_id(thread_id)
+    {}
+
     void set_filename(std::string tim, std::string ext)
     {
         filename = tim + ext;
