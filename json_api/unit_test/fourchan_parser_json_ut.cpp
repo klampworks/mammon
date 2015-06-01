@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(parse_posts)
     auto json = common_ut::read_file_string(input_file);
 
     fourchan_parser_json p;
-    auto res = p.parse_posts(json, chan_post("666"));
+    auto res = p.parse_posts(json, chan_post("x", "666"));
 
     CHECK_VECTOR(res, golden::posts_g);
 }

@@ -5,6 +5,7 @@
 #include <boost/property_tree/ptree_fwd.hpp>
 
 struct chan_post {
+    std::string board;
     std::string thread_id;
     std::string id;
     std::string sub;
@@ -12,22 +13,17 @@ struct chan_post {
     std::string filename;
 
     /* Constructor for golden output unit tests. */
-    chan_post(std::string thread_id, std::string id, std::string sub, 
-        std::string com, std::string filename) :
-            thread_id(thread_id), id(id), sub(sub), com(com), filename(filename)
+    chan_post(std::string board, std::string thread_id, std::string id, 
+        std::string sub, std::string com, std::string filename) :
+            board(board), thread_id(thread_id), id(id), sub(sub), 
+                com(com), filename(filename)
     {}
 
     /* Constructor for partially constructing a post and using it as a prototype
-     * to base over posts on (i.e. members of the same thread. 
+     * to base other posts on (i.e. members of the same thread. 
      */
-    chan_post(std::string thread_id) :
-        thread_id(thread_id)
-    {}
-
-    chan_post(std::string thread_id, std::string id, std::string sub, 
-        std::string com, std::string tim, std::string ext) :
-            thread_id(thread_id), id(id), sub(sub), com(com), 
-            filename(mk_filename(tim, ext))
+    chan_post(std::string board, std::string thread_id) :
+        board(board), thread_id(thread_id)
     {}
 
     chan_post finish(std::string id, std::string sub, 
@@ -65,7 +61,7 @@ class fourchan_parser_json {
     public:
         std::vector<std::string> parse_threads(const std::string &json);
         std::vector<chan_post> parse_posts(const std::string &json, 
-            const chan_post=chan_post("0"));
+            const chan_post=chan_post("_", "0"));
     protected:
         boost::property_tree::ptree parse_json(const std::string &json);
 
