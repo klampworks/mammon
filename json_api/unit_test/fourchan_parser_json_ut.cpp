@@ -2,6 +2,7 @@
 #include "../../chan/unit_test/but.hpp"
 #include "../fourchan_parser_json.hpp"
 #include "common_ut.hpp"
+#include "../chan_post.hpp"
 
 BOOST_AUTO_TEST_CASE(parse_threads) 
 {

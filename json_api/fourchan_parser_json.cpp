@@ -1,6 +1,7 @@
 #include "fourchan_parser_json.hpp"
 #include <boost/property_tree/json_parser.hpp>
 #include <sstream>
+#include "chan_post.hpp"
 
 boost::property_tree::ptree fourchan_parser_json::parse_json(
     const std::string &json)

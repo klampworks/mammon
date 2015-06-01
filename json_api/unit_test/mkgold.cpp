@@ -3,6 +3,7 @@
 #include <vector>
 #include "../fourchan_parser_json.hpp"
 #include "common_ut.hpp"
+#include "../chan_post.hpp"
 
 /* TODO This could be a template with a chan_post member function to print out
  * its own fields. Would need a way of printing out the class name too.
