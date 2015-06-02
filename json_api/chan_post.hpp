@@ -40,4 +40,5 @@ public:
     std::string get_sub() const;
     std::string get_com() const;
     std::string get_filename() const;
+	void print() const;
 };

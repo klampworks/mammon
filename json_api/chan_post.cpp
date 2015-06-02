@@ -60,3 +60,12 @@ std::string chan_post::get_filename() const
 {
     return filename;
 }
+
+#include <iostream>
+void chan_post::print() const {
+    std::cout 
+        << "Board = " << get_board() << "\n"
+        << "Thread_id = " << get_thread_id() << "\n"
+        << "Post_id = " << get_id() << "\n"
+        << "Content = " << get_com().substr(0, 160) << std::endl;
+}
