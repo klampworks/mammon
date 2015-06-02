@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     auto posts = p.parse_posts(s);
 
     for (const auto &post : posts)
-        std::cout << post.id << std::endl;
+        std::cout << post.get_id() << std::endl;
     /*
     auto threads = parse_threads(s);
     for (const auto &thread : threads)

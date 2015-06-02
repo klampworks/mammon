@@ -20,16 +20,16 @@ void mkgold_chan_posts(
 
     ofs << "const std::vector<chan_post> " << name << "({\n";
     for (const auto &r : posts) {
-        auto t = r.com;
+        auto t = r.get_com();
         boost::replace_all(t, "\"", "\\\"");
 
         ofs  
-        << "{\"" << r.board << "\",\n"
-        << "\"" << r.thread_id << "\",\n"
-        << "\"" << r.id << "\",\n"
-        << "\"" << r.sub << "\",\n"
+        << "{\"" << r.get_board() << "\",\n"
+        << "\"" << r.get_thread_id() << "\",\n"
+        << "\"" << r.get_id() << "\",\n"
+        << "\"" << r.get_sub() << "\",\n"
         << "\"" << t << "\",\n"
-        << "\"" << r.filename << "\"},\n";
+        << "\"" << r.get_filename() << "\"},\n";
     }
     ofs << "});\n";
     ofs << "} //namespace";
