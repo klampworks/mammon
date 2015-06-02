@@ -6,18 +6,21 @@ project(mammon)
 add_executable(
     json_test
     main.cpp
+    chan_post.cpp
     fourchan_parser_json.cpp)
 
 add_executable(
     fourchan_parser_json_ut
     unit_test/fourchan_parser_json_ut.cpp
     unit_test/common_ut.cpp
+    chan_post.cpp
     fourchan_parser_json.cpp)
 
 add_executable(
     mkgold
     unit_test/mkgold.cpp
     unit_test/common_ut.cpp
+    chan_post.cpp
     fourchan_parser_json.cpp)
 
 find_package(Doxygen)
