@@ -2,13 +2,13 @@
 #include <string>
 
 chan_post chan_post::finish(std::string id, std::string sub, 
-    std::string com, std::string tim, std::string ext) const
+    std::string com, std::vector<std::string> filenames) const
 {
     chan_post ret = *this;
     ret.id = id;
     ret.sub = sub;
     ret.com = com;
-    ret.filename = mk_filename(tim, ext);
+    ret.filenames = filenames;
     return ret;
 }
 
@@ -16,7 +16,7 @@ bool chan_post::operator==(const chan_post &other) const
 {
     return this->id == other.id 
         && this->sub == other.sub
-        && this->filename == other.filename
+        //&& this->filename == other.filename
         && this->thread_id == other.thread_id
         && this->com == other.com;
 }
@@ -24,11 +24,6 @@ bool chan_post::operator==(const chan_post &other) const
 std::string chan_post::mk_filename(std::string tim, std::string ext)
 {
     return tim + ext;
-}
-
-void chan_post::set_filename(std::string tim, std::string ext)
-{
-    filename = mk_filename(tim, ext);
 }
 
 std::string chan_post::get_board() const
@@ -56,9 +51,9 @@ std::string chan_post::get_com() const
     return com;
 }
 
-std::string chan_post::get_filename() const
+std::vector<std::string> chan_post::get_filenames() const
 {
-    return filename;
+    return filenames;
 }
 
 #include <iostream>

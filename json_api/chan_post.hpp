@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 class chan_post {
     std::string board;
@@ -8,14 +9,14 @@ class chan_post {
     std::string id;
     std::string sub;
     std::string com;
-    std::string filename;
+    std::vector<std::string> filenames;
 
 public:
     /* Constructor for golden output unit tests. */
     chan_post(std::string board, std::string thread_id, std::string id, 
-        std::string sub, std::string com, std::string filename) :
+        std::string sub, std::string com, std::vector<std::string> filenames) :
             board(board), thread_id(thread_id), id(id), sub(sub), 
-                com(com), filename(filename)
+                com(com), filenames(filenames)
     {}
 
     /* Constructor for partially constructing a post and using it as a prototype
@@ -26,19 +27,17 @@ public:
     {}
 
     chan_post finish(std::string id, std::string sub, 
-        std::string com, std::string tim, std::string ext) const;
+        std::string com, std::vector<std::string> filenames) const;
 
     bool operator==(const chan_post &other) const;
 
     static std::string mk_filename(std::string tim, std::string ext);
-
-    void set_filename(std::string tim, std::string ext);
 
     std::string get_board() const;
     std::string get_thread_id() const;
     std::string get_id() const;
     std::string get_sub() const;
     std::string get_com() const;
-    std::string get_filename() const;
+    std::vector<std::string> get_filenames() const;
 	void print() const;
 };

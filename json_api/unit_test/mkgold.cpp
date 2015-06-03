@@ -29,7 +29,11 @@ void mkgold_chan_posts(
         << "\"" << r.get_id() << "\",\n"
         << "\"" << r.get_sub() << "\",\n"
         << "\"" << t << "\",\n"
-        << "\"" << r.get_filename() << "\"},\n";
+        << "{\n";
+        for (const auto &a : r.get_filenames()) {
+            ofs << "\"" << a << "\",\n";
+        }
+        ofs << "}},\n";
     }
     ofs << "});\n";
     ofs << "} //namespace";

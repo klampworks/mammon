@@ -66,8 +66,8 @@ std::vector<chan_post> fourchan_parser_json::parse_posts(
             v.second.get<std::string>("no"),
             sget(v, "sub"),
             sget(v, "com"),
-            sget(v, "tim"), 
-            sget(v, "ext"));
+            {chan_post::mk_filename(sget(v, "tim"), sget(v, "ext"))});
+
         ret.push_back(cp);
     }
 
