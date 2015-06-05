@@ -17,6 +17,16 @@ add_executable(
     fourchan_parser_json.cpp)
 
 add_executable(
+    chan_db_ut
+    unit_test/chan_db_ut.cpp
+    unit_test/common_ut.cpp
+    chan_db.cpp
+    ../base_db.cpp
+    chan_post.cpp
+    )
+target_link_libraries(chan_db_ut sqlite3)
+
+add_executable(
     mkgold
     unit_test/mkgold.cpp
     unit_test/common_ut.cpp
