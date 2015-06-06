@@ -47,5 +47,5 @@ bool chan_db::post_exists(const chan_post &cp)
     const std::string res = base_db::lookup_single_value(
         query.c_str(), std::vector<std::string>({cp.get_board(), cp.get_id()}));
 
-    return res.empty();
+    return !res.empty();
 }
