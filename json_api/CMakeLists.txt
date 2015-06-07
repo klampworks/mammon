@@ -27,6 +27,14 @@ add_executable(
 target_link_libraries(chan_db_ut sqlite3)
 
 add_executable(
+    kon_ut
+    unit_test/kon_ut.cpp
+    kyukon/kon.cpp
+    kyukon/task.cpp
+    )
+target_link_libraries(kon_ut curl)
+
+add_executable(
     mkgold
     unit_test/mkgold.cpp
     unit_test/common_ut.cpp
