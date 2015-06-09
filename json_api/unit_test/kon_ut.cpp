@@ -13,7 +13,9 @@ BOOST_AUTO_TEST_CASE(grab_wiki_page)
     k.grab(&t);
 
     const std::string gold("<title>Mammon - Wikipedia, the free encyclopedia</title>");
-    BOOST_CHECK(t.get_data().find(gold) != std::string::npos);
+
+    /* Should fail with firewall. */
+    BOOST_CHECK(t.get_data().find(gold) == std::string::npos);
 }
 
 BOOST_AUTO_TEST_CASE(grab_wiki_page_tor) 
@@ -26,5 +28,5 @@ BOOST_AUTO_TEST_CASE(grab_wiki_page_tor)
     k.grab(&t);
 
     const std::string gold("<title>Mammon - Wikipedia, the free encyclopedia</title>");
-    BOOST_CHECK(t.get_data().find(gold) != std::string::npos);
+    BOOST_CHECK_MESSAGE(t.get_data().find(gold) != std::string::npos, t.get_data());
 }
