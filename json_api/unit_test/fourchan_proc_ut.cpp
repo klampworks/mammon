@@ -10,3 +10,12 @@ BOOST_AUTO_TEST_CASE(file_url)
     BOOST_CHECK_MESSAGE(got == expected, 
         "Expected <" << expected << "> but got <" << "got <" << got << ">");
 }
+
+BOOST_AUTO_TEST_CASE(thread_url) 
+{
+    const auto expected = "http://a.4cdn.org/x/1234.json";
+    const auto got = fourchan_proc::mk_thread_url("x", "1234");
+
+    BOOST_CHECK_MESSAGE(got == expected, 
+        "Expected <" << expected << "> but got <" << "got <" << got << ">");
+}
