@@ -35,6 +35,12 @@ add_executable(
 target_link_libraries(kon_ut curl)
 
 add_executable(
+    fourchan_proc_ut
+    fourchan_proc.cpp
+    unit_test/fourchan_proc_ut.cpp
+    )
+
+add_executable(
     mkgold
     unit_test/mkgold.cpp
     unit_test/common_ut.cpp
