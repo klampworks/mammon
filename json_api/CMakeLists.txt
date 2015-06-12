@@ -34,11 +34,11 @@ add_executable(
     )
 target_link_libraries(kon_ut curl)
 
-add_executable(
-    fourchan_proc_ut
-    fourchan_proc.cpp
-    unit_test/fourchan_proc_ut.cpp
-    )
+#add_executable(
+#    fourchan_proc_ut
+#    fourchan_proc.cpp
+#    unit_test/fourchan_proc_ut.cpp
+#    )
 
 add_executable(
     mkgold
@@ -46,6 +46,20 @@ add_executable(
     unit_test/common_ut.cpp
     chan_post.cpp
     fourchan_parser_json.cpp)
+
+add_executable(
+    fourchan_test
+    fourchan_test.cpp
+    fourchan_proc.cpp
+    kyukon/kon.cpp
+    kyukon/task.cpp
+    chan_db.cpp
+    ../base_db.cpp
+    fourchan_parser_json.cpp
+    chan_post.cpp
+    fourchan_parser_json.cpp)
+target_link_libraries(fourchan_test sqlite3)
+target_link_libraries(fourchan_test curl)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
