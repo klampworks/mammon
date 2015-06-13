@@ -15,7 +15,8 @@ std::string fourchan_proc::mk_file_url(const std::string b, const std::string fi
 std::string fourchan_proc::mk_thread_url(const std::string b, 
     const std::string thread_id)
 {
-    return "http://" + text_sub + "." + domain + "/" + b + "/" + thread_id + ".json";
+    return "http://" + text_sub + "." + domain + "/" + b 
+        + "/thread/" + thread_id + ".json";
 }
 
 std::string fourchan_proc::mk_board_url(const std::string b)
