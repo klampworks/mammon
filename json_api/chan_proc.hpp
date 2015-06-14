@@ -5,7 +5,7 @@
 #include "kyukon/kon.hpp"
 #include "chan_db.hpp"
 
-class fourchan_proc {
+class chan_proc {
 
     static std::string domain;
     static std::string text_sub;
@@ -23,5 +23,5 @@ class fourchan_proc {
         static std::string mk_board_url(const std::string b);
 
         bool proc_board(const std::string board);
-        fourchan_proc();
+        chan_proc();
 };

@@ -1,38 +1,39 @@
-#include "fourchan_proc.hpp"
+#include "chan_proc.hpp"
 #include "kyukon/task.hpp"
 #include "kyukon/kon.hpp"
 
-std::string fourchan_proc::domain = "4cdn.org";
-std::string fourchan_proc::text_sub = "a";
-std::string fourchan_proc::file_sub = "i";
+std::string chan_proc::domain = "4cdn.org";
+//std::string chan_proc::domain = "fullchan4jtta4sx.onion";
+std::string chan_proc::text_sub = "a";
+std::string chan_proc::file_sub = "i";
 
 
-std::string fourchan_proc::mk_file_url(const std::string b, const std::string filename)
+std::string chan_proc::mk_file_url(const std::string b, const std::string filename)
 {
     return "http://" + file_sub + "." + domain + "/" + b + "/" + filename;
 }
 
-std::string fourchan_proc::mk_thread_url(const std::string b, 
+std::string chan_proc::mk_thread_url(const std::string b, 
     const std::string thread_id)
 {
     return "http://" + text_sub + "." + domain + "/" + b 
         + "/thread/" + thread_id + ".json";
 }
 
-std::string fourchan_proc::mk_board_url(const std::string b)
+std::string chan_proc::mk_board_url(const std::string b)
 {
     return "http://" + text_sub + "." + domain + "/" + b + "/threads.json";
 }
 
 #include <iostream>
-bool fourchan_proc::proc_board(const std::string board)
+bool chan_proc::proc_board(const std::string board)
 {
-    auto board_url = fourchan_proc::mk_board_url(board);
+    auto board_url = chan_proc::mk_board_url(board);
     std::cout << "Processing " << board_url << std::endl;
 
 	auto t = task(1, 
         board_url, 
-        "http://" + fourchan_proc::domain, task::STRING, nullptr);
+        "http://" + chan_proc::domain, task::STRING, nullptr);
 
     k.grab(&t);
 
@@ -73,7 +74,7 @@ bool fourchan_proc::proc_board(const std::string board)
                     continue;
 
                 std::cout << "Porcessing file " << filename << std::endl;
-                auto file_url = fourchan_proc::mk_file_url(board, filename);
+                auto file_url = chan_proc::mk_file_url(board, filename);
                 auto file_task = task(1, 
                     file_url, 
                     thread_task.get_url(), task::FILE, nullptr);
@@ -89,4 +90,4 @@ bool fourchan_proc::proc_board(const std::string board)
     return true;
 }
 
-fourchan_proc::fourchan_proc() : k("127.0.0.1:9050", true), db("fourchan") {}
+chan_proc::chan_proc() : k("127.0.0.1:9050", true), db("chan") {}

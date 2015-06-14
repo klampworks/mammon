@@ -50,7 +50,7 @@ add_executable(
 add_executable(
     fourchan_test
     fourchan_test.cpp
-    fourchan_proc.cpp
+    chan_proc.cpp
     kyukon/kon.cpp
     kyukon/task.cpp
     chan_db.cpp
