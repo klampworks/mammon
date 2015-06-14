@@ -68,6 +68,10 @@ bool fourchan_proc::proc_board(const std::string board)
 
             for (const auto &filename : post.get_filenames()) {
 
+                // Not every post has an attached file,
+                if (filename.empty())
+                    continue;
+
                 std::cout << "Porcessing file " << filename << std::endl;
                 auto file_url = fourchan_proc::mk_file_url(board, filename);
                 auto file_task = task(1, 
