@@ -2,12 +2,13 @@
 
 #include <string>
 #include <vector>
+#include "chan_parser.hpp"
 #include <boost/property_tree/ptree_fwd.hpp>
 
 /* Default argument cannot be forward declared. */
 #include "chan_post.hpp"
 
-class fourchan_parser_json {
+class fourchan_parser_json : public chan_parser {
     public:
         std::vector<std::string> parse_threads(const std::string &json);
         std::vector<chan_post> parse_posts(const std::string &json, 
