@@ -7,9 +7,10 @@
 
 class chan_proc {
 
-    fourchan_parser_json p;
-    kon k;
-    chan_db db;
+    protected:
+        kon k;
+        chan_db db;
+        chan_parser *p;
 
     public:
         virtual std::string mk_file_url(const std::string b, 
@@ -20,5 +21,6 @@ class chan_proc {
 
         bool proc_board(const std::string board);
         chan_proc();
-        chan_proc(kon k, chan_db db);
+        chan_proc(kon k, chan_db db, chan_parser *p);
+        virtual ~chan_proc();
 };

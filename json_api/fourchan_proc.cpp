@@ -28,4 +28,5 @@ std::string fourchan_proc::mk_board_url(const std::string b)
 }
 
 fourchan_proc::fourchan_proc() : 
-    chan_proc(kon("127.0.0.1:9050", true), chan_db("fourchan")) {}
+    chan_proc(kon("127.0.0.1:9050", true), chan_db("fourchan"), 
+    p=new fourchan_parser_json()) {}

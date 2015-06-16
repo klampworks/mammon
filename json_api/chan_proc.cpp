@@ -16,7 +16,7 @@ bool chan_proc::proc_board(const std::string board)
 
     k.grab(&t);
 
-    auto thread_ids = p.parse_threads(t.get_data());
+    auto thread_ids = p->parse_threads(t.get_data());
     if (thread_ids.empty()) {
         std::cout << "No thread ids!" << std::endl;
         //Bad thigns
@@ -33,7 +33,7 @@ bool chan_proc::proc_board(const std::string board)
             t.get_url(), task::STRING, nullptr);
 
         k.grab(&thread_task);
-        auto posts = p.parse_posts(thread_task.get_data(), chan_post(board, thread_id));
+        auto posts = p->parse_posts(thread_task.get_data(), chan_post(board, thread_id));
 
         if (posts.empty()) {
             std::cout << "No posts!" << std::endl;
@@ -69,5 +69,12 @@ bool chan_proc::proc_board(const std::string board)
     return true;
 }
 
-chan_proc::chan_proc(kon k, chan_db db) : k(k), db(db) {}
-chan_proc::chan_proc() : chan_proc(kon("127.0.0.1:9050", true), chan_db("chan")) {}
+chan_proc::chan_proc(kon k, chan_db db, chan_parser *p) : k(k), db(db), p(p) {}
+
+chan_proc::chan_proc() 
+    : chan_proc(kon("127.0.0.1:9050", true), chan_db("chan"), nullptr) {}
+
+chan_proc::~chan_proc()
+{
+    delete p;
+}
