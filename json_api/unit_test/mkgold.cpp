@@ -41,7 +41,7 @@ void mkgold_chan_posts(
 
 void mkgold_parse_chan_posts()
 {
-    const std::string input_file = "47962086.json";
+    const std::string input_file = "3343928.json";
     auto json = common_ut::read_file_string(input_file.c_str());
 
     fourchan_parser_json p;
