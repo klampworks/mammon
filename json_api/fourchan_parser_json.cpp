@@ -47,6 +47,26 @@ std::string fourchan_parser_json::sget(T &pt, const char *node)
     }
 }
 
+template <typename T>
+std::vector<std::string> fourchan_parser_json::get_filenames(T &pt)
+{
+    
+    std::vector<std::string> ret = 
+        {chan_post::mk_filename(sget(pt, "tim"), sget(pt, "ext"))};
+
+    if (!ret.empty()) {
+        try {
+            auto it = pt.second.template get_child("extra_files");
+            for (const auto i : it) {
+                ret.push_back(chan_post::mk_filename(
+                    i.second.template get<std::string>("tim"),
+                    i.second.template get<std::string>("ext")));
+             }
+         } catch (...) {}
+    }
+    return ret;
+}
+
 std::vector<chan_post> fourchan_parser_json::parse_posts(
     const std::string &json,
     const chan_post proto)
@@ -66,7 +86,8 @@ std::vector<chan_post> fourchan_parser_json::parse_posts(
             v.second.get<std::string>("no"),
             sget(v, "sub"),
             sget(v, "com"),
-            {chan_post::mk_filename(sget(v, "tim"), sget(v, "ext"))});
+            get_filenames(v));
+            //{chan_post::mk_filename(sget(v, "tim"), sget(v, "ext"))});
 
         ret.push_back(cp);
     }

@@ -18,4 +18,6 @@ class fourchan_parser_json : public chan_parser {
 
         template <typename T>
         std::string sget(T &pt, const char *node);
+        template <typename T>
+        std::vector<std::string> get_filenames(T &pt);
 };
