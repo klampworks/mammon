@@ -50,3 +50,14 @@ bool chan_db::post_exists(const chan_post &cp)
 
     return !res.empty();
 }
+
+bool chan_db::file_exists(const std::string &board, const std::string &filename)
+{
+    const std::string query = 
+        "select * from " + f_table + " where board=? and filename=?";
+
+    const std::string res = base_db::lookup_single_value(
+        query.c_str(), std::vector<std::string>({board, filename}));
+
+    return !res.empty();
+}
