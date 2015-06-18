@@ -18,7 +18,8 @@ chan_db::chan_db(const std::string &chan_name)
 
     base_db::format_table(f_table, {
         "id",
-        "filename"});
+        "filename",
+        "board"});
 }
 
 bool chan_db::store_post(const chan_post &cp)
@@ -34,7 +35,7 @@ bool chan_db::store_post(const chan_post &cp)
         cp.get_com()});
 
     for (const auto &fn : cp.get_filenames())
-        base_db::insert_row(f_table, {cp.get_id(), fn});
+        base_db::insert_row(f_table, {cp.get_id(), fn, cp.get_board()});
 
     return true;
 }
