@@ -13,6 +13,6 @@ BOOST_AUTO_TEST_CASE(helllo)
     BOOST_CHECK(db.store_post(cp));
     BOOST_CHECK(db.post_exists(cp));
 
-    BOOST_CHECK(db.file_exists("x", "hello.jpg"));
-    BOOST_CHECK(db.file_exists("x", "world.jpg"));
+    BOOST_CHECK(!db.file_exists("x", "hello.jpg"));
+    BOOST_CHECK(!db.file_exists("x", "world.jpg"));
 }

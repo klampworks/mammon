@@ -34,8 +34,8 @@ bool chan_db::store_post(const chan_post &cp)
         cp.get_sub(), 
         cp.get_com()});
 
-    for (const auto &fn : cp.get_filenames())
-        base_db::insert_row(f_table, {cp.get_id(), fn, cp.get_board()});
+    //for (const auto &fn : cp.get_filenames())
+    //   base_db::insert_row(f_table, {cp.get_id(), fn, cp.get_board()});
 
     return true;
 }
