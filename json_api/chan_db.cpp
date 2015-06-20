@@ -40,6 +40,16 @@ bool chan_db::store_post(const chan_post &cp)
     return true;
 }
 
+bool chan_db::store_file(const std::string &id, const std::string &board, 
+    const std::string &filename)
+{
+    if (file_exists(board, filename))
+        return true;
+
+    base_db::insert_row(f_table, {id, filename, board});
+    return true;
+}
+
 bool chan_db::post_exists(const chan_post &cp)
 {
     const std::string query = 
