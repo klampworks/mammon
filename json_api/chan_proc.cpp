@@ -46,26 +46,35 @@ bool chan_proc::proc_board(const std::string board)
             if (db.post_exists(post))
                 continue;
 
-            for (const auto &filename : post.get_filenames()) {
-
-                // Not every post has an attached file,
-                if (filename.empty())
-                    continue;
-
-                std::cout << "Porcessing file " << filename << std::endl;
-                auto file_url = mk_file_url(board, filename);
-                auto file_task = task(1, 
-                    file_url, 
-                    thread_task.get_url(), task::FILE, nullptr);
-                k.grab(&file_task);
-                //CHeck result
-            }
+            for (const auto &filename : post.get_filenames())
+                proc_file(post, filename, thread_task);
 
             db.store_post(post);
         }
 
     }
     
+    return true;
+}
+
+bool chan_proc::proc_file(
+    const chan_post &cp, 
+    const std::string filename,
+    const task &thread_task)
+{
+    // Not every post has an attached file,
+    if (filename.empty() || db.file_exists(cp.get_board(), filename))
+        return true;
+
+    std::cout << "Porcessing file " << filename << std::endl;
+    auto file_url = mk_file_url(cp.get_board(), filename);
+    auto file_task = task(1, 
+        file_url, 
+        thread_task.get_url(), task::FILE, nullptr);
+    k.grab(&file_task);
+    //Check result
+
+    db.store_file(cp.get_id(), filename, cp.get_board());
     return true;
 }
 

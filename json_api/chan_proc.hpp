@@ -22,5 +22,7 @@ class chan_proc {
         bool proc_board(const std::string board);
         chan_proc();
         chan_proc(kon k, chan_db db, chan_parser *p);
+        bool proc_file(const chan_post &cp, 
+            const std::string filename, const task &thread_task);
         virtual ~chan_proc();
 };
