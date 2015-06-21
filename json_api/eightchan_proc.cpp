@@ -23,4 +23,5 @@ std::string eightchan_proc::mk_board_url(const std::string b)
 }
 
 eightchan_proc::eightchan_proc() : 
-    chan_proc(kon("127.0.0.1:9050", true), chan_db("eightchan"), new fourchan_parser_json()) {}
+    chan_proc(kon("127.0.0.1:9050", true), chan_db("eightchan"), 
+        new fourchan_parser_json()) {}

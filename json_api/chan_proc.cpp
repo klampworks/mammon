@@ -82,8 +82,3 @@ chan_proc::chan_proc(kon k, chan_db db, chan_parser *p) : k(k), db(db), p(p) {}
 
 chan_proc::chan_proc() 
     : chan_proc(kon("127.0.0.1:9050", true), chan_db("chan"), nullptr) {}
-
-chan_proc::~chan_proc()
-{
-    delete p;
-}

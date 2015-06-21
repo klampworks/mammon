@@ -4,13 +4,14 @@
 #include "fourchan_parser_json.hpp"
 #include "kyukon/kon.hpp"
 #include "chan_db.hpp"
+#include <memory>
 
 class chan_proc {
 
     protected:
         kon k;
         chan_db db;
-        chan_parser *p;
+        std::unique_ptr<chan_parser> p;
 
     public:
         virtual std::string mk_file_url(const std::string b, 
@@ -24,5 +25,4 @@ class chan_proc {
         chan_proc(kon k, chan_db db, chan_parser *p);
         bool proc_file(const chan_post &cp, 
             const std::string filename, const task &thread_task);
-        virtual ~chan_proc();
 };
