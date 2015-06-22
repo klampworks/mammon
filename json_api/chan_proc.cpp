@@ -41,26 +41,25 @@ bool chan_proc::proc_board(const std::string board)
             std::cout << "Data = " << thread_task.get_data() << std::endl;
         }
 
-        proc_thread(posts, thread_task);
+        for (const auto &post : posts) {
+            proc_post(post, thread_task);
+        }
     }
     
     return true;
 }
 
-bool chan_proc::proc_thread(
-    const std::vector<chan_post> &posts, 
+bool chan_proc::proc_post(
+    const chan_post &post, 
     const task &thread_task)
 {
-    for (const auto &post : posts) {
-        
-        if (db.post_exists(post))
-            continue;
+    if (db.post_exists(post))
+        return true;
 
-        for (const auto &filename : post.get_filenames())
-            proc_file(post, filename, thread_task);
+    for (const auto &filename : post.get_filenames())
+        proc_file(post, filename, thread_task);
 
-        db.store_post(post);
-    }
+    db.store_post(post);
 
     return true;
 }

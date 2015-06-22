@@ -25,7 +25,7 @@ class chan_proc {
         chan_proc(kon k, chan_db db, chan_parser *p);
         bool proc_file(const chan_post &cp, 
             const std::string filename, const task &thread_task);
-        bool proc_thread(
-            const std::vector<chan_post> &posts, 
+        bool proc_post(
+            const chan_post &posts, 
             const task &thread_task);
 };
