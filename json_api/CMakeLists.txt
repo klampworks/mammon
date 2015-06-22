@@ -57,6 +57,7 @@ add_executable(
     kyukon/task.cpp
     chan_db.cpp
     ../base_db.cpp
+    ../filesystem.cpp
     fourchan_parser_json.cpp
     chan_post.cpp
     fourchan_parser_json.cpp)

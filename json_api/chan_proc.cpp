@@ -1,6 +1,7 @@
 #include "chan_proc.hpp"
 #include "kyukon/task.hpp"
 #include "kyukon/kon.hpp"
+#include "../filesystem.hpp"
 
 
 #include <iostream>
@@ -78,6 +79,10 @@ bool chan_proc::proc_file(
     auto file_task = task(1, 
         file_url, 
         thread_task.get_url(), task::FILE, nullptr);
+
+    fs::create_path(cp.get_board());
+    file_task.set_filepath(cp.get_board());
+    
     k.grab(&file_task);
     //Check result
 
