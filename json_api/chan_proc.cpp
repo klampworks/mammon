@@ -19,10 +19,8 @@ bool chan_proc::proc_board(const std::string board)
 
     auto thread_ids = p->parse_threads(t.get_data());
     if (thread_ids.empty()) {
-        std::cout << "No thread ids!" << std::endl;
-        //Bad thigns
-        //we should at least have the OP right?
-        //Check for 403/404
+        std::cout << "Fuck." << std::endl;
+        // Either they are down or refusing us service.
     }
 
     for (const auto &thread_id : thread_ids) {
@@ -34,6 +32,9 @@ bool chan_proc::proc_board(const std::string board)
             t.get_url(), task::STRING, nullptr);
 
         k.grab(&thread_task);
+        if (thread_task.get_status_code() == 404)
+            continue;
+
         auto posts = p->parse_posts(thread_task.get_data(), chan_post(board, thread_id));
 
         if (posts.empty()) {
@@ -88,7 +89,8 @@ bool chan_proc::proc_file(
     file_task.set_filepath(cp.get_board());
     
     k.grab(&file_task);
-    //Check result
+    if (file_task.get_status_code() == 404)
+        return false;
 
     db.store_file(cp.get_id(), filename, cp.get_board());
     return true;
