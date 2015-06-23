@@ -74,6 +74,10 @@ bool chan_proc::proc_file(
     if (filename.empty() || db.file_exists(cp.get_board(), filename))
         return true;
 
+    //Quick hack to avoid large files (webM, Mp4 etc.)
+    if (filename.find("m") != std::string::npos)
+        return true;
+
     std::cout << "Porcessing file " << filename << std::endl;
     auto file_url = mk_file_url(cp.get_board(), filename);
     auto file_task = task(1, 
