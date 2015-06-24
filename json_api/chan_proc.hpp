@@ -13,6 +13,12 @@ class chan_proc {
         chan_db db;
         std::unique_ptr<chan_parser> p;
 
+        std::string status(const std::string &board);
+        std::string status(const std::string &board, 
+            const std::string &thread_id);
+        std::string status(const std::string &board, 
+            const std::string &thread_id, const std::string &filename);
+
     public:
         virtual std::string mk_file_url(const std::string b, 
             const std::string filename)=0;

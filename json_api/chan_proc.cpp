@@ -4,11 +4,29 @@
 #include "../filesystem.hpp"
 
 
+std::string chan_proc::status(const std::string &board)
+{
+    return "Processing board=[" + board + "]";
+}
+
+std::string chan_proc::status(const std::string &board, 
+    const std::string &thread_id)
+{
+    return status(board) + " thread=[" + thread_id + "]";
+}
+
+std::string chan_proc::status(const std::string &board, 
+    const std::string &thread_id,
+    const std::string &filename)
+{
+    return status(board, thread_id) + " file=[" + filename + "]";
+}
+
 #include <iostream>
 bool chan_proc::proc_board(const std::string board)
 {
     auto board_url = mk_board_url(board);
-    std::cout << "Processing " << board_url << std::endl;
+    std::cout << status(board_url) << std::endl;
 
 	auto t = task(1, 
         board_url, 
@@ -25,7 +43,7 @@ bool chan_proc::proc_board(const std::string board)
 
     for (const auto &thread_id : thread_ids) {
 
-        std::cout << "Processing thread " << thread_id << std::endl;
+        std::cout << status(board_url, thread_id) << std::endl;
         auto thread_url = mk_thread_url(board, thread_id);
         auto thread_task = task(1, 
             thread_url, 
@@ -79,7 +97,8 @@ bool chan_proc::proc_file(
     if (filename.find("m") != std::string::npos)
         return true;
 
-    std::cout << "Porcessing file " << filename << std::endl;
+    std::cout << status(cp.get_board(), cp.get_thread_id(), filename) 
+        << std::endl;
     auto file_url = mk_file_url(cp.get_board(), filename);
     auto file_task = task(1, 
         file_url, 
