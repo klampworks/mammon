@@ -18,6 +18,7 @@ class chan_proc {
             const std::string &thread_id);
         std::string status(const std::string &board, 
             const std::string &thread_id, const std::string &filename);
+        std::string now();
 
     public:
         virtual std::string mk_file_url(const std::string b, 

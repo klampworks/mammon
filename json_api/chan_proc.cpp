@@ -2,11 +2,22 @@
 #include "kyukon/task.hpp"
 #include "kyukon/kon.hpp"
 #include "../filesystem.hpp"
+#include <ctime>
 
+std::string chan_proc::now()
+{
+    time_t t = time(NULL);
+    struct tm *tm_info;
+    tm_info = localtime(&t);
+
+    char buf[20];
+    strftime(buf, 20, "%F %T", tm_info);
+    return std::string(buf);
+}
 
 std::string chan_proc::status(const std::string &board)
 {
-    return "Processing board=[" + board + "]";
+    return now() + " Processing board=[" + board + "]";
 }
 
 std::string chan_proc::status(const std::string &board, 
