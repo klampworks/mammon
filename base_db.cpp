@@ -80,8 +80,7 @@ bool check_table(
 	
 	bool ret = true;
 
-	/* TODO, why divide by 2? */
-	unsigned cols = (sqlite3_column_count(stmt) / 2);
+	unsigned cols = sqlite3_column_count(stmt) - 1;
 
 	if (cols != columns.size()) {
 		ret = false;
