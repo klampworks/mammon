@@ -122,7 +122,7 @@ bool chan_proc::proc_file(
     if (file_task.get_status_code() == 404)
         return false;
 
-    db.store_file(cp.get_id(), filename, cp.get_board());
+    db.store_file(cp.get_id(), cp.get_board(), filename);
     return true;
 }
 
