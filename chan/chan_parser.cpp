@@ -1,5 +1,5 @@
 #define PUGIXML_HEADER_ONLY
-#include "../pugi_lib/pugixml.cpp"
+#include <pugixml.hpp>
 #include "../base_parser.hpp"
 #include "chan_parser.hpp"
 #include "chan_post.hpp"
