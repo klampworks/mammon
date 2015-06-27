@@ -1,5 +1,5 @@
 #define PUGIXML_HEADER_ONLY
-#include "../pugi_lib/pugixml.cpp"
+#include <pugixml.hpp>
 #include "fourchan_parser.hpp"
 #include <vector>
 #include "chan_post.hpp"
