@@ -2,7 +2,7 @@
 #define PARSER_HPP
 
 #define PUGIXML_HEADER_ONLY
-#include "pugi_lib/pugixml.cpp"
+#include <pugixml.hpp>
 #include <string>
 #include <vector>
 #include <boost/regex.hpp>
