@@ -1,5 +1,5 @@
-#include <tidy.h>
-#include <buffio.h>
+#include <tidy/tidy.h>
+#include <tidy/buffio.h>
 #include <string>
 #include <cassert>
 
