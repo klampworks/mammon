@@ -11,6 +11,7 @@ add_executable(
 	../reddit/unit_test/reddit_parser_ut.cpp
 	)
 target_link_libraries(reddit_parser_ut boost_regex)
+target_link_libraries(reddit_parser_ut pugixml)
 
 add_executable(
 	reddit_db_ut
