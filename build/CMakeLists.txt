@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
 #set(CMAKE_CXX_FLAGS "-std=c++11 -g 
 #-I/usr/include/ruby/x86_64-linux/ -I/usr/include/ruby")
-set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall -Wextra  -I/usr/include/ruby/x86_64-linux/ -I/usr/include/ruby")
+set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall -Wextra -I/usr/include/ruby/x86_64-linux/ -I/usr/include/x86_64-linux-gnu/ruby-2.1.0/ -I/usr/include/ruby")
 project (test)
 
 add_executable(
