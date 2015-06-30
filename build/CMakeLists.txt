@@ -21,12 +21,6 @@ add_executable(
 	)
 target_link_libraries(reddit_db_ut sqlite3)
 
-add_executable(
-	dump_tags	
-	../debug/dump_tags.cpp 
-	../tidy.cpp
-	)
-target_link_libraries(dump_tags tidy)
 
 add_executable(
 	reddit_driver_test
