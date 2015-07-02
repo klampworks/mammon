@@ -81,5 +81,5 @@ add_executable(
 	../chan/ruby/eightchan_parser_main.cpp
 	../chan/rb_chan_post_multi.cpp
 )
-target_link_libraries(eight ruby20)
+target_link_libraries(eight ruby-2.1)
 
