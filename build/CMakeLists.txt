@@ -83,3 +83,9 @@ add_executable(
 )
 target_link_libraries(eight ruby-2.1)
 
+add_executable(
+    base_db_ut
+    ../chan/unit_test/base_db_ut.cpp
+    ../base_db.cpp
+)
+target_link_libraries(base_db_ut sqlite3)
