@@ -3,37 +3,6 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall -Wextra")
 set(CMAKE_CXX_COMPILER_ID "Clang")
 project(mammon)
 
-add_executable(
-    json_test
-    main.cpp
-    chan_post.cpp
-    fourchan_parser_json.cpp)
-
-add_executable(
-    fourchan_parser_json_ut
-    unit_test/fourchan_parser_json_ut.cpp
-    unit_test/common_ut.cpp
-    chan_post.cpp
-    fourchan_parser_json.cpp)
-
-add_executable(
-    chan_db_ut
-    unit_test/chan_db_ut.cpp
-    unit_test/common_ut.cpp
-    chan_db.cpp
-    ../base_db.cpp
-    chan_post.cpp
-    )
-target_link_libraries(chan_db_ut sqlite3)
-
-add_executable(
-    kon_ut
-    unit_test/kon_ut.cpp
-    kyukon/kon.cpp
-    kyukon/task.cpp
-    )
-target_link_libraries(kon_ut curl)
-
 #add_executable(
 #    fourchan_proc_ut
 #    fourchan_proc.cpp
