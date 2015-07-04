@@ -4,9 +4,6 @@ set(CMAKE_CXX_COMPILER_ID "Clang")
 project(mammon)
 
 #add_executable(
-#    fourchan_proc_ut
-#    fourchan_proc.cpp
-#    unit_test/fourchan_proc_ut.cpp
 #    )
 
 add_executable(
