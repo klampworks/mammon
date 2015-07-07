@@ -2,6 +2,7 @@
 #include <functional>
 #include <vector>
 #include <fstream>
+#include <iostream>
 
 namespace common_ut {
     template <typename T>
@@ -11,6 +12,11 @@ namespace common_ut {
     {
         std::ifstream ifs;
         ifs.open(filename);
+
+        if (!ifs) {
+            std::cout << "Could not open file " << filename << std::endl;
+            abort();
+        }
 
         std::string tmp;
         T out;
