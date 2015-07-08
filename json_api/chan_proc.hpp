@@ -20,6 +20,10 @@ class chan_proc {
             const std::string &thread_id, const std::string &filename);
         std::string now();
 
+        // Only used by 8chan.
+        std::string base_url;
+        std::string get_base_url(const char *site_name);
+
     public:
         virtual std::string mk_file_url(const std::string b, 
             const std::string filename)=0;

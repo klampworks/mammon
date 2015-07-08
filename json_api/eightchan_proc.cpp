@@ -3,7 +3,7 @@
 
 std::string eightchan_proc::mk_base_url()
 {
-    return "http://fullchan4jtta4sx.onion/";
+    return get_base_url("MAMMON_8CHAN_URL");
 }
 
 std::string eightchan_proc::mk_file_url(const std::string b, const std::string filename)

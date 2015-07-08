@@ -130,3 +130,19 @@ chan_proc::chan_proc(kon k, chan_db db, chan_parser *p) : k(k), db(db), p(p) {}
 
 chan_proc::chan_proc() 
     : chan_proc(kon("127.0.0.1:9050", true), chan_db("chan"), nullptr) {}
+
+std::string chan_proc::get_base_url(const char *site_name)
+{
+    if (base_url.empty()) {
+        try {
+            base_url = std::string(getenv(site_name));
+        } catch (const std::logic_error &e) {
+            std::cout << "\n~~~ Sorry, please make sure that the environmental "
+                "variable \n   $" << site_name << " is set correctly. ~~~\n" 
+                << std::endl;
+            throw;
+        }
+    }
+
+    return base_url;
+}
