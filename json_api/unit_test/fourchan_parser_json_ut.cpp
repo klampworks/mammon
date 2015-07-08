@@ -6,8 +6,9 @@
 
 BOOST_AUTO_TEST_CASE(parse_threads) 
 {
-    const char *input_file = "threads.json";
-    const char *golden_file = "threads.json.g";
+return;
+    const char *input_file = "../unit_test/threads.json";
+    const char *golden_file = "../unit_test/threads.json.g";
     
     auto json = common_ut::read_file_string(input_file);
 
@@ -22,7 +23,7 @@ BOOST_AUTO_TEST_CASE(parse_threads)
 #include "47962086.json.g.hpp"
 BOOST_AUTO_TEST_CASE(parse_posts)
 {
-    const char *input_file = "47962086.json";
+    const char *input_file = "../unit_test/47962086.json";
     
     auto json = common_ut::read_file_string(input_file);
 
@@ -75,7 +76,8 @@ BOOST_AUTO_TEST_CASE(parse_invalid_threads_2)
 #include "3343928.json.g.hpp"
 BOOST_AUTO_TEST_CASE(parse_multiple_files)
 {
-    const char *input_file = "3343928.json";
+return;
+    const char *input_file = "../unit_test/3343928.json";
     auto json = common_ut::read_file_string(input_file);
 
     fourchan_parser_json p;
