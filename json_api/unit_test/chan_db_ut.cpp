@@ -5,6 +5,7 @@
 
 BOOST_AUTO_TEST_CASE(helllo) 
 {
+    remove("test_chan.sqlite");
     chan_db db("test_chan"); 
     chan_post cp("x", "666", "111", "hello wolrd", "I like puppies.", 
         {"hello.jpg", "world.jpg"});
