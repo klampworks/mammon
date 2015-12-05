@@ -14,4 +14,5 @@ class eightchan_proc : public chan_proc
         eightchan_proc();
     private:
         std::string mk_base_url();
+        std::string base_url;
 };

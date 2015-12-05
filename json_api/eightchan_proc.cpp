@@ -1,9 +1,23 @@
 #include "eightchan_proc.hpp"
 #include <string>
+#include <iostream>
 
 std::string eightchan_proc::mk_base_url()
 {
-    return get_base_url("MAMMON_8CHAN_URL");
+    static const char *site_name = "MAMMON_8CHAN_URL";
+
+    if (base_url.empty()) {
+        try {
+            base_url = std::string(getenv(site_name));
+        } catch (const std::logic_error &e) {
+            std::cout << "\n~~~ Sorry, please make sure that the environmental "
+                "variable \n   $" << site_name << " is set correctly. ~~~\n"
+                << std::endl;
+            throw;
+        }
+    }
+
+    return base_url;
 }
 
 std::string eightchan_proc::mk_file_url(const std::string b, const std::string filename)
