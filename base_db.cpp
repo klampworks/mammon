@@ -129,6 +129,12 @@ void format_table(std::string table_name, std::vector<std::string> columns)
 		" (" + insert + ");");
 	
 	int res = sqlite3_prepare_v2(database, statement.c_str(), -1, &stmt, 0);
+
+    if (res == SQLITE_ERROR) {
+        //That's cool, it just means the table already exists.
+        goto END;
+    }
+
 	SQL_CHK_RES
 
 	res = sqlite3_step(stmt);
