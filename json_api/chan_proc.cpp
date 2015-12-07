@@ -75,11 +75,8 @@ bool chan_proc::proc_board(const std::string board)
         const auto &posts = thread.first;
         const auto &thread_task = thread.second;
 
-        if (posts.empty()) {
-            std::cout << "No posts!" << std::endl;
-            //std::cout << "Url = " << thread_url << std::endl;
-            //std::cout << "Data = " << thread_task.get_data() << std::endl;
-        }
+        //TODO Means the thread was deleted. May have had interesting content.
+        //if (posts.empty());
 
         for (const auto &post : posts) {
             proc_post(post, thread_task);
