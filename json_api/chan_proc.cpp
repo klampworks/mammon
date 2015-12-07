@@ -52,6 +52,8 @@ bool chan_proc::proc_board(const std::string board)
         // Either they are down or refusing us service.
     }
 
+    std::vector<std::pair<const std::vector<chan_post>, const task>> threads;
+
     for (const auto &thread_id : thread_ids) {
 
         std::cout << status(board_url, thread_id) << std::endl;
@@ -64,12 +66,19 @@ bool chan_proc::proc_board(const std::string board)
         if (thread_task.get_status_code() == 404)
             continue;
 
-        auto posts = p->parse_posts(thread_task.get_data(), chan_post(board, thread_id));
+        threads.push_back({p->parse_posts(
+            thread_task.get_data(), chan_post(board, thread_id)),
+            thread_task});
+    }
+
+    for (const auto &thread : threads) {
+        const auto &posts = thread.first;
+        const auto &thread_task = thread.second;
 
         if (posts.empty()) {
             std::cout << "No posts!" << std::endl;
-            std::cout << "Url = " << thread_url << std::endl;
-            std::cout << "Data = " << thread_task.get_data() << std::endl;
+            //std::cout << "Url = " << thread_url << std::endl;
+            //std::cout << "Data = " << thread_task.get_data() << std::endl;
         }
 
         for (const auto &post : posts) {
