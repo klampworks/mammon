@@ -3,6 +3,7 @@
 #include "kyukon/kon.hpp"
 #include "../filesystem.hpp"
 #include <ctime>
+#include <set>
 
 std::string chan_proc::now()
 {
@@ -52,7 +53,7 @@ bool chan_proc::proc_board(const std::string board)
         // Either they are down or refusing us service.
     }
 
-    std::vector<thread> threads;
+    std::set<thread> threads;
 
     for (const auto &thread_id : thread_ids) {
 
@@ -66,7 +67,7 @@ bool chan_proc::proc_board(const std::string board)
         if (thread_task.get_status_code() == 404)
             continue;
 
-        threads.push_back({p->parse_posts(
+        threads.insert({p->parse_posts(
             thread_task.get_data(), chan_post(board, thread_id)),
             thread_task});
     }

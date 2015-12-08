@@ -51,4 +51,8 @@ struct thread {
 
     thread(const std::vector<chan_post> ps, const task t) :
         posts(ps), thread_task(t), score(0) {};
+
+    bool operator<(const thread &other) const {
+        return this->score < other.score;
+    }
 };
