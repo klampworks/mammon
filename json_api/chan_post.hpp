@@ -41,3 +41,14 @@ public:
     std::vector<std::string> get_filenames() const;
 	void print() const;
 };
+
+#include "kyukon/task.hpp"
+struct thread {
+
+    const std::vector<chan_post> posts;
+    const task thread_task;
+    unsigned score;
+
+    thread(const std::vector<chan_post> ps, const task t) :
+        posts(ps), thread_task(t), score(0) {};
+};

@@ -52,7 +52,7 @@ bool chan_proc::proc_board(const std::string board)
         // Either they are down or refusing us service.
     }
 
-    std::vector<std::pair<const std::vector<chan_post>, const task>> threads;
+    std::vector<thread> threads;
 
     for (const auto &thread_id : thread_ids) {
 
@@ -72,10 +72,11 @@ bool chan_proc::proc_board(const std::string board)
     }
 
     for (const auto &thread : threads) {
-        const auto &posts = thread.first;
-        const auto &thread_task = thread.second;
+        const auto &posts = thread.posts;
+        const auto &thread_task = thread.thread_task;
 
-        //TODO Means the thread was deleted. May have had interesting content.
+        //TODO Means the thread fell off page 10 or was deleted.
+        // In the latter case it may have had interesting content...
         //if (posts.empty());
 
         for (const auto &post : posts) {
