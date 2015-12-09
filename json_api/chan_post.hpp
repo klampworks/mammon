@@ -55,8 +55,4 @@ struct thread {
     bool operator<(const thread &other) const {
         return this->score < other.score;
     }
-
-    bool operator==(const thread &other) const {
-        return this->score == other.score;
-    }
 };
