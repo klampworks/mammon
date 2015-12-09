@@ -3,7 +3,7 @@
 #include "kyukon/kon.hpp"
 #include "../filesystem.hpp"
 #include <ctime>
-#include <set>
+#include <algorithm>
 
 std::string chan_proc::now()
 {
@@ -53,9 +53,11 @@ bool chan_proc::proc_board(const std::string board)
         // Either they are down or refusing us service.
     }
 
-    std::set<thread> threads;
+    //std::priority_queue<thread> threads;
+    std::vector<thread> threads;
+    std::make_heap(threads.begin(), threads.end());
 
-    for (const auto &thread_id : thread_ids) {
+    for (auto &thread_id : thread_ids) {
 
         std::cout << status(board_url, thread_id) << std::endl;
         auto thread_url = mk_thread_url(board, thread_id);
@@ -67,10 +69,13 @@ bool chan_proc::proc_board(const std::string board)
         if (thread_task.get_status_code() == 404)
             continue;
 
-        threads.insert({p->parse_posts(
+        threads.push_back({p->parse_posts(
             thread_task.get_data(), chan_post(board, thread_id)),
             thread_task});
+        std::push_heap(threads.begin(), threads.end());
     }
+
+    std::cout << threads.size() << " threads" << std::endl;
 
     for (const auto &thread : threads) {
         const auto &posts = thread.posts;
@@ -78,13 +83,14 @@ bool chan_proc::proc_board(const std::string board)
 
         //TODO Means the thread fell off page 10 or was deleted.
         // In the latter case it may have had interesting content...
-        //if (posts.empty());
+        if (posts.empty())
+            std::cout << "Empty!" << std::endl;
 
         for (const auto &post : posts) {
             proc_post(post, thread_task);
         }
     }
-    
+    std::cout << "Done." << std::endl; 
     return true;
 }
 

@@ -45,8 +45,8 @@ public:
 #include "kyukon/task.hpp"
 struct thread {
 
-    const std::vector<chan_post> posts;
-    const task thread_task;
+    std::vector<chan_post> posts;
+    task thread_task;
     unsigned score;
 
     thread(const std::vector<chan_post> ps, const task t) :
@@ -54,5 +54,9 @@ struct thread {
 
     bool operator<(const thread &other) const {
         return this->score < other.score;
+    }
+
+    bool operator==(const thread &other) const {
+        return this->score == other.score;
     }
 };
