@@ -53,7 +53,6 @@ bool chan_proc::proc_board(const std::string board)
         // Either they are down or refusing us service.
     }
 
-    //std::priority_queue<thread> threads;
     std::vector<thread> threads;
     std::make_heap(threads.begin(), threads.end());
 
@@ -75,11 +74,17 @@ bool chan_proc::proc_board(const std::string board)
         std::push_heap(threads.begin(), threads.end());
     }
 
+    int c = 0;
+    for (auto &thread : threads) {
+        thread.score = c++;
+    }
+
     std::cout << threads.size() << " threads" << std::endl;
 
     for (const auto &thread : threads) {
         const auto &posts = thread.posts;
         const auto &thread_task = thread.thread_task;
+        std::cout << thread.score << std::endl;
 
         //TODO Means the thread fell off page 10 or was deleted.
         // In the latter case it may have had interesting content...
@@ -87,7 +92,7 @@ bool chan_proc::proc_board(const std::string board)
             std::cout << "Empty!" << std::endl;
 
         for (const auto &post : posts) {
-            proc_post(post, thread_task);
+            //proc_post(post, thread_task);
         }
     }
     std::cout << "Done." << std::endl; 
