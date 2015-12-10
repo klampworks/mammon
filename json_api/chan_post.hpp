@@ -47,7 +47,7 @@ struct thread {
 
     std::vector<chan_post> posts;
     task thread_task;
-    unsigned score;
+    int score;
 
     thread(const std::vector<chan_post> ps, const task t) :
         posts(ps), thread_task(t), score(0) {};
