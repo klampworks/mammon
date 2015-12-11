@@ -89,7 +89,7 @@ bool chan_proc::proc_board(const std::string board)
         //if (posts.empty())
 
         for (const auto &post : posts) {
-            //proc_post(post, thread_task);
+            proc_post(post, thread_task);
         }
     }
 
