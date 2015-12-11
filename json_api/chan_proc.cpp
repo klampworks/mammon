@@ -79,8 +79,6 @@ bool chan_proc::proc_board(const std::string board)
         thread.score = c++;
     }
 
-    std::cout << threads.size() << " threads" << std::endl;
-
     for (const auto &thread : threads) {
         const auto &posts = thread.posts;
         const auto &thread_task = thread.thread_task;
@@ -88,14 +86,13 @@ bool chan_proc::proc_board(const std::string board)
 
         //TODO Means the thread fell off page 10 or was deleted.
         // In the latter case it may have had interesting content...
-        if (posts.empty())
-            std::cout << "Empty!" << std::endl;
+        //if (posts.empty())
 
         for (const auto &post : posts) {
             //proc_post(post, thread_task);
         }
     }
-    std::cout << "Done." << std::endl; 
+
     return true;
 }
 
