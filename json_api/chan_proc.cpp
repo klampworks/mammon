@@ -74,11 +74,6 @@ bool chan_proc::proc_board(const std::string board)
         std::push_heap(threads.begin(), threads.end());
     }
 
-    int c = 0;
-    for (auto &thread : threads) {
-        thread.score = c++;
-    }
-
     for (const auto &thread : threads) {
         const auto &posts = thread.posts;
         const auto &thread_task = thread.thread_task;
