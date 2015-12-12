@@ -37,6 +37,7 @@ std::string chan_proc::status(const std::string &board,
 #include <iostream>
 bool chan_proc::proc_board(const std::string board)
 {
+    fs::create_path(cp.get_board());
     auto board_url = mk_board_url(board);
     std::cout << status(board_url) << std::endl;
 
@@ -121,12 +122,12 @@ bool chan_proc::proc_file(
 
     std::cout << status(cp.get_board(), cp.get_thread_id(), filename) 
         << std::endl;
+
     auto file_url = mk_file_url(cp.get_board(), filename);
     auto file_task = task(1, 
         file_url, 
         thread_task.get_url(), task::FILE, nullptr);
 
-    fs::create_path(cp.get_board());
     file_task.set_filepath(cp.get_board());
     
     k.grab(&file_task);
