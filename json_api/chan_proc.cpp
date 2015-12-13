@@ -37,7 +37,7 @@ std::string chan_proc::status(const std::string &board,
 #include <iostream>
 bool chan_proc::proc_board(const std::string board)
 {
-    fs::create_path(cp.get_board());
+    fs::create_path(board);
     auto board_url = mk_board_url(board);
     std::cout << status(board_url) << std::endl;
 
