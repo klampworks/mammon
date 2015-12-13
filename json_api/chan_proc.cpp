@@ -84,9 +84,12 @@ bool chan_proc::proc_board(const std::string board)
         // In the latter case it may have had interesting content...
         //if (posts.empty())
 
-        for (const auto &post : posts) {
+        //for (const auto &post : posts) {
+        std::for_each(posts.rbegin(), posts.rend(), 
+            [this, &thread_task](const chan_post &post) 
+        {
             proc_post(post, thread_task);
-        }
+        });
     }
 
     return true;
@@ -97,7 +100,7 @@ bool chan_proc::proc_post(
     const task &thread_task)
 {
     if (db.post_exists(post))
-        return true;
+        return false;
 
     for (const auto &filename : post.get_filenames())
         proc_file(post, filename, thread_task);
