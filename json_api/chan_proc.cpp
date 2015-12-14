@@ -84,7 +84,6 @@ bool chan_proc::proc_board(const std::string board)
         // In the latter case it may have had interesting content...
         //if (posts.empty())
 
-        //for (const auto &post : posts) {
         for (auto rit = posts.crbegin(); rit != posts.crend(); ++rit) {
             proc_post(*rit, thread_task);
         };
