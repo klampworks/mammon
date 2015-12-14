@@ -85,11 +85,9 @@ bool chan_proc::proc_board(const std::string board)
         //if (posts.empty())
 
         //for (const auto &post : posts) {
-        std::for_each(posts.rbegin(), posts.rend(), 
-            [this, &thread_task](const chan_post &post) 
-        {
-            proc_post(post, thread_task);
-        });
+        for (auto rit = posts.crbegin(); rit != posts.crend(); ++rit) {
+            proc_post(*rit, thread_task);
+        };
     }
 
     return true;
