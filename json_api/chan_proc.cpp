@@ -85,7 +85,13 @@ bool chan_proc::proc_board(const std::string board)
         //if (posts.empty())
 
         for (auto rit = posts.crbegin(); rit != posts.crend(); ++rit) {
-            proc_post(*rit, thread_task);
+
+            if (!proc_post(*rit, thread_task)) {
+                // We have already seen this post. Since we are going backwards
+                // through the thread it means we have seen all of the earlier 
+                // ones too.
+                break;
+            }
         };
     }
 
