@@ -10,6 +10,7 @@ class chan_post {
     std::string sub;
     std::string com;
     std::vector<std::string> filenames;
+    std::vector<std::string> filehashes;
 
 public:
     /* Constructor for golden output unit tests. */
