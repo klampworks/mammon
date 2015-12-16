@@ -75,8 +75,8 @@ bool chan_proc::proc_board(const std::string board)
         std::push_heap(threads.begin(), threads.end());
     }
 
-    for (auto &thread : threads) {
-        auto &posts = thread.posts;
+    for (const auto &thread : threads) {
+        const auto &posts = thread.posts;
         const auto &thread_task = thread.thread_task;
         std::cout << thread.score << std::endl;
 
@@ -84,7 +84,7 @@ bool chan_proc::proc_board(const std::string board)
         // In the latter case it may have had interesting content...
         //if (posts.empty())
 
-        for (auto rit = posts.rbegin(); rit != posts.rend(); ++rit) {
+        for (auto rit = posts.crbegin(); rit != posts.crend(); ++rit) {
 
             if (!proc_post(*rit, thread_task)) {
                 // We have already seen this post. Since we are going backwards
@@ -99,7 +99,7 @@ bool chan_proc::proc_board(const std::string board)
 }
 
 bool chan_proc::proc_post(
-    chan_post &post, 
+    const chan_post &post, 
     const task &thread_task)
 {
     if (db.post_exists(post))
@@ -114,7 +114,7 @@ bool chan_proc::proc_post(
 }
 
 bool chan_proc::proc_file(
-    chan_post &cp, 
+    const chan_post &cp, 
     const std::string filename,
     const task &thread_task)
 {
