@@ -30,9 +30,9 @@ class chan_proc {
         bool proc_board(const std::string board);
         chan_proc();
         chan_proc(kon k, chan_db db, chan_parser *p);
-        bool proc_file(const chan_post &cp, 
+        bool proc_file(chan_post &cp, 
             const std::string filename, const task &thread_task);
         bool proc_post(
-            const chan_post &posts, 
+            chan_post &posts, 
             const task &thread_task);
 };
