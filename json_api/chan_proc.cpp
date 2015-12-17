@@ -4,6 +4,7 @@
 #include "../filesystem.hpp"
 #include <ctime>
 #include <algorithm>
+#include "hash.hpp"
 
 std::string chan_proc::now()
 {

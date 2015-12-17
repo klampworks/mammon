@@ -51,6 +51,7 @@ add_executable(
     fourchan_test
     fourchan_test.cpp
     chan_proc.cpp
+    hash.cpp
     fourchan_proc.cpp
     eightchan_proc.cpp
     kyukon/kon.cpp
@@ -63,6 +64,7 @@ add_executable(
     fourchan_parser_json.cpp)
 target_link_libraries(fourchan_test sqlite3)
 target_link_libraries(fourchan_test curl)
+target_link_libraries(fourchan_test crypto)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
