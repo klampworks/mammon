@@ -1,9 +1,17 @@
+#include "hash.hpp"
 #include <openssl/md5.h>
 #include <cstring>
 #include <cstdio>
-
+#include <string>
 
 namespace hash {
+
+    std::string md5(const char *filename)
+    {
+        char hash[33];
+        md5(filename, hash);
+        return std::string(hash);
+    }
 
     void md5(const char *filename, char *hash)
     {
