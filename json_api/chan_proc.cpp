@@ -142,7 +142,7 @@ bool chan_proc::proc_file(
         return false;
 
     std::string md5 = hash::md5(filename.c_str());
-    db.store_file(cp.get_id(), cp.get_board(), filename);
+    db.store_file(cp.get_id(), cp.get_board(), filename, md5);
     return true;
 }
 

@@ -19,7 +19,8 @@ chan_db::chan_db(const std::string &chan_name)
     base_db::format_table(f_table, {
         "id",
         "filename",
-        "board"});
+        "board",
+        "md5"});
 }
 
 bool chan_db::store_post(const chan_post &cp)
@@ -41,12 +42,12 @@ bool chan_db::store_post(const chan_post &cp)
 }
 
 bool chan_db::store_file(const std::string &id, const std::string &board, 
-    const std::string &filename)
+    const std::string &filename, const std::string &md5)
 {
     if (file_exists(board, filename))
         return true;
 
-    base_db::insert_row(f_table, {id, filename, board});
+    base_db::insert_row(f_table, {id, filename, board, md5});
     return true;
 }
 
