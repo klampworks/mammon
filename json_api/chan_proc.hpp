@@ -35,4 +35,5 @@ class chan_proc {
         bool proc_post(
             const chan_post &posts, 
             const task &thread_task);
+        void proc_thread(const thread&);
 };

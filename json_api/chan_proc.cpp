@@ -70,13 +70,21 @@ bool chan_proc::proc_board(const std::string board)
         if (thread_task.get_status_code() == 404)
             continue;
 
-        threads.push_back({p->parse_posts(
+        thread t(p->parse_posts(
             thread_task.get_data(), chan_post(board, thread_id)),
             thread_task});
         std::push_heap(threads.begin(), threads.end());
     }
 
     for (const auto &thread : threads) {
+        proc_thread(thread);
+    }
+
+    return true;
+}
+
+void chan_proc::proc_thread(const thread &thread)
+{
         const auto &posts = thread.posts;
         const auto &thread_task = thread.thread_task;
         std::cout << thread.score << std::endl;
@@ -94,9 +102,6 @@ bool chan_proc::proc_board(const std::string board)
                 break;
             }
         };
-    }
-
-    return true;
 }
 
 bool chan_proc::proc_post(
