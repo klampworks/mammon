@@ -72,8 +72,16 @@ bool chan_proc::proc_board(const std::string board)
 
         thread t(p->parse_posts(
             thread_task.get_data(), chan_post(board, thread_id)),
-            thread_task});
-        std::push_heap(threads.begin(), threads.end());
+            thread_task);
+
+        //score(t);
+
+        if (t.score > 0) {
+            proc_thread(t);
+        } else {
+            threads.push_back(t);
+            std::push_heap(threads.begin(), threads.end());
+        }
     }
 
     for (const auto &thread : threads) {
