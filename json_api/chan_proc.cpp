@@ -154,7 +154,9 @@ bool chan_proc::proc_file(
     if (file_task.get_status_code() == 404)
         return false;
 
-    std::string md5 = hash::md5(filename.c_str());
+    std::string fullname = file_task.get_filepath() + "/" + filename.c_str();
+    std::string md5 = hash::md5(fullname.c_str());
+
     db.store_file(cp.get_id(), cp.get_board(), filename, md5);
     return true;
 }
