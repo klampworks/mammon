@@ -16,6 +16,12 @@ namespace fs {
             path += "/";
     }
 
+    bool file_exists(const std::string &path)
+    {
+        struct stat stat_buf;
+        return stat(path.c_str(), &stat_buf) == 0;
+    }
+
     bool create_path(const std::string &path)
     {
         struct stat stat_buf;
