@@ -32,10 +32,10 @@ namespace fs {
             std::cout << "Error file exists but is not a directory." 
                 << std::endl; 
             goto bad;
-        }
 
-        /* Path does not exist, good. */
-        if (errno == ENOENT) {
+        } else if (errno == ENOENT) {
+
+            /* Path does not exist, good. */
             if (!mkdir(path.c_str(), 0777)) {
                 goto good;
             } else {
