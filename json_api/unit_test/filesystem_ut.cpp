@@ -23,3 +23,9 @@ struct fs_fix {
     }
 };
 
+BOOST_FIXTURE_TEST_CASE(file_does_not_exist, fs_fix) 
+{
+    const std::string test_file = "hello";
+    BOOST_CHECK(!fs::file_exists(test_dir + test_file));
+}
+
