@@ -48,6 +48,12 @@ target_link_libraries(chan_db_ut sqlite3)
 #    fourchan_parser_json.cpp)
 
 add_executable(
+    filesystem_ut
+    ../filesystem.cpp
+    unit_test/filesystem_ut.cpp
+    )
+
+add_executable(
     fourchan_test
     fourchan_test.cpp
     chan_proc.cpp
