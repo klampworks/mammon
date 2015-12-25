@@ -14,12 +14,12 @@ struct fs_fix {
     fs_fix()
     {
         test_dir = "test/";
-        system(std::string("mkdir -p " + test_dir).c_str());
+        cmd("mkdir -p " + test_dir);
     }
 
     ~fs_fix()
     {
-        system(std::string("rm -r " + test_dir).c_str());
+        cmd("rm -r " + test_dir);
     }
 };
 
