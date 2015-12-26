@@ -8,6 +8,10 @@
 
 namespace fs {
 
+    bool move(const std::string &from, const std::string &to)
+    {
+        return rename(from.c_str(), to.c_str()) == 0;
+    }
 
     void append_slash(std::string &path)
     {
