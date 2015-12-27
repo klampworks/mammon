@@ -8,6 +8,16 @@
 
 namespace fs {
 
+    std::string get_ext(const std::string fn)
+    {
+        const auto pos = fn.rfind('.');
+        if (pos == std::string::npos) {
+            return "";
+        }
+
+        return fn.substr(pos);
+    }
+
     bool move(const std::string &from, const std::string &to)
     {
         return rename(from.c_str(), to.c_str()) == 0;
