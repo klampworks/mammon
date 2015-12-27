@@ -37,3 +37,21 @@ BOOST_FIXTURE_TEST_CASE(file_does_exist, fs_fix)
     cmd("touch " + test_dir + "/" + test_file);
     BOOST_CHECK(fs::file_exists(test_dir + test_file));
 }
+
+BOOST_FIXTURE_TEST_CASE(move_file, fs_fix) 
+{
+    const std::string f1 = "hello";
+    const std::string f2 = "world";
+
+    BOOST_CHECK(!fs::file_exists(test_dir + f1));
+    BOOST_CHECK(!fs::file_exists(test_dir + f2));
+
+    cmd("touch " + test_dir + "/" + f1);
+    BOOST_CHECK(fs::file_exists(test_dir + f1));
+    BOOST_CHECK(!fs::file_exists(test_dir + f2));
+
+    BOOST_CHECK(fs::move(test_dir + f1, test_dir + f2));
+    BOOST_CHECK(!fs::file_exists(test_dir + f1));
+    BOOST_CHECK(fs::file_exists(test_dir + f2));
+}
+
