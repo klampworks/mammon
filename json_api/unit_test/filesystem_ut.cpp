@@ -55,3 +55,10 @@ BOOST_FIXTURE_TEST_CASE(move_file, fs_fix)
     BOOST_CHECK(fs::file_exists(test_dir + f2));
 }
 
+BOOST_FIXTURE_TEST_CASE(get_ext, fs_fix) 
+{
+    const std::string f1 = "hello.txt";
+    cmd("touch " + test_dir + "/" + f1);
+
+    BOOST_CHECK(fs::get_ext(f1) == ".txt");
+}
