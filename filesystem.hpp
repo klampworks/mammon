@@ -8,4 +8,5 @@ namespace fs {
     bool create_path(const std::string &path);
     void unique_fn(std::string &fn);
     bool file_exists(const std::string &path);
+    std::string get_ext(const std::string fn);
 }
