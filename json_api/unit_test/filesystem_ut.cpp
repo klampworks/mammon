@@ -70,3 +70,11 @@ BOOST_FIXTURE_TEST_CASE(get_ext_no_ext, fs_fix)
 
     BOOST_CHECK(fs::get_ext(f1) == "");
 }
+
+BOOST_FIXTURE_TEST_CASE(get_ext_dot_no_ext, fs_fix)
+{
+    const std::string f1 = "hello.";
+    cmd("touch " + test_dir + "/" + f1);
+
+    BOOST_CHECK(fs::get_ext(f1) == ".");
+}
