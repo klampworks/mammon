@@ -8,6 +8,16 @@
 
 namespace fs {
 
+    std::pair<std::string, std::string> split_ext(const std::string fn)
+    {
+        const auto pos = fn.rfind('.');
+        if (pos == std::string::npos) {
+            return {fn, ""};
+        }
+
+        return {fn.substr(pos+1), fn.substr(0, pos)};
+    }
+
     std::string get_ext(const std::string fn)
     {
         const auto pos = fn.rfind('.');
