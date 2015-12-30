@@ -9,4 +9,5 @@ namespace fs {
     void unique_fn(std::string &fn);
     bool file_exists(const std::string &path);
     std::string get_ext(const std::string fn);
+    std::pair<std::string, std::string> split_ext(const std::string fn);
 }
