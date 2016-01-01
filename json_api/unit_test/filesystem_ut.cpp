@@ -98,3 +98,13 @@ BOOST_FIXTURE_TEST_CASE(split_ext_no_ext, fs_fix)
     BOOST_CHECK(res.first == "hello");
     BOOST_CHECK(res.second == "");
 }
+
+BOOST_FIXTURE_TEST_CASE(split_ext_dot_no_ext, fs_fix)
+{
+    const std::string f1 = "hello.";
+    cmd("touch " + test_dir + "/" + f1);
+
+    const auto res = fs::split_ext(f1);
+    BOOST_CHECK(res.first == "hello");
+    BOOST_CHECK(res.second == "");
+}
