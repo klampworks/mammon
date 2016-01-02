@@ -15,7 +15,7 @@ namespace fs {
             return {fn, ""};
         }
 
-        return {fn.substr(pos+1), fn.substr(0, pos)};
+        return {fn.substr(0, pos), fn.substr(pos+1)};
     }
 
     std::string get_ext(const std::string fn)
