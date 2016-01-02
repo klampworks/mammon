@@ -156,8 +156,17 @@ bool chan_proc::proc_file(
 
     std::string fullname = file_task.get_filepath() + "/" + filename.c_str();
     std::string md5 = hash::md5(fullname.c_str());
+    const auto pair = fs::split_ext(filename);
+    std::string new_fullname = file_task.get_filepath() + "/" + 
+        md5 + "." + pair.second;
 
-    db.store_file(cp.get_id(), cp.get_board(), filename, md5);
+    if (fs::file_exists(new_fullname)) { 
+        remove(fullname.c_str());
+    } else {
+        rename(fullname.c_str(), new_fullname.c_str());
+        db.store_file(cp.get_id(), cp.get_board(), filename, md5);
+    }
+
     return true;
 }
 
