@@ -72,3 +72,14 @@ bool chan_db::file_exists(const std::string &board, const std::string &filename)
 
     return !res.empty();
 }
+
+bool chan_db::file_hash_exists(const std::string &hash)
+{
+    const std::string query = 
+        "select * from " + f_table + " md5=?";
+
+    const std::string res = base_db::lookup_single_value(
+        query.c_str(), std::vector<std::string>({hash}));
+
+    return !res.empty();
+}
