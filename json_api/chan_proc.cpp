@@ -160,7 +160,7 @@ bool chan_proc::proc_file(
     std::string new_fullname = file_task.get_filepath() + "/" + 
         md5 + "." + pair.second;
 
-    if (fs::file_exists(new_fullname)) { 
+    if (fs::file_exists(new_fullname) || db.file_hash_exists(md5)) {
         remove(fullname.c_str());
     } else {
         rename(fullname.c_str(), new_fullname.c_str());
