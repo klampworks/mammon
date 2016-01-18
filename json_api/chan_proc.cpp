@@ -5,6 +5,7 @@
 #include <ctime>
 #include <algorithm>
 #include "hash.hpp"
+#include <fstream>
 
 std::string chan_proc::now()
 {
@@ -70,8 +71,18 @@ bool chan_proc::proc_board(const std::string board)
         if (thread_task.get_status_code() == 404)
             continue;
 
-        thread t(p->parse_posts(
-            thread_task.get_data(), chan_post(board, thread_id)),
+        {
+        const std::string path = board + "/" + thread_id;
+        fs::create_path(path);
+
+        std::ofstream ofs;
+        ofs.open(path + "/" + thread_id + ".json");
+        ofs << thread_task.get_data();
+        ofs.close();
+        }
+
+        thread t(
+            p->parse_posts(thread_task.get_data(), chan_post(board, thread_id)),
             thread_task);
 
         //score(t);
@@ -150,7 +161,6 @@ bool chan_proc::proc_file(
 
     {
     const std::string new_path = cp.get_board() + "/" + cp.get_thread_id();
-    fs::create_path(new_path);
     file_task.set_filepath(new_path);
     }
     
