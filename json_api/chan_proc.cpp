@@ -148,7 +148,11 @@ bool chan_proc::proc_file(
         file_url, 
         thread_task.get_url(), task::FILE, nullptr);
 
-    file_task.set_filepath(cp.get_board());
+    {
+    const std::string new_path = cp.get_board() + "/" + cp.get_thread_id();
+    fs::create_path(new_path);
+    file_task.set_filepath(new_path);
+    }
     
     k.grab(&file_task);
     if (file_task.get_status_code() == 404)
