@@ -9,6 +9,8 @@
 #include <iostream>
 #include <map>
 
+#include <chibi/eval.h>
+
 void process(std::unique_ptr<chan_proc> pc, std::vector<std::string> boards)
 {
     for (const auto &b: boards)
@@ -21,6 +23,8 @@ void process(std::unique_ptr<chan_proc> pc, std::vector<std::string> boards)
 
 int main(int argc, char **argv)
 {
+    sexp ctx;
+
     std::map<std::string, std::function<void(std::vector<std::string>)>> 
         opts = {
             {"4chan", bind(fourchan_proc)},

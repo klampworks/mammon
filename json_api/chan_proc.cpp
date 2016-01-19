@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "hash.hpp"
 #include <fstream>
+#include "score.hpp"
 
 std::string chan_proc::now()
 {
@@ -85,7 +86,7 @@ bool chan_proc::proc_board(const std::string board)
             p->parse_posts(thread_task.get_data(), chan_post(board, thread_id)),
             thread_task);
 
-        //score(t);
+        score::score(t);
 
         if (t.score > 0) {
             proc_thread(t);
@@ -148,8 +149,8 @@ bool chan_proc::proc_file(
         return true;
 
     //Quick hack to avoid large files (webM, Mp4 etc.)
-    if (filename.find("m") != std::string::npos)
-        return true;
+    //if (filename.find("m") != std::string::npos)
+    //    return true;
 
     std::cout << status(cp.get_board(), cp.get_thread_id(), filename) 
         << std::endl;

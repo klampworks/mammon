@@ -9,12 +9,12 @@ add_executable(
     chan_post.cpp
     fourchan_parser_json.cpp)
 
-add_executable(
-    fourchan_parser_json_ut
-    unit_test/fourchan_parser_json_ut.cpp
-    unit_test/common_ut.cpp
-    chan_post.cpp
-    fourchan_parser_json.cpp)
+#add_executable(
+#    fourchan_parser_json_ut
+#    unit_test/fourchan_parser_json_ut.cpp
+#    unit_test/common_ut.cpp
+#    chan_post.cpp
+#    fourchan_parser_json.cpp)
 
 add_executable(
     chan_db_ut
@@ -57,6 +57,7 @@ add_executable(
     fourchan_test
     fourchan_test.cpp
     chan_proc.cpp
+    score.cpp
     hash.cpp
     fourchan_proc.cpp
     eightchan_proc.cpp
