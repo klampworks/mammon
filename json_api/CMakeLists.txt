@@ -72,6 +72,7 @@ add_executable(
 target_link_libraries(fourchan_test sqlite3)
 target_link_libraries(fourchan_test curl)
 target_link_libraries(fourchan_test crypto)
+target_link_libraries(fourchan_test chibi-scheme)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)

@@ -23,8 +23,6 @@ void process(std::unique_ptr<chan_proc> pc, std::vector<std::string> boards)
 
 int main(int argc, char **argv)
 {
-    sexp ctx;
-
     std::map<std::string, std::function<void(std::vector<std::string>)>> 
         opts = {
             {"4chan", bind(fourchan_proc)},
@@ -40,6 +38,17 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    sexp ctx = sexp_make_eval_context(NULL, NULL, NULL, 0, 0);
+    sexp_load_standard_env(ctx, NULL, SEXP_SEVEN);
+
+    sexp_gc_var1(file_path);
+    sexp_gc_preserve1(ctx, file_path);
+    file_path = sexp_c_string(ctx, "mammon.ss", -1);
+    sexp_load(ctx, file_path, NULL);
+
     opts.at(argv[1])(std::vector<std::string>(argv+2, argv+argc));
+
+    sexp_gc_release1(ctx);
+    sexp_destroy_context(ctx);
     return 0;
 }
