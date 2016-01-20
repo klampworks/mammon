@@ -58,7 +58,6 @@ bool chan_proc::proc_board(const std::string board)
     }
 
     std::vector<thread> threads;
-    std::make_heap(threads.begin(), threads.end());
 
     for (auto &thread_id : thread_ids) {
 
@@ -90,9 +89,6 @@ bool chan_proc::proc_board(const std::string board)
 
         if (t.score > 0) {
             proc_thread(t);
-        } else {
-            threads.push_back(t);
-            std::push_heap(threads.begin(), threads.end());
         }
     }
 

@@ -8,10 +8,11 @@ namespace score {
 
     void score(thread &t)
     {
-        if (!ext_score)
-            return;
-            
-        for (const auto &p: t.posts)
-            t.score += ext_score(p.get_com().c_str());
+        if (!ext_score) {
+            t.score = 1;
+        } else {
+            for (const auto &p: t.posts)
+                t.score += ext_score(p.get_com().c_str());
+        }
     }
 }
