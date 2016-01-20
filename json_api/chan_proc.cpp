@@ -57,8 +57,6 @@ bool chan_proc::proc_board(const std::string board)
         // Either they are down or refusing us service.
     }
 
-    std::vector<thread> threads;
-
     for (auto &thread_id : thread_ids) {
 
         std::cout << status(board_url, thread_id) << std::endl;
@@ -90,10 +88,6 @@ bool chan_proc::proc_board(const std::string board)
         if (t.score > 0) {
             proc_thread(t);
         }
-    }
-
-    for (const auto &thread : threads) {
-        proc_thread(thread);
     }
 
     return true;
