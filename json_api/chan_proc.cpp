@@ -87,6 +87,10 @@ bool chan_proc::proc_board(const std::string board)
 
         if (t.score > 0) {
             proc_thread(t);
+        } else {
+            std::cout << "Skipping thread=[" << thread_id
+                << "] becuase score=[" << t.score << "] is too low."
+                << std::endl;
         }
     }
 
