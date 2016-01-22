@@ -1,4 +1,4 @@
-(import (scheme r5rs) (srfi 9))
+(import (scheme r5rs) (srfi 9) (srfi 1))
 (load "irregex.scm")
 
 (define-record-type :rule
@@ -7,12 +7,22 @@
   (x rule-pattern)
   (y rule-score))
 
-(define a
-    (rule (irregex "a" 'i) 10))
+(define rules
+  (list
+    (rule (irregex "a" 'i) 10)
+    (rule (irregex "p" 'i) 5)))
 
-(define (score t)
-  -1)
+(define (score thread-text)
+  (fold-right (lambda (r acc)
+               (if (irregex-search (rule-pattern r) thread-text) 
+                 (+ acc (rule-score r)) acc))
+             0
+             rules))
 
 (display
-  (if (irregex-search (rule-pattern a) "apple") (rule-score a) 0)
-)
+  (score "apple"))
+(newline)
+
+(display
+  (score "tomoato"))
+(newline)
