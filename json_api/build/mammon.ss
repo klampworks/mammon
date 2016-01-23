@@ -6,11 +6,3 @@
   (list
     (rule (irregex "a" 'i) 10)
     (rule (irregex "p" 'i) 5)))
-
-(display
-  (score "apple"))
-(newline)
-
-(display
-  (score "tomoato"))
-(newline)
