@@ -22,3 +22,21 @@
              "all-new-and-improved linux kernel version.")))
 
 (test 0 (score "tomato"))
+
+(define rules
+  (list
+    (rule (irregex '(: "linux" eow) 'i) 10)))
+
+(test 10 (score
+           (string-append
+             "linux")))
+
+(test 10 (score
+           (string-append
+             "archlinux")))
+
+(test 0 (score
+           (string-append
+             "linuxxxx")))
+
+(test 0 (score "tomato"))
