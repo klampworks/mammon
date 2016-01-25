@@ -46,3 +46,11 @@
 (test 10 (score "archlinux"))
 
 (test 0 (score "tomato"))
+
+(define rules
+  (list
+    (rule (irregex '(: bow "c++") 'i) 10)))
+
+(test 10 (score "c++ is great"))
+
+(test 0 (score "tomato"))
