@@ -27,16 +27,22 @@
   (list
     (rule (irregex '(: "linux" eow) 'i) 10)))
 
-(test 10 (score
-           (string-append
-             "linux")))
+(test 10 (score "linux"))
 
-(test 10 (score
-           (string-append
-             "archlinux")))
+(test 10 (score "archlinux"))
 
-(test 0 (score
-           (string-append
-             "linuxxxx")))
+(test 0 (score "linuxxxx"))
+
+(test 0 (score "tomato"))
+
+(define rules
+  (list
+    (rule (irregex '(or (: bow "arch" eow) (: bow "archlinux" eow)) 'i) 10)))
+
+(test 10 (score "arch"))
+
+(test 0 (score "architecture"))
+
+(test 10 (score "archlinux"))
 
 (test 0 (score "tomato"))
