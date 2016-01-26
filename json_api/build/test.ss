@@ -49,8 +49,18 @@
 
 (define rules
   (list
-    (rule (irregex '(: bow "c++") 'i) 10)))
+    (rule (irregex '(or (: bow "rhel") (: bow "red" (? " ") "hat" eow)) 'i) 10)))
 
-(test 10 (score "c++ is great"))
+(test 10 (score "red hat"))
+
+(test 10 (score "redhat"))
+
+(test 10 (score "rhel"))
+
+(test 10 (score "rhel6"))
+
+(test 10 (score "Red Hat Enterprise (rhel)"))
+
+(test 0 (score "redhatt"))
 
 (test 0 (score "tomato"))
