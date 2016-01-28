@@ -17,6 +17,13 @@ add_executable(
 #    fourchan_parser_json.cpp)
 
 add_executable(
+    ext_ut
+    unit_test/ext_test.cpp
+    ext.cpp
+    )
+target_link_libraries(ext_ut chibi-scheme)
+
+add_executable(
     chan_db_ut
     unit_test/chan_db_ut.cpp
     unit_test/common_ut.cpp
