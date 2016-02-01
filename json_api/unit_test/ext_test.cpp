@@ -3,7 +3,6 @@
 #include "../ext.hpp"
 #include <fstream>
 
-/* TODO It might be worth diving deeper into Chibi exception handling. */
 BOOST_AUTO_TEST_CASE(load_nonexistant_script)
 {
     sexp ctx = sexp_make_eval_context(NULL, NULL, NULL, 0, 0);
