@@ -15,4 +15,9 @@ namespace ext {
         sexp_gc_release2(ctx);
         return all_good;
     }
+
+    bool fun_is_defined(sexp ctx, const char *function_name)
+    {
+        return false;
+    }
 }
