@@ -42,3 +42,19 @@ BOOST_AUTO_TEST_CASE(fun_is_not_defined)
     bool ret = ext::fun_is_defined(ctx, "no-such-fun");
     BOOST_CHECK(!ret);
 }
+
+BOOST_AUTO_TEST_CASE(fun_is_defined)
+{
+    const char *fn = "blank.ss";
+    std::ofstream ofs;
+    ofs.open("blank.ss");
+    ofs << "(define (real-function a b c) 666)" << std::endl;
+    ofs.close();
+
+    sexp ctx = sexp_make_eval_context(NULL, NULL, NULL, 0, 0);
+    sexp_load_standard_env(ctx, NULL, SEXP_SEVEN);
+
+    ext::load_file(ctx, fn);
+    bool ret = ext::fun_is_defined(ctx, "real-function");
+    BOOST_CHECK(ret);
+}
