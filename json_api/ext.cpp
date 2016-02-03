@@ -18,6 +18,13 @@ namespace ext {
 
     bool fun_is_defined(sexp ctx, const char *function_name)
     {
-        return false;
+        sexp_gc_var1(fun);
+        sexp_gc_preserve1(ctx, fun);
+        fun = sexp_eval_string(ctx, function_name, -1, NULL);
+
+        bool fun_exists = sexp_procedurep(fun);
+
+        sexp_gc_release1(ctx);
+        return fun_exists;
     }
 }
