@@ -1,5 +1,6 @@
 #include "ext.hpp"
 #include <chibi/eval.h>
+#include <string>
 
 namespace ext {
 
@@ -26,5 +27,29 @@ namespace ext {
 
         sexp_gc_release1(ctx);
         return fun_exists;
+    }
+
+    int call_fun_str(sexp ctx, const char *fun_name, const char *arg)
+    {
+        sexp_gc_var3(arg_sym, arg_val, ret);
+        sexp_gc_preserve3(ctx, arg_sym, arg_val, ret);
+
+        arg_val = sexp_c_string(ctx, arg, -1);
+        arg_sym = sexp_intern(ctx, "arg", -1);
+        sexp_env_define(ctx, sexp_context_env(ctx), arg_sym, arg_val);
+
+        const std::string code(
+            std::string("(") + fun_name + std::string(" arg)"));
+        ret = sexp_eval_string(ctx, code.c_str(), -1, NULL);
+
+        int r;
+        if (sexp_integerp(ret))
+            r = sexp_unbox_fixnum(ret);
+        else
+            r = -1;
+
+        sexp_gc_release3(ctx);
+
+        return r;
     }
 }
