@@ -97,20 +97,7 @@ BOOST_AUTO_TEST_CASE(call_fun_with_arg)
 
     ext::load_file(ctx, fn);
 
-    {
-        sexp_gc_var3(arg_sym, arg_val, ret);
-        sexp_gc_preserve3(ctx, arg_sym, arg_val, ret);
-
-        const std::string msg("hello world");
-        arg_val = sexp_c_string(ctx, msg.c_str(), -1);
-        arg_sym = sexp_intern(ctx, "arg", -1);
-        sexp_env_define(ctx, sexp_context_env(ctx), arg_sym, arg_val);
-
-        ret = sexp_eval_string(ctx, "(strlen arg)", -1, NULL);
-
-        BOOST_CHECK(sexp_integerp(ret));
-        BOOST_CHECK_EQUAL(msg.length(), sexp_unbox_fixnum(ret));
-
-        sexp_gc_release3(ctx);
-    }
+    const std::string msg("hello world");
+    int ret = ext::call_fun_str(ctx, "strlen", msg.c_str());
+    BOOST_CHECK_EQUAL(msg.length(), ret);
 }
