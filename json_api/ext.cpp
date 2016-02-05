@@ -52,4 +52,9 @@ namespace ext {
 
         return r;
     }
+
+    int config_get_int(sexp ctx, const char *sym, int def)
+    {
+        return def;
+    }
 }
