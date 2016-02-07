@@ -133,3 +133,19 @@ BOOST_AUTO_TEST_CASE(get_int)
     int ret = ext::config_get_int(ctx, "port", 666);
     BOOST_CHECK_EQUAL(9050, ret);
 }
+
+BOOST_AUTO_TEST_CASE(get_int_invalid1)
+{
+    const char *fn = "blank.ss";
+    std::ofstream ofs;
+    ofs.open("blank.ss");
+    ofs << "(define port \"hello\")" << std::endl;
+    ofs.close();
+
+    sexp ctx = sexp_make_eval_context(NULL, NULL, NULL, 0, 0);
+    sexp_load_standard_env(ctx, NULL, SEXP_SEVEN);
+
+    ext::load_file(ctx, fn);
+    int ret = ext::config_get_int(ctx, "port", 666);
+    BOOST_CHECK_EQUAL(666, ret);
+}
