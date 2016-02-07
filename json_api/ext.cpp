@@ -55,6 +55,17 @@ namespace ext {
 
     int config_get_int(sexp ctx, const char *sym, int def)
     {
-        return def;
+        sexp_gc_var1(ret);
+        sexp_gc_preserve1(ctx, ret);
+        ret = sexp_eval_string(ctx, sym, -1, NULL);
+
+        int r;
+        if (sexp_integerp(ret))
+            r = sexp_unbox_fixnum(ret);
+        else
+            r = def;
+
+        sexp_gc_release1(ctx);
+        return r;
     }
 }
