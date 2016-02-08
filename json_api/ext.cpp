@@ -68,4 +68,9 @@ namespace ext {
         sexp_gc_release1(ctx);
         return r;
     }
+
+    std::string config_get_str(sexp ctx, const char *sym, const char *def)
+    {
+        return std::string(def);
+    }
 }
