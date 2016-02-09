@@ -182,3 +182,19 @@ BOOST_AUTO_TEST_CASE(get_nonexistant_string)
     BOOST_CHECK_EQUAL("", ret);
 }
 
+BOOST_AUTO_TEST_CASE(get_string)
+{
+    const char *fn = "blank.ss";
+    std::ofstream ofs;
+    ofs.open("blank.ss");
+    ofs << "(define host \"http://example.com/\")" << std::endl;
+    ofs.close();
+
+    sexp ctx = sexp_make_eval_context(NULL, NULL, NULL, 0, 0);
+    sexp_load_standard_env(ctx, NULL, SEXP_SEVEN);
+
+    ext::load_file(ctx, fn);
+    std::string ret = ext::config_get_str(ctx, "host", "");
+    BOOST_CHECK_EQUAL("http://example.com/", ret);
+}
+
