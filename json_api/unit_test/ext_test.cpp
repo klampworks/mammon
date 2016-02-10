@@ -198,3 +198,19 @@ BOOST_AUTO_TEST_CASE(get_string)
     BOOST_CHECK_EQUAL("http://example.com/", ret);
 }
 
+BOOST_AUTO_TEST_CASE(get_string_unicode)
+{
+    const char *fn = "blank.ss";
+    std::ofstream ofs;
+    ofs.open("blank.ss");
+    ofs << "(define msg \"hello † world\")" << std::endl;
+    ofs.close();
+
+    sexp ctx = sexp_make_eval_context(NULL, NULL, NULL, 0, 0);
+    sexp_load_standard_env(ctx, NULL, SEXP_SEVEN);
+
+    ext::load_file(ctx, fn);
+    std::string ret = ext::config_get_str(ctx, "msg", "");
+    BOOST_CHECK_EQUAL("hello † world", ret);
+}
+
