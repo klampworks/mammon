@@ -71,6 +71,17 @@ namespace ext {
 
     std::string config_get_str(sexp ctx, const char *sym, const char *def)
     {
-        return std::string(def);
+        sexp_gc_var1(ret);
+        sexp_gc_preserve1(ctx, ret);
+        ret = sexp_eval_string(ctx, sym, -1, NULL);
+
+        std::string r;
+        if (sexp_stringp(ret))
+            r = sexp_string_data(ret);
+        else
+            r = def;
+
+        sexp_gc_release1(ctx);
+        return r;
     }
 }
