@@ -230,3 +230,18 @@ BOOST_AUTO_TEST_CASE(get_string_invalid1)
     BOOST_CHECK_EQUAL("Invalid", ret);
 }
 
+BOOST_AUTO_TEST_CASE(get_string_invalid2)
+{
+    const char *fn = "blank.ss";
+    std::ofstream ofs;
+    ofs.open("blank.ss");
+    ofs << "(define (msg) 666)" << std::endl;
+    ofs.close();
+
+    sexp ctx = sexp_make_eval_context(NULL, NULL, NULL, 0, 0);
+    sexp_load_standard_env(ctx, NULL, SEXP_SEVEN);
+
+    ext::load_file(ctx, fn);
+    std::string ret = ext::config_get_str(ctx, "msg", "InValid");
+    BOOST_CHECK_EQUAL("InValid", ret);
+}
