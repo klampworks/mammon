@@ -11,6 +11,7 @@
 
 #include <chibi/eval.h>
 #include "score.hpp"
+#include "ext.hpp"
 
 void process(std::unique_ptr<chan_proc> pc, std::vector<std::string> boards)
 {
@@ -42,10 +43,10 @@ int main(int argc, char **argv)
     sexp ctx = sexp_make_eval_context(NULL, NULL, NULL, 0, 0);
     sexp_load_standard_env(ctx, NULL, SEXP_SEVEN);
 
-    sexp_gc_var2(file_path, score);
-    sexp_gc_preserve2(ctx, file_path, score);
-    file_path = sexp_c_string(ctx, "mammon.ss", -1);
-    sexp_load(ctx, file_path, NULL);
+    sexp_gc_var1(score);
+    sexp_gc_preserve1(ctx, score);
+
+    bool ret = ext::load_file(ctx, "mammon.ss");
 
     score = sexp_eval_string(ctx, "score", -1, NULL);
     if (sexp_procedurep(score)) {
