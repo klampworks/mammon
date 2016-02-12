@@ -65,6 +65,7 @@ add_executable(
     fourchan_test.cpp
     chan_proc.cpp
     score.cpp
+    ext.cpp
     hash.cpp
     fourchan_proc.cpp
     eightchan_proc.cpp
