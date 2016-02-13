@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 
     opts.at(argv[1])(std::vector<std::string>(argv+2, argv+argc));
 
-    sexp_gc_release2(ctx);
+    sexp_gc_release1(ctx);
     sexp_destroy_context(ctx);
     return 0;
 }
