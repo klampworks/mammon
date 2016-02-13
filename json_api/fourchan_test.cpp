@@ -51,21 +51,8 @@ int main(int argc, char **argv)
     score = sexp_eval_string(ctx, "score", -1, NULL);
     if (sexp_procedurep(score)) {
         score::ext_score = [&ctx](const char *t) {
-            int score = 0;
-            sexp_gc_var3(arg_sym, arg_val, ret);
-            sexp_gc_preserve3(ctx, arg_sym, arg_val, ret);
 
-            arg_val = sexp_c_string(ctx, t, -1);
-            arg_sym = sexp_intern(ctx, "arg", -1);
-            sexp_env_define(ctx, sexp_context_env(ctx), arg_sym, arg_val);
-            ret = sexp_eval_string(ctx, "(score arg)", -1, NULL);
-
-            if (sexp_integerp(ret)) {
-                score = sexp_unbox_fixnum(ret);
-            }
-
-            sexp_gc_release3(ctx);
-            return score;
+        return ext::call_fun_str(ctx, "score", t);
         };
     }
 
