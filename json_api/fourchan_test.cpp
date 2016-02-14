@@ -52,7 +52,7 @@ int main(int argc, char **argv)
     if (sexp_procedurep(score)) {
         score::ext_score = [&ctx](const char *t) {
 
-        return ext::call_fun_str(ctx, "score", t);
+            return ext::call_fun_str(ctx, "score", t);
         };
     }
 
