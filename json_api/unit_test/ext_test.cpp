@@ -259,5 +259,11 @@ BOOST_AUTO_TEST_CASE(get_list)
 
     ext::load_file(ctx, fn);
     std::vector<std::string> ret = ext::config_get_list(ctx, "xs");
+
     BOOST_CHECK_EQUAL(3, ret.size());
+
+    BOOST_CHECK_EQUAL("a", ret[0]);
+    BOOST_CHECK_EQUAL("b", ret[1]);
+    BOOST_CHECK_EQUAL("c", ret[2]);
 }
+
