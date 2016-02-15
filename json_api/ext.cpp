@@ -2,6 +2,7 @@
 #include <chibi/eval.h>
 #include <string>
 
+#include <iostream>
 namespace ext {
 
     bool load_file(sexp ctx, const char *filename)
@@ -82,6 +83,26 @@ namespace ext {
             r = def;
 
         sexp_gc_release1(ctx);
+        return r;
+    }
+
+    std::vector<std::string> config_get_list(sexp ctx, const char *sym)
+    {
+        sexp_gc_var2(ret, kar);
+        sexp_gc_preserve2(ctx, ret, kar);
+        ret = sexp_eval_string(ctx, sym, -1, NULL);
+
+        std::vector<std::string> r;
+
+        while (sexp_pairp(ret)) {
+
+            kar = sexp_car(ret);
+            if (sexp_stringp(kar))
+                r.push_back(sexp_string_data(kar));
+            ret = sexp_cdr(ret);
+        }
+
+        sexp_gc_release2(ctx);
         return r;
     }
 }
