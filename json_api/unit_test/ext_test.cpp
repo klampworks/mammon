@@ -267,7 +267,7 @@ BOOST_AUTO_TEST_CASE(get_list)
     BOOST_CHECK_EQUAL("c", ret[2]);
 }
 
-BOOST_AUTO_TEST_CASE(get_no_list)
+BOOST_AUTO_TEST_CASE(get_empty_list)
 {
     const char *fn = "blank.ss";
     std::ofstream ofs;
