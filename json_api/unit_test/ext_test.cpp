@@ -334,3 +334,22 @@ BOOST_AUTO_TEST_CASE(get_no_list)
 
     BOOST_CHECK_EQUAL(0, ret.size());
 }
+
+BOOST_AUTO_TEST_CASE(get_partial_list)
+{
+    const char *fn = "blank.ss";
+    std::ofstream ofs;
+    ofs.open("blank.ss");
+    ofs << "(define xs (list 1 \"b\" 3))" << std::endl;
+    ofs.close();
+
+    sexp ctx = sexp_make_eval_context(NULL, NULL, NULL, 0, 0);
+    sexp_load_standard_env(ctx, NULL, SEXP_SEVEN);
+
+    ext::load_file(ctx, fn);
+    std::vector<std::string> ret = ext::config_get_list(ctx, "xs");
+
+    BOOST_CHECK_EQUAL(1, ret.size());
+    BOOST_CHECK_EQUAL("b", ret[0]);
+}
+
