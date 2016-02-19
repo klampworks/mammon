@@ -30,16 +30,6 @@ int main(int argc, char **argv)
             {"4chan", bind(fourchan_proc)},
             {"8chan", bind(eightchan_proc)}};
 
-    if (argc < 3) {
-        std::cout << "Usage " << argv[0] << " <domain> board1 board2 ...\n";
-        std::cout << "\tWhere <domain> may be one of the following:\n";
-        for (const auto &o: opts)
-            std::cout << "\t\t" << o.first << "\n";
-
-        std::cout << std::endl;
-        return 1;
-    }
-
     sexp ctx = sexp_make_eval_context(NULL, NULL, NULL, 0, 0);
     sexp_load_standard_env(ctx, NULL, SEXP_SEVEN);
 
@@ -56,7 +46,21 @@ int main(int argc, char **argv)
         };
     }
 
-    opts.at(argv[1])(std::vector<std::string>(argv+2, argv+argc));
+    const std::string dom = ext::config_get_str(ctx, "dom", "");
+    std::function<void(std::vector<std::string>)> *fn = nullptr;
+
+    try {
+        fn = &opts.at(dom); 
+    } catch (...) {
+        std::cout << "Please specify a value for `dom` in your configuration "
+            "file.\nPossible values are:" << std::endl;
+        for (const auto &p : opts)
+            std::cout << "\t" << p.first << std::endl;
+
+        return 1;
+    }
+
+    (*fn)(std::vector<std::string>(argv+2, argv+argc));
 
     sexp_gc_release1(ctx);
     sexp_destroy_context(ctx);
