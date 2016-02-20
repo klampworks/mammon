@@ -23,7 +23,7 @@ void process(std::unique_ptr<chan_proc> pc, std::vector<std::string> boards)
     [](std::vector<std::string> bs) { \
         process(std::unique_ptr<chan_proc>(new type()), bs);},
 
-int main(int argc, char **argv)
+int main()
 {
     std::map<std::string, std::function<void(std::vector<std::string>)>> 
         opts = {
