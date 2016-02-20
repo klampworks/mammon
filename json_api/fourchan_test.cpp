@@ -60,7 +60,14 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    (*fn)(std::vector<std::string>(argv+2, argv+argc));
+    const auto boards = ext::config_get_list(ctx, "boards");
+    if (boards.empty()) {
+        std::cout << "Please add a value for `boards` in your configuration "
+            "file.\ne.g. (define boards '(\"g\" \"a\" \"k\"))" << std::endl;
+
+        return 1;
+    }
+    (*fn)(boards);
 
     sexp_gc_release1(ctx);
     sexp_destroy_context(ctx);
