@@ -37,6 +37,12 @@ int main()
     sexp_gc_preserve1(ctx, score);
 
     bool ret = ext::load_file(ctx, "mammon.ss");
+    if (!ret) {
+        std::cout << "Could not find configuration file `mammon.ss`."
+            << std::endl;
+        
+        return 1;
+    }
 
     score = sexp_eval_string(ctx, "score", -1, NULL);
     if (sexp_procedurep(score)) {
