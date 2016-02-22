@@ -61,8 +61,8 @@ add_executable(
     )
 
 add_executable(
-    fourchan_test
-    fourchan_test.cpp
+    mammon
+    mammon.cpp
     chan_proc.cpp
     score.cpp
     ext.cpp
@@ -77,10 +77,10 @@ add_executable(
     fourchan_parser_json.cpp
     chan_post.cpp
     fourchan_parser_json.cpp)
-target_link_libraries(fourchan_test sqlite3)
-target_link_libraries(fourchan_test curl)
-target_link_libraries(fourchan_test crypto)
-target_link_libraries(fourchan_test chibi-scheme)
+target_link_libraries(mammon sqlite3)
+target_link_libraries(mammon curl)
+target_link_libraries(mammon crypto)
+target_link_libraries(mammon chibi-scheme)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
