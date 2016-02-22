@@ -2,6 +2,9 @@
 (load "irregex.scm")
 (load "score.ss")
 
+(define dom "4chan")
+(define boards '("g"))
+
 (define rules
   (list
     (rule (irregex '(: "linux" eow) 'i) 10)
