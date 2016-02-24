@@ -52,12 +52,21 @@ int main()
         };
     }
 
-    const std::string dom = ext::config_get_str(ctx, "dom", "");
-    std::function<void(std::vector<std::string>)> *fn = nullptr;
+    const auto boards = ext::config_get_list(ctx, "boards");
+    if (boards.empty()) {
+        std::cout << "Please add a value for `boards` in your configuration "
+            "file.\ne.g. (define boards '(\"g\" \"a\" \"k\"))" << std::endl;
 
-    try {
-        fn = &opts.at(dom); 
-    } catch (...) {
+        return 1;
+    }
+
+    const std::string dom = ext::config_get_str(ctx, "dom", "");
+    std::unique_ptr<chan_proc> pc;
+    if (dom == "4chan") {
+        pc = std::unique_ptr<chan_proc>(new fourchan_proc());
+    } else if (dom == "8chan") {
+        pc = std::unique_ptr<chan_proc>(new eightchan_proc());
+    } else {
         std::cout << "Please specify a value for `dom` in your configuration "
             "file.\nPossible values are:" << std::endl;
         for (const auto &p : opts)
@@ -66,14 +75,8 @@ int main()
         return 1;
     }
 
-    const auto boards = ext::config_get_list(ctx, "boards");
-    if (boards.empty()) {
-        std::cout << "Please add a value for `boards` in your configuration "
-            "file.\ne.g. (define boards '(\"g\" \"a\" \"k\"))" << std::endl;
-
-        return 1;
-    }
-    (*fn)(boards);
+    for (const auto &b: boards)
+        pc->proc_board(b);
 
     sexp_gc_release1(ctx);
     sexp_destroy_context(ctx);
