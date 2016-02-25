@@ -54,8 +54,10 @@ int main()
     } else {
         std::cout << "Please specify a value for `dom` in your configuration "
             "file.\nPossible values are:" << std::endl;
-        for (const auto &p : opts)
-            std::cout << "\t" << p.first << std::endl;
+        std::cout
+            << "\t4chan\n"
+            << "\t8chan\n"
+            << std::endl;
 
         return 1;
     }
