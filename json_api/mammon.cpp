@@ -13,23 +13,8 @@
 #include "score.hpp"
 #include "ext.hpp"
 
-void process(std::unique_ptr<chan_proc> pc, std::vector<std::string> boards)
-{
-    for (const auto &b: boards)
-        pc->proc_board(b);
-}
-
-#define bind(type) \
-    [](std::vector<std::string> bs) { \
-        process(std::unique_ptr<chan_proc>(new type()), bs);},
-
 int main()
 {
-    std::map<std::string, std::function<void(std::vector<std::string>)>> 
-        opts = {
-            {"4chan", bind(fourchan_proc)},
-            {"8chan", bind(eightchan_proc)}};
-
     sexp ctx = sexp_make_eval_context(NULL, NULL, NULL, 0, 0);
     sexp_load_standard_env(ctx, NULL, SEXP_SEVEN);
 
