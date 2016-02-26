@@ -11,7 +11,7 @@ class eightchan_proc : public chan_proc
             const std::string thread_id);
         virtual std::string mk_board_url(const std::string b);
 
-        eightchan_proc();
+        eightchan_proc(std::string &&b_url);
     private:
         std::string mk_base_url();
         std::string base_url;

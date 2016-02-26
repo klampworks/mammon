@@ -50,7 +50,7 @@ int main()
     if (dom == "4chan") {
         pc = std::unique_ptr<chan_proc>(new fourchan_proc());
     } else if (dom == "8chan") {
-        pc = std::unique_ptr<chan_proc>(new eightchan_proc());
+        pc = std::unique_ptr<chan_proc>(new eightchan_proc("apple"));
     } else {
         std::cout << "Please specify a value for `dom` in your configuration "
             "file.\nPossible values are:" << std::endl;
