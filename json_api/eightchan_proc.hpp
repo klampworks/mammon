@@ -13,6 +13,6 @@ class eightchan_proc : public chan_proc
 
         eightchan_proc(std::string &&b_url);
     private:
-        std::string mk_base_url();
-        std::string base_url;
+        const std::string& mk_base_url() const;
+        const std::string base_url;
 };

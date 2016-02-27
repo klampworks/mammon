@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 
-std::string eightchan_proc::mk_base_url()
+const std::string& eightchan_proc::mk_base_url() const
 {
     return base_url;
 }
