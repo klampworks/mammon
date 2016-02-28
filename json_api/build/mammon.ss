@@ -2,8 +2,9 @@
 (load "irregex.scm")
 (load "score.ss")
 
-(define dom "4chan")
+(define dom "8chan")
 (define boards '("g"))
+(define url-8chan "banana/")
 
 (define rules
   (list
