@@ -4,7 +4,7 @@
 
 (define dom "8chan")
 (define boards '("g"))
-(define url-8chan "banana/")
+(define url-8chan "http://oxwugzccvk3dk6tj.onion/")
 
 (define rules
   (list
