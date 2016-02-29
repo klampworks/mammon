@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(call_fun_with_arg)
     const char *fn = "blank.ss";
     std::ofstream ofs;
     ofs.open("blank.ss");
-    ofs << "(define (strlen s) (string-length s))" << std::endl;
+    ofs << "(define (strlen s) (string-length s _))" << std::endl;
     ofs.close();
 
     sexp ctx = sexp_make_eval_context(NULL, NULL, NULL, 0, 0);
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(call_fun_with_arg)
     ext::load_file(ctx, fn);
 
     const std::string msg("hello world");
-    int ret = ext::call_fun_str(ctx, "strlen", msg.c_str());
+    int ret = ext::call_fun_str2(ctx, "strlen", msg.c_str(), "");
     BOOST_CHECK_EQUAL(msg.length(), ret);
 }
 

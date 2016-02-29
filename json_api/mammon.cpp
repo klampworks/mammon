@@ -31,9 +31,9 @@ int main()
 
     score = sexp_eval_string(ctx, "score", -1, NULL);
     if (sexp_procedurep(score)) {
-        score::ext_score = [&ctx](const char *t) {
+        score::ext_score = [&ctx](const char *b, const char *t) {
 
-            return ext::call_fun_str(ctx, "score", t);
+            return ext::call_fun_str2(ctx, "score", b, t);
         };
     }
 

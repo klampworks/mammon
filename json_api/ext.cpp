@@ -30,17 +30,22 @@ namespace ext {
         return fun_exists;
     }
 
-    int call_fun_str(sexp ctx, const char *fun_name, const char *arg)
+    int call_fun_str2(sexp ctx, const char *fun_name,
+        const char *arg1, const char *arg2)
     {
-        sexp_gc_var3(arg_sym, arg_val, ret);
-        sexp_gc_preserve3(ctx, arg_sym, arg_val, ret);
+        sexp_gc_var5(arg1_sym, arg1_val, arg2_sym, arg2_val, ret);
+        sexp_gc_preserve5(ctx, arg1_sym, arg1_val, arg2_sym, arg2_val, ret);
 
-        arg_val = sexp_c_string(ctx, arg, -1);
-        arg_sym = sexp_intern(ctx, "arg", -1);
-        sexp_env_define(ctx, sexp_context_env(ctx), arg_sym, arg_val);
+        arg1_val = sexp_c_string(ctx, arg1, -1);
+        arg1_sym = sexp_intern(ctx, "arg1", -1);
+        sexp_env_define(ctx, sexp_context_env(ctx), arg1_sym, arg1_val);
+
+        arg2_val = sexp_c_string(ctx, arg2, -1);
+        arg2_sym = sexp_intern(ctx, "arg2", -1);
+        sexp_env_define(ctx, sexp_context_env(ctx), arg2_sym, arg2_val);
 
         const std::string code(
-            std::string("(") + fun_name + std::string(" arg)"));
+            std::string("(") + fun_name + std::string(" arg1 arg2)"));
         ret = sexp_eval_string(ctx, code.c_str(), -1, NULL);
 
         int r;
@@ -49,7 +54,7 @@ namespace ext {
         else
             r = -1;
 
-        sexp_gc_release3(ctx);
+        sexp_gc_release5(ctx);
 
         return r;
     }

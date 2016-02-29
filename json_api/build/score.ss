@@ -4,7 +4,7 @@
   (x rule-pattern)
   (y rule-score))
 
-(define (score thread-text)
+(define (score board thread-text)
   (fold-right (lambda (r acc)
                (if (irregex-search (rule-pattern r) thread-text) 
                  (+ acc (rule-score r)) acc))

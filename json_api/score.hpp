@@ -5,6 +5,6 @@ class thread;
 
 namespace score {
 
-    extern std::function<int(const char*)> ext_score;
+    extern std::function<int(const char*, const char*)> ext_score;
     void score(thread &t);
 }
